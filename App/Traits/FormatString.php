@@ -1,5 +1,7 @@
 <?php
 
+namespace App\Traits;
+
 trait FormatString
 {
     function removeNumbers($word)
@@ -17,7 +19,7 @@ trait FormatString
 
     function countDigits($word)
     {
-        return preg_match_all( "/[0-9]/", $word);
+        return preg_match_all("/[0-9]/", $word);
     }
 
     function countLetters($word)

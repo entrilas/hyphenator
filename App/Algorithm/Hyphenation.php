@@ -1,6 +1,11 @@
 <?php
 
-class Hyphenator
+namespace App\Algorithm;
+
+use App\Algorithm\Interfaces\HyphenationInterface;
+use App\Traits\FormatString;
+
+class Hyphenation implements HyphenationInterface
 {
     use FormatString;
 
@@ -23,11 +28,10 @@ class Hyphenator
     {
         $correctPatterns = [];
         $patterns = $this->patterns;
-        foreach($patterns as $pattern)
-        {
+        foreach ($patterns as $pattern) {
             $clearedPattern = $this->clearString($pattern);
             $clearedPatternPosition = strpos($word, $clearedPattern);
-            if($this->positionChecker($pattern, $clearedPattern, $clearedPatternPosition, $word))
+            if ($this->positionChecker($pattern, $clearedPattern, $clearedPatternPosition, $word))
                 continue;
             $correctPatterns[] = $this->formCorrectPattern($pattern, $clearedPatternPosition);
         }
@@ -38,8 +42,8 @@ class Hyphenator
     {
         preg_match_all('/[0-9]+/', $pattern, $patternOffsets, PREG_OFFSET_CAPTURE);
         return array('pattern' => $pattern,
-                    'patternOffsets' => $patternOffsets[0],
-                    'startPosition' => $patternStartPosition);
+            'patternOffsets' => $patternOffsets[0],
+            'startPosition' => $patternStartPosition);
     }
 
     private function positionChecker($pattern, $clearedPattern, $patternPosition, $word)
@@ -57,10 +61,8 @@ class Hyphenator
 
     private function findBreakpoints($patterns)
     {
-        foreach($patterns as $pattern)
-        {
-            foreach($pattern['patternOffsets'] as $key => $offset)
-            {
+        foreach ($patterns as $pattern) {
+            foreach ($pattern['patternOffsets'] as $key => $offset) {
                 $realPosition = $pattern['startPosition'] + $offset[1] - $key;
                 $this->setBreakpoint($realPosition, $offset[0]);
             }
@@ -70,9 +72,9 @@ class Hyphenator
     private function setBreakpoint($position, $value)
     {
         $breakpoints = &$this->breakpoints;
-        if(!isset($breakpoints[$position]))
+        if (!isset($breakpoints[$position]))
             $breakpoints[$position] = $value;
-        else if($breakpoints[$position] <= $value)
+        else if ($breakpoints[$position] <= $value)
             $breakpoints[$position] = $value;
     }
 
@@ -80,14 +82,12 @@ class Hyphenator
     {
         $hyphenatedWord = '';
         $chars = str_split($word);
-        for($i=0;$i<strlen($word);$i++)
-        {
-            if(isset($this->breakpoints[$i]))
-                if($this->breakpoints[$i] % 2 != 0 && $i > 0)
+        for ($i = 0; $i < strlen($word); $i++) {
+            if (isset($this->breakpoints[$i]))
+                if ($this->breakpoints[$i] % 2 != 0 && $i > 0)
                     $hyphenatedWord .= $hyphen;
             $hyphenatedWord .= $chars[$i];
         }
         return $hyphenatedWord;
-
     }
 }

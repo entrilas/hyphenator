@@ -1,8 +1,11 @@
 <?php
 
-class FileReader
+namespace App\Services;
+
+class FileReaderService
 {
     private $start = 0;
+
     public function readFiles($filename)
     {
         $fileData = array();
