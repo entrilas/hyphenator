@@ -7,6 +7,7 @@ class Hyphenator
     use FormatString;
 
     private $patterns;
+    private $breakpoints;
 
     public function __construct($patterns)
     {
@@ -16,7 +17,8 @@ class Hyphenator
     public function hyphenate($word)
     {
         $correctPatterns = $this->findCorrectPatterns($word);
-        print_r($correctPatterns);
+        $this->findBreakpoints($word, $correctPatterns);
+        print_r($this->breakpoints);
     }
 
     private function findCorrectPatterns($word)
@@ -46,12 +48,31 @@ class Hyphenator
     {
         //Not sure yet if all the rules are applied, will read TeX algorithm documentation later
         //First rule checks if position is not found
-        //Second rule checks if pattern does not start at the beggining (if pattern contains dot at the start)
+        //Second rule checks if pattern does not start at the beginning (if pattern contains dot at the start)
         //Third rule checks if pattern applies to the end of the word (if pattern contains dot at the end)
         if ($patternPosition === false || ($pattern[0] == '.' && $patternPosition !== 0) ||
             ($pattern[strlen($pattern) - 1] == '.' && $patternPosition !== strlen($word) - strlen($clearedPattern)))
             return true;
         else
             return false;
+    }
+
+    private function findBreakpoints($word, $patterns)
+    {
+        foreach($patterns as $pattern)
+        {
+            foreach($pattern['patternOffsets'] as $key => $offset)
+            {
+                $realPosition = $pattern['startPosition'] + $offset[1] - $key;
+                $this->setBreakpoint($realPosition, $offset[0]);
+            }
+        }
+    }
+
+    private function setBreakpoint($position, $value)
+    {
+        $breakpoints = &$this->breakpoints;
+        if(!isset($breakpoints[$position]))
+            $breakpoints[$position] = $value;
     }
 }
