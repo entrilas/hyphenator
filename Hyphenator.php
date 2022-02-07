@@ -15,7 +15,7 @@ class Hyphenator
     public function hyphenate($word)
     {
         $correctPatterns = $this->findCorrectPatterns($word);
-        $this->findBreakpoints($word, $correctPatterns);
+        $this->findBreakpoints($correctPatterns);
         return $this->insertHyphen('-', $word);
     }
 
@@ -55,7 +55,7 @@ class Hyphenator
             return false;
     }
 
-    private function findBreakpoints($word, $patterns)
+    private function findBreakpoints($patterns)
     {
         foreach($patterns as $pattern)
         {
@@ -83,7 +83,7 @@ class Hyphenator
         for($i=0;$i<strlen($word);$i++)
         {
             if(isset($this->breakpoints[$i]))
-                if($this->breakpoints[$i] % 2 != 0 && $this->breakpoints[$i] > 1)
+                if($this->breakpoints[$i] % 2 != 0 && $i > 0)
                     $hyphenatedWord .= $hyphen;
             $hyphenatedWord .= $chars[$i];
         }
