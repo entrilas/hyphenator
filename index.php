@@ -7,5 +7,8 @@ $fileReader = new FileReader();
 $logger = new Logger();
 $content = $fileReader->readFilesTest('tex-hyphenation-patterns.txt');
 $algorithm = new Hyphenator($content);
-$algorithm->hyphenate("computer");
+
+$start = microtime(true);
+print_r($algorithm->hyphenate("computer"));
+$time_elapsed_secs = microtime(true) - $start;
 //$logger->logConsole($content);

@@ -1,7 +1,5 @@
 <?php
 
-include_once 'FormatString.php';
-
 class Hyphenator
 {
     use FormatString;
@@ -18,7 +16,7 @@ class Hyphenator
     {
         $correctPatterns = $this->findCorrectPatterns($word);
         $this->findBreakpoints($word, $correctPatterns);
-        print_r($this->breakpoints);
+        return $this->insertHyphen('-', $word);
     }
 
     private function findCorrectPatterns($word)
@@ -74,5 +72,22 @@ class Hyphenator
         $breakpoints = &$this->breakpoints;
         if(!isset($breakpoints[$position]))
             $breakpoints[$position] = $value;
+        else if($breakpoints[$position] <= $value)
+            $breakpoints[$position] = $value;
+    }
+
+    private function insertHyphen($hyphen, $word)
+    {
+        $hyphenatedWord = '';
+        $chars = str_split($word);
+        for($i=0;$i<strlen($word);$i++)
+        {
+            if(isset($this->breakpoints[$i]))
+                if($this->breakpoints[$i] % 2 != 0 && $this->breakpoints[$i] > 1)
+                    $hyphenatedWord .= $hyphen;
+            $hyphenatedWord .= $chars[$i];
+        }
+        return $hyphenatedWord;
+
     }
 }
