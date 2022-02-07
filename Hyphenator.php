@@ -29,9 +29,17 @@ class Hyphenator
             $clearedPatternPosition = strpos($word, $clearedPattern);
             if($this->positionChecker($pattern, $clearedPattern, $clearedPatternPosition, $word))
                 continue;
-            $correctPatterns[] = $pattern;
+            $correctPatterns[] = $this->formCorrectPattern($pattern, $clearedPatternPosition);
         }
         return $correctPatterns;
+    }
+
+    private function formCorrectPattern($pattern, $patternStartPosition)
+    {
+        preg_match_all('/[0-9]+/', $pattern, $patternOffsets, PREG_OFFSET_CAPTURE);
+        return array('pattern' => $pattern,
+                    'patternOffsets' => $patternOffsets[0],
+                    'startPosition' => $patternStartPosition);
     }
 
     private function positionChecker($pattern, $clearedPattern, $patternPosition, $word)
