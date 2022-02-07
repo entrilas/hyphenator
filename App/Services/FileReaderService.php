@@ -4,7 +4,7 @@ namespace App\Services;
 
 class FileReaderService
 {
-    public function readFile($path)
+    public function readFiles($path)
     {
         $file = array();
         if (!is_array($path)) {

@@ -5,7 +5,7 @@ spl_autoload_register(function($class){
 });
 
 $fileReader = new App\Services\FileReaderService();
-$content = $fileReader->readFilesTest(App\Constants\Constants::US_TEX_PATTERNS);
+$content = $fileReader->readFiles(App\Constants\Constants::US_TEX_PATTERNS);
 $algorithm = new App\Algorithm\Hyphenation($content);
 
 App\Console\Logger::time("Hyphenation Algorithm");
