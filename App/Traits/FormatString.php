@@ -4,12 +4,12 @@ namespace App\Traits;
 
 trait FormatString
 {
-    function removeNumbers($word)
+    public function removeNumbers($word)
     {
         return preg_replace('/\d/', '', $word);
     }
 
-    function clearString($word)
+    public function clearString($word)
     {
         $word = $this->removeSymbols($word);
         $word = $this->removeNumbers($word);
@@ -17,22 +17,22 @@ trait FormatString
         return $word;
     }
 
-    function countDigits($word)
+    public function countDigits($word)
     {
         return preg_match_all("/[0-9]/", $word);
     }
 
-    function countLetters($word)
+    public function countLetters($word)
     {
         return strlen(preg_replace("/[^a-zA-Z]+/", "", $word));
     }
 
-    function removeSpaces($word)
+    public function removeSpaces($word)
     {
         return preg_replace('/\s+/', '', $word);
     }
 
-    function removeSymbols($word)
+    public function removeSymbols($word)
     {
         return preg_replace('/[^A-Za-z0-9\-]/', '', $word);
     }
