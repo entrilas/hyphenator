@@ -85,7 +85,7 @@ class Logger
     public static function formatLog(array $logEntry)
     {
         $logMessage = "";
-        $logMessage .= date('c', $logEntry['timestamp']) . " ";
+        $logMessage .= date('r', $logEntry['timestamp']) . " ";
         $logMessage .= "[" . strtoupper($logEntry['level']) . "] : ";
         if (!empty($logEntry['name'])) {
             $logMessage .= $logEntry['name'] . " => ";
