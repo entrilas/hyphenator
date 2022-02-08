@@ -33,15 +33,15 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/App/Models" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/App/Algorithm" />
     <property name="nodejs_package_manager_path" value="npm" />
     <property name="settings.editor.selected.configurable" value="vcs.Git" />
     <property name="vue.rearranger.settings.migration" value="true" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/App/Models" />
       <recent name="$PROJECT_DIR$/App/Algorithm" />
+      <recent name="$PROJECT_DIR$/App/Models" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$" />
@@ -58,7 +58,7 @@
       <option name="presentableId" value="Default" />
       <updated>1644228543066</updated>
       <workItem from="1644228544514" duration="16782000" />
-      <workItem from="1644305408100" duration="8894000" />
+      <workItem from="1644305408100" duration="24155000" />
     </task>
     <servers />
   </component>

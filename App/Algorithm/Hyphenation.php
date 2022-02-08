@@ -11,7 +11,6 @@ class Hyphenation implements HyphenationInterface
     use FormatString;
 
     private $patterns;
-    private $breakpoints;
 
     public function __construct($patterns)
     {
@@ -21,8 +20,8 @@ class Hyphenation implements HyphenationInterface
     public function hyphenate($word)
     {
         $correctPatterns = $this->findCorrectPatterns($word);
-        $this->findBreakpoints($correctPatterns);
-        return $this->insertHyphen('-', $word);
+        $breakpoints = $this->findBreakpoints($correctPatterns);
+        return $this->insertHyphen('-', $word, $breakpoints);
     }
 
     private function findCorrectPatterns($word)
@@ -62,30 +61,31 @@ class Hyphenation implements HyphenationInterface
 
     private function findBreakpoints($patterns)
     {
+        $breakpoints = array();
         foreach ($patterns as $pattern) {
             foreach ($pattern['patternOffsets'] as $key => $offset) {
                 $realPosition = $pattern['startPosition'] + $offset[1] - $key;
-                $this->setBreakpoint($realPosition, $offset[0]);
+                $this->setBreakpoint($realPosition, $offset[0], $breakpoints);
             }
         }
+        return $breakpoints;
     }
 
-    private function setBreakpoint($position, $value)
+    private function setBreakpoint($position, $value, &$breakpoints)
     {
-        $breakpoints = &$this->breakpoints;
-        if (!isset($breakpoints[$position]))
-            $breakpoints[$position] = $value;
-        else if ($breakpoints[$position] <= $value)
+        if(isset($breakpoints[$position]))
+            $breakpoints[$position] = max($breakpoints[$position], $value);
+        else
             $breakpoints[$position] = $value;
     }
 
-    private function insertHyphen($hyphen, $word)
+    private function insertHyphen($hyphen, $word, $breakpoints)
     {
         $hyphenatedWord = '';
         $chars = str_split($word);
         for ($i = 0; $i < strlen($word); $i++) {
-            if (isset($this->breakpoints[$i]))
-                if ($this->breakpoints[$i] % 2 != 0 && $i > 0)
+            if (isset($breakpoints[$i]))
+                if ($breakpoints[$i] % 2 != 0 && $i > 0)
                     $hyphenatedWord .= $hyphen;
             $hyphenatedWord .= $chars[$i];
         }

@@ -17,16 +17,6 @@ trait FormatString
         return $word;
     }
 
-    public function countDigits($word)
-    {
-        return preg_match_all("/[0-9]/", $word);
-    }
-
-    public function countLetters($word)
-    {
-        return strlen(preg_replace("/[^a-zA-Z]+/", "", $word));
-    }
-
     public function removeSpaces($word)
     {
         return preg_replace('/\s+/', '', $word);
@@ -34,6 +24,6 @@ trait FormatString
 
     public function removeSymbols($word)
     {
-        return preg_replace('/[^A-Za-z0-9\-]/', '', $word);
+        return trim($word);
     }
 }
