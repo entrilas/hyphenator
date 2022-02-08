@@ -5,8 +5,17 @@ spl_autoload_register(function($class){
 });
 
 $fileReader = new App\Services\FileReaderService();
-$content = $fileReader->readFiles(App\Constants\Constants::US_TEX_PATTERNS);
+$content = $fileReader->readFile(App\Constants\Constants::US_TEX_PATTERNS);
 $algorithm = new App\Algorithm\Hyphenation($content);
+
+//App\Console\Logger::time("File Reading with fread()");
+//$largeFileData = $fileReader->readFile('App/Resources/text.txt');
+//App\Console\Logger::timeEnd("File Reading with fread()");
+//
+//App\Console\Logger::time("File Reading with fgets()");
+//$largeFileData = $fileReader->readLargeFile(App\Constants\Constants::LARGE_FILE);
+//App\Console\Logger::timeEnd("File Reading with fgets()");
+
 
 App\Console\Logger::time("Hyphenation Algorithm");
 $hyphenatedWord = $algorithm->hyphenate("mistranslate");

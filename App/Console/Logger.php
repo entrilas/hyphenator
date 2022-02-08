@@ -104,5 +104,4 @@ class Logger
         }
         self::$LOGGER_STATUS = true;
     }
-
 }

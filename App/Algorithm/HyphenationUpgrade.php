@@ -3,7 +3,6 @@
 namespace App\Algorithm;
 
 use App\Algorithm\Interfaces\HyphenationInterface;
-use App\Models\Word;
 use App\Traits\FormatString;
 
 class Hyphenation implements HyphenationInterface
