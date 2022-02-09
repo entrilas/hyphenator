@@ -6,15 +6,6 @@ use App\Models\Pattern;
 
 class FileReaderService
 {
-//    public function readSmallFile($path)
-//    {
-//        $file = array();
-//        if (!is_array($path)) {
-//            $file = file($path, FILE_IGNORE_NEW_LINES);
-//        }
-//        return $file;
-//    }
-
     public function readFile($path)
     {
         $fp = @fopen($path, 'r');

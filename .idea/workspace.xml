@@ -1,7 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="80446ad4-d831-40fc-954f-105377b38c5e" name="Changes" comment="" />
+    <list default="true" id="80446ad4-d831-40fc-954f-105377b38c5e" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/App/Constants/Constants.php" beforeDir="false" afterPath="$PROJECT_DIR$/App/Constants/Constants.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/App/Services/FileReaderService.php" beforeDir="false" afterPath="$PROJECT_DIR$/App/Services/FileReaderService.php" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -58,11 +62,24 @@
       <option name="presentableId" value="Default" />
       <updated>1644228543066</updated>
       <workItem from="1644228544514" duration="16782000" />
-      <workItem from="1644305408100" duration="24155000" />
+      <workItem from="1644305408100" duration="25205000" />
+      <workItem from="1644352659059" duration="722000" />
+      <workItem from="1644392492619" duration="745000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
 </project>
