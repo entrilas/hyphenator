@@ -2,80 +2,82 @@
 
 namespace App\Core\Log;
 
+use App\Constants\Constants;
+use App\Core\Config;
 use App\Core\Log\Interfaces\LoggerInterface;
 
 class Logger implements LoggerInterface
 {
-    protected static $logFile;
+    private $config;
+    private $openedFile;
 
-    protected static $logToFileStatus = true;
-
-    protected static $logToConsoleStatus = false;
-
-    protected static $file;
-
-    private static $instance;
-
-    protected static $options = [
-        'dateFormat' => 'd-M-Y',
-        'logFormat' => 'H:i:s d-M-Y'
-    ];
-
-    public static function createLogFile()
+    public function __construct(Config $config)
     {
-        $time = date(static::$options['dateFormat']);
-        static::$logFile = __DIR__ . "/logs/log-{$time}.txt";
+        $this->config = $config->get(Constants::LOGGER_FILE_NAME);
+    }
 
-        if (!file_exists(__DIR__ . '/logs')) {
-            mkdir(__DIR__ . '/logs', 0777, true);
+    private function getLogFile()
+    {
+        $time = date($this->config['LOG_DATE_FORMAT']);
+        return dirname(__FILE__, 4) . $this->config['LOG_PATH'] . "/". "log-$time.txt";
+    }
+
+    private function getLogDirectory()
+    {
+        return dirname(__FILE__, 4) . $this->config['LOG_PATH'];
+    }
+
+    public function createLogFile()
+    {
+        $logFile = $this->getLogFile();
+        $logDirectory = $this->getLogDirectory();
+
+        if (!file_exists($logDirectory)) {
+            mkdir($logDirectory, 0777, true);
         }
 
-        if (!file_exists(static::$logFile)) {
-            fopen(static::$logFile, 'w') or exit("Can't create {static::log_file}!");
+        if (!file_exists($logFile)) {
+            $this->openedFile = fopen($logFile, 'w') or exit("Can't create {static::log_file}!");
         }
 
-        if (!is_writable(static::$logFile)) {
+        if (!is_writable($logFile)) {
             throw new Exception("ERROR: Unable to write to file!", 1);
         }
     }
 
-    public static function setOptions($options = []) {
-        static::$options = array_merge(static::$options, $options);
+    public function info($message, array $context = []) {
+        $this->log(LogLevel::INFO, $message, $context);
     }
 
-    public static function info($message, array $context = []) {
-        static::log(LogLevel::INFO, $message, $context);
+    public function alert($message, array $context = []) {
+        $this->log(LogLevel::ALERT, $message, $context);
     }
 
-    public static function alert($message, array $context = []) {
-        static::log(LogLevel::ALERT, $message, $context);
+    public function critical($message, array $context = []) {
+        $this->log(LogLevel::CRITICAL, $message, $context);
     }
 
-    public static function critical($message, array $context = []) {
-        static::log(LogLevel::CRITICAL, $message, $context);
+    public function notice($message, array $context = []) {
+        $this->log(LogLevel::NOTICE, $message, $context);
     }
 
-    public static function notice($message, array $context = []) {
-        static::log(LogLevel::NOTICE, $message, $context);
+    public function debug($message, array $context = []) {
+        $this->log(LogLevel::DEBUG, $message, $context);
     }
 
-    public static function debug($message, array $context = []) {
-        static::log(LogLevel::DEBUG, $message, $context);
+    public function warning($message, array $context = []){
+        $this->log(LogLevel::WARNING, $message, $context);
     }
 
-    public static function warning($message, array $context = []){
-        static::log(LogLevel::WARNING, $message, $context);
+    public function error($message, array $context = []) {
+        $this->log(LogLevel::ERROR, $message, $context);
     }
 
-    public static function error($message, array $context = []) {
-        static::log(LogLevel::ERROR, $message, $context);
+    public function emergency($message, array $context = []) {
+        $this->log(LogLevel::EMERGENCY, $message, $context);
     }
 
-    public static function emergency($message, array $context = []) {
-        static::log(LogLevel::EMERGENCY, $message, $context);
-    }
-
-    public static function log($level, $message, array $context = array()) {
+    public function log($level, $message, array $context = array()) {
 
         $context = [
             'message' => $message,
@@ -83,58 +85,49 @@ class Logger implements LoggerInterface
             'context' => $context
         ];
 
-        $message = self::formatLog($context);
+        $message = $this->formatLog($context);
 
-        self::logFile($message);
-        self::logConsole($message);
+        $this->logFile($message);
+        $this->logConsole($message);
     }
 
-    private static function formatLog($context)
+    private function formatLog($context)
     {
-        $time = date(static::$options['logFormat']);
-        $timeLog = is_null($time) ? "[N/A] " : "[{$time}] ";
+        $time = date($this->config['LOG_FORMAT']);
+        $timeLog = is_null($time) ? "[N/A] " : "[$time] ";
         $levelLog = is_null($context['level']) ? "[N/A]" : "[{$context['level']}]";
         $messageLog = is_null($context['message']) ? "N/A" : "{$context['message']}";
-        $contextLog = empty($args['context']) ? "" : "{$context}";
-        $message = "{$timeLog} {$levelLog}: - {$messageLog} {$contextLog}" . PHP_EOL;
-        return $message;
+        $contextLog = empty($args['context']) ? "" : "$context";
+        return "$timeLog $levelLog: - $messageLog $contextLog" . PHP_EOL;
     }
 
-    private static function logConsole($message){
-        if(self::$logToConsoleStatus) {
+    private function logConsole($message){
+        if($this->config['LOG_TO_CONSOLE']) {
             print_r($message);
         }
     }
 
-    private static function logFile($message){
-        static::createLogFile();
+    private function logFile($message){
+        $this->createLogFile();
 
-        if (!is_resource(static::$file)) {
-            static::openLog();
+        if (!is_resource($this->getLogFile())) {
+            $this->openLog();
         }
 
-        if(self::$logToFileStatus) {
-            fwrite(static::$file, $message . PHP_EOL);
+        if($this->config['LOG_TO_FILE']) {
+            fwrite($this->openedFile, $message . PHP_EOL);
         }
-        static::closeFile();
+        $this->closeFile();
     }
 
-    private static function openLog(){
-        $openFile = static::$logFile;
-        static::$file = fopen($openFile, 'a') or exit("Can't open $openFile!");
+    private function openLog(){
+        $openFile = $this->getLogFile();
+        $this->openedFile = fopen($openFile, 'a') or exit("Can't open $openFile!");
     }
 
-    public static function closeFile(){
-        if (static::$file) {
-            fclose(static::$file);
+    public function closeFile(){
+        if ($this->getLogFile()) {
+            fclose($this->openedFile);
         }
     }
-
-    public static function getInstance(){
-        if (is_null(self::$instance)) {
-            self::$instance = new self();
-        }
-        return self::$instance;
-    }
-
 }

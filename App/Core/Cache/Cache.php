@@ -4,7 +4,6 @@ namespace App\Core\Cache;
 
 use App\Constants\Constants;
 use App\Core\Cache\Interfaces\CacheInterface;
-use http\Exception\InvalidArgumentException;
 
 class Cache implements CacheInterface
 {
@@ -32,11 +31,11 @@ class Cache implements CacheInterface
         $path = realpath($cachePath);
 
         if ($path === false) {
-            throw new InvalidArgumentException("Cache path doesn't exist: {$cachePath}");
+            throw new \InvalidArgumentException("Cache path doesn't exist: {$cachePath}");
         }
 
         if (! is_writable($path . DIRECTORY_SEPARATOR)) {
-            throw new InvalidArgumentException("Cache path isn't writable: {$cachePath}");
+            throw new \InvalidArgumentException("Cache path isn't writable: {$cachePath}");
         }
 
         $this->cachePath = $path;
@@ -96,7 +95,7 @@ class Cache implements CacheInterface
         } elseif ($ttl === null) {
             $expires_at = $this->getTime() + $this->defaultTTL;
         } else {
-            throw new InvalidArgumentException("Wrong TTL: " . print_r($ttl, true));
+            throw new \InvalidArgumentException("Wrong TTL: " . print_r($ttl, true));
         }
 
         if (false === @file_put_contents($temp_path, serialize($value))) {
@@ -142,7 +141,7 @@ class Cache implements CacheInterface
     public function getMultiple($keys, $default = null)
     {
         if (! is_array($keys) && ! $keys instanceof Traversable) {
-            throw new InvalidArgumentException("keys must be either of type array or Traversable");
+            throw new \InvalidArgumentException("keys must be either of type array or Traversable");
         }
 
         $values = [];
@@ -157,7 +156,7 @@ class Cache implements CacheInterface
     public function setMultiple($values, $ttl = null)
     {
         if (! is_array($values) && ! $values instanceof Traversable) {
-            throw new InvalidArgumentException("keys must be either of type array or Traversable");
+            throw new \InvalidArgumentException("keys must be either of type array or Traversable");
         }
 
         $ok = true;
@@ -178,7 +177,7 @@ class Cache implements CacheInterface
     public function deleteMultiple($keys)
     {
         if (! is_array($keys) && ! $keys instanceof Traversable) {
-            throw new InvalidArgumentException("Keys must be either type of Array or Traversable");
+            throw new \InvalidArgumentException("Keys must be either type of Array or Traversable");
         }
 
         $ok = true;
@@ -237,19 +236,19 @@ class Cache implements CacheInterface
         if (! is_string($key)) {
             $type = is_object($key) ? get_class($key) : gettype($key);
 
-            throw new InvalidArgumentException("Wrong key type: {$type} provided");
+            throw new \InvalidArgumentException("Wrong key type: {$type} provided");
         }
 
         if ($key === "") {
-            throw new InvalidArgumentException("Wrong key: empty string provided");
+            throw new \InvalidArgumentException("Wrong key: empty string provided");
         }
 
         if ($key === null) {
-            throw new InvalidArgumentException("Wrong key: null provided");
+            throw new \InvalidArgumentException("Wrong key: null provided");
         }
 
         if (preg_match(self::PSR16_RESERVED, $key, $match) === 1) {
-            throw new InvalidArgumentException("Invalid character in key provided: {$match[0]}");
+            throw new \InvalidArgumentException("Invalid character in key provided: {$match[0]}");
         }
     }
 

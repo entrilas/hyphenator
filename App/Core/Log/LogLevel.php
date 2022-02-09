@@ -2,9 +2,6 @@
 
 namespace App\Core\Log;
 
-/**
- * Describes log levels.
- */
 class LogLevel
 {
     final public const EMERGENCY = 'emergency';

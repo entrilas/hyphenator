@@ -1,0 +1,5 @@
+{
+  "CACHE_OUTPUT" : "/cache",
+  "PATTERNS_NAME" : "tex-hyphenation-patterns.txt",
+  "PATTERNS_PATH" : "/App/Resources/"
+}

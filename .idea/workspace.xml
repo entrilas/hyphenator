@@ -2,16 +2,22 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="80446ad4-d831-40fc-954f-105377b38c5e" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/App/Core/Config.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/App/Core/Exceptions/FileNotFoundException.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/App/Core/Exceptions/ParseException.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/App/Core/Exceptions/UnsupportedFormatException.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/App/Core/Parser/JSONParser.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/config/config.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/config/logger.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/App/Algorithm/Hyphenation.php" beforeDir="false" afterPath="$PROJECT_DIR$/App/Algorithm/Hyphenation.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/App/Algorithm/HyphenationTree.php" beforeDir="false" afterPath="$PROJECT_DIR$/App/Algorithm/HyphenationTree.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/App/Algorithm/Interfaces/HyphenationInterface.php" beforeDir="false" afterPath="$PROJECT_DIR$/App/Algorithm/Interfaces/HyphenationInterface.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/App/Constants/Constants.php" beforeDir="false" afterPath="$PROJECT_DIR$/App/Constants/Constants.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/App/Core/Cache/Cache.php" beforeDir="false" afterPath="$PROJECT_DIR$/App/Core/Cache/Cache.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/App/Core/Exceptions/InvalidArgumentException.php" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/App/Core/Log/Interfaces/LoggerInterface.php" beforeDir="false" afterPath="$PROJECT_DIR$/App/Core/Log/Interfaces/LoggerInterface.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/App/Core/Log/LogLevel.php" beforeDir="false" afterPath="$PROJECT_DIR$/App/Core/Log/LogLevel.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/App/Core/Log/Logger.php" beforeDir="false" afterPath="$PROJECT_DIR$/App/Core/Log/Logger.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/App/Core/Log/logs/log-09-Feb-2022.txt" beforeDir="false" afterPath="$PROJECT_DIR$/App/Core/Log/logs/log-09-Feb-2022.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/App/Core/Timer.php" beforeDir="false" afterPath="$PROJECT_DIR$/App/Core/Timer.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/App/Traits/FormatString.php" beforeDir="false" afterPath="$PROJECT_DIR$/App/Traits/FormatString.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/App/Core/Log/logs/log-09-Feb-2022.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/index.php" beforeDir="false" afterPath="$PROJECT_DIR$/index.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -22,6 +28,13 @@
     <execution>
       <executable path="composer" />
     </execution>
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="package.json" />
+      </list>
+    </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -38,7 +51,6 @@
     <setting file="file://$PROJECT_DIR$/App/Core/Cache/Cache.php" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/App/Services/FileReaderService.php" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/App/Algorithm/Hyphenation.php" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/App/Core/Log/logs/log-09-Feb-2022.txt" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/App/Constants/Constants.php" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/App/Core/Timer.php" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/index.php" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" />
@@ -58,13 +70,14 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/App/Algorithm" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/App/Core/Exceptions" />
     <property name="nodejs_package_manager_path" value="npm" />
     <property name="settings.editor.selected.configurable" value="preferences.sourceCode.PHP" />
     <property name="vue.rearranger.settings.migration" value="true" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/App/Core/Exceptions" />
       <recent name="$PROJECT_DIR$/App/Algorithm" />
       <recent name="$PROJECT_DIR$/App/Models" />
     </key>
@@ -87,7 +100,7 @@
       <workItem from="1644228544514" duration="16782000" />
       <workItem from="1644305408100" duration="25205000" />
       <workItem from="1644352659059" duration="722000" />
-      <workItem from="1644392492619" duration="34845000" />
+      <workItem from="1644392492619" duration="44389000" />
     </task>
     <servers />
   </component>
