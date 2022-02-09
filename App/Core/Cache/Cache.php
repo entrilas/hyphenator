@@ -4,6 +4,7 @@ namespace App\Core\Cache;
 
 use App\Constants\Constants;
 use App\Core\Cache\Interfaces\CacheInterface;
+use http\Exception\InvalidArgumentException;
 
 class Cache implements CacheInterface
 {
@@ -21,7 +22,7 @@ class Cache implements CacheInterface
         $this->fileMode = $fileMode;
 
         if (! file_exists($cachePath) && file_exists(dirname($cachePath))) {
-            $this->makeDirection($cachePath);
+            $this->makeDirectory($cachePath);
         }
 
         $path = realpath($cachePath);
@@ -79,7 +80,7 @@ class Cache implements CacheInterface
         $dir = dirname($path);
 
         if (! file_exists($dir)) {
-            $this->makeDirection($dir);
+            $this->makeDirectory($dir);
         }
 
         $temp_path = $this->cachePath . DIRECTORY_SEPARATOR . uniqid('', true);
@@ -260,11 +261,11 @@ class Cache implements CacheInterface
         return self::$instance;
     }
 
-    private function makeDirection($path)
+    private function makeDirectory($path)
     {
         $parent_path = dirname($path);
         if (!file_exists($parent_path)) {
-            $this->makeDirection($parent_path);
+            $this->makeDirectory($parent_path);
         }
         mkdir($path);
         chmod($path, $this->dirMode);

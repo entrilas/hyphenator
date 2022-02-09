@@ -14,7 +14,9 @@ class PatternReaderService extends FileReader
 
     public function readFile($path){
         if(!$this->cache->has('patterns')) {
-            return parent::readFile($path);
+            $patterns = parent::readFile($path);
+            $this->cache->set('patterns', $patterns);
+            return $patterns;
         }else{
             return $this->cache->get('patterns');
         }

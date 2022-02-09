@@ -1252,3 +1252,183 @@
 
 [18:56:11 09-Feb-2022]  [info]: - Algorithm finished in 0.00296 seconds 
 
+[18:57:38 09-Feb-2022]  [info]: - Algorithm started for word priceless 
+
+[18:57:38 09-Feb-2022]  [info]: - Found pattern for word .priceless. : pr2 
+
+[18:57:38 09-Feb-2022]  [info]: - Found pattern for word .priceless. : r4ice 
+
+[18:57:38 09-Feb-2022]  [info]: - Found pattern for word .priceless. : e1les 
+
+[18:57:38 09-Feb-2022]  [info]: - Found pattern for word .priceless. : les2 
+
+[18:57:38 09-Feb-2022]  [info]: - Found pattern for word .priceless. : 3less 
+
+[18:57:38 09-Feb-2022]  [info]: - Found pattern for word .priceless. : 2ess 
+
+[18:57:38 09-Feb-2022]  [info]: - Found pattern for word .priceless. : 2ss 
+
+[18:57:38 09-Feb-2022]  [info]: - Word priceless was hyphenated : price-less 
+
+[18:57:38 09-Feb-2022]  [info]: - Algorithm finished in 0.00252 seconds 
+
+[18:57:40 09-Feb-2022]  [info]: - Algorithm started for word priceless 
+
+[18:57:40 09-Feb-2022]  [info]: - Found pattern for word .priceless. : pr2 
+
+[18:57:40 09-Feb-2022]  [info]: - Found pattern for word .priceless. : r4ice 
+
+[18:57:40 09-Feb-2022]  [info]: - Found pattern for word .priceless. : e1les 
+
+[18:57:40 09-Feb-2022]  [info]: - Found pattern for word .priceless. : les2 
+
+[18:57:40 09-Feb-2022]  [info]: - Found pattern for word .priceless. : 3less 
+
+[18:57:40 09-Feb-2022]  [info]: - Found pattern for word .priceless. : 2ess 
+
+[18:57:40 09-Feb-2022]  [info]: - Found pattern for word .priceless. : 2ss 
+
+[18:57:40 09-Feb-2022]  [info]: - Word priceless was hyphenated : price-less 
+
+[18:57:40 09-Feb-2022]  [info]: - Algorithm finished in 0.00307 seconds 
+
+[18:57:50 09-Feb-2022]  [info]: - Algorithm started for word priceless 
+
+[18:57:50 09-Feb-2022]  [info]: - Found pattern for word .priceless. : pr2 
+
+[18:57:50 09-Feb-2022]  [info]: - Found pattern for word .priceless. : r4ice 
+
+[18:57:50 09-Feb-2022]  [info]: - Found pattern for word .priceless. : e1les 
+
+[18:57:50 09-Feb-2022]  [info]: - Found pattern for word .priceless. : les2 
+
+[18:57:50 09-Feb-2022]  [info]: - Found pattern for word .priceless. : 3less 
+
+[18:57:50 09-Feb-2022]  [info]: - Found pattern for word .priceless. : 2ess 
+
+[18:57:50 09-Feb-2022]  [info]: - Found pattern for word .priceless. : 2ss 
+
+[18:57:50 09-Feb-2022]  [info]: - Word priceless was hyphenated : price-less 
+
+[18:57:50 09-Feb-2022]  [info]: - Algorithm finished in 0.00266 seconds 
+
+[18:57:52 09-Feb-2022]  [info]: - Algorithm started for word priceless 
+
+[18:57:52 09-Feb-2022]  [info]: - Found pattern for word .priceless. : pr2 
+
+[18:57:52 09-Feb-2022]  [info]: - Found pattern for word .priceless. : r4ice 
+
+[18:57:52 09-Feb-2022]  [info]: - Found pattern for word .priceless. : e1les 
+
+[18:57:52 09-Feb-2022]  [info]: - Found pattern for word .priceless. : les2 
+
+[18:57:52 09-Feb-2022]  [info]: - Found pattern for word .priceless. : 3less 
+
+[18:57:52 09-Feb-2022]  [info]: - Found pattern for word .priceless. : 2ess 
+
+[18:57:52 09-Feb-2022]  [info]: - Found pattern for word .priceless. : 2ss 
+
+[18:57:52 09-Feb-2022]  [info]: - Word priceless was hyphenated : price-less 
+
+[18:57:52 09-Feb-2022]  [info]: - Algorithm finished in 0.00253 seconds 
+
+[18:58:35 09-Feb-2022]  [info]: - Algorithm started for word priceless 
+
+[18:58:35 09-Feb-2022]  [info]: - Found pattern for word .priceless. : pr2 
+
+[18:58:35 09-Feb-2022]  [info]: - Found pattern for word .priceless. : r4ice 
+
+[18:58:35 09-Feb-2022]  [info]: - Found pattern for word .priceless. : e1les 
+
+[18:58:35 09-Feb-2022]  [info]: - Found pattern for word .priceless. : les2 
+
+[18:58:35 09-Feb-2022]  [info]: - Found pattern for word .priceless. : 3less 
+
+[18:58:35 09-Feb-2022]  [info]: - Found pattern for word .priceless. : 2ess 
+
+[18:58:35 09-Feb-2022]  [info]: - Found pattern for word .priceless. : 2ss 
+
+[18:58:35 09-Feb-2022]  [info]: - Word priceless was hyphenated : price-less 
+
+[18:58:35 09-Feb-2022]  [info]: - Algorithm finished in 0.00273 seconds 
+
+[18:58:37 09-Feb-2022]  [info]: - Algorithm started for word priceless 
+
+[18:58:37 09-Feb-2022]  [info]: - Found pattern for word .priceless. : pr2 
+
+[18:58:37 09-Feb-2022]  [info]: - Found pattern for word .priceless. : r4ice 
+
+[18:58:37 09-Feb-2022]  [info]: - Found pattern for word .priceless. : e1les 
+
+[18:58:37 09-Feb-2022]  [info]: - Found pattern for word .priceless. : les2 
+
+[18:58:37 09-Feb-2022]  [info]: - Found pattern for word .priceless. : 3less 
+
+[18:58:37 09-Feb-2022]  [info]: - Found pattern for word .priceless. : 2ess 
+
+[18:58:37 09-Feb-2022]  [info]: - Found pattern for word .priceless. : 2ss 
+
+[18:58:37 09-Feb-2022]  [info]: - Word priceless was hyphenated : price-less 
+
+[18:58:37 09-Feb-2022]  [info]: - Algorithm finished in 0.00243 seconds 
+
+[19:00:15 09-Feb-2022]  [info]: - Algorithm started for word priceless 
+
+[19:00:15 09-Feb-2022]  [info]: - Found pattern for word .priceless. : pr2 
+
+[19:00:15 09-Feb-2022]  [info]: - Found pattern for word .priceless. : r4ice 
+
+[19:00:15 09-Feb-2022]  [info]: - Found pattern for word .priceless. : e1les 
+
+[19:00:15 09-Feb-2022]  [info]: - Found pattern for word .priceless. : les2 
+
+[19:00:15 09-Feb-2022]  [info]: - Found pattern for word .priceless. : 3less 
+
+[19:00:15 09-Feb-2022]  [info]: - Found pattern for word .priceless. : 2ess 
+
+[19:00:15 09-Feb-2022]  [info]: - Found pattern for word .priceless. : 2ss 
+
+[19:00:15 09-Feb-2022]  [info]: - Word priceless was hyphenated : price-less 
+
+[19:00:15 09-Feb-2022]  [info]: - Algorithm finished in 0.00258 seconds 
+
+[19:05:40 09-Feb-2022]  [info]: - Algorithm started for word priceless 
+
+[19:05:40 09-Feb-2022]  [info]: - Found pattern for word .priceless. : pr2 
+
+[19:05:40 09-Feb-2022]  [info]: - Found pattern for word .priceless. : r4ice 
+
+[19:05:40 09-Feb-2022]  [info]: - Found pattern for word .priceless. : e1les 
+
+[19:05:40 09-Feb-2022]  [info]: - Found pattern for word .priceless. : les2 
+
+[19:05:40 09-Feb-2022]  [info]: - Found pattern for word .priceless. : 3less 
+
+[19:05:40 09-Feb-2022]  [info]: - Found pattern for word .priceless. : 2ess 
+
+[19:05:40 09-Feb-2022]  [info]: - Found pattern for word .priceless. : 2ss 
+
+[19:05:40 09-Feb-2022]  [info]: - Word priceless was hyphenated : price-less 
+
+[19:05:40 09-Feb-2022]  [info]: - Algorithm finished in 0.00294 seconds 
+
+[19:10:04 09-Feb-2022]  [info]: - Algorithm started for word priceless 
+
+[19:10:04 09-Feb-2022]  [info]: - Found pattern for word .priceless. : pr2 
+
+[19:10:04 09-Feb-2022]  [info]: - Found pattern for word .priceless. : r4ice 
+
+[19:10:04 09-Feb-2022]  [info]: - Found pattern for word .priceless. : e1les 
+
+[19:10:04 09-Feb-2022]  [info]: - Found pattern for word .priceless. : les2 
+
+[19:10:04 09-Feb-2022]  [info]: - Found pattern for word .priceless. : 3less 
+
+[19:10:04 09-Feb-2022]  [info]: - Found pattern for word .priceless. : 2ess 
+
+[19:10:04 09-Feb-2022]  [info]: - Found pattern for word .priceless. : 2ss 
+
+[19:10:04 09-Feb-2022]  [info]: - Word priceless was hyphenated : price-less 
+
+[19:10:04 09-Feb-2022]  [info]: - Algorithm finished in 0.00259 seconds 
+

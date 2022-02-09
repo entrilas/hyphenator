@@ -14,6 +14,8 @@ class Logger implements LoggerInterface
 
     protected static $file;
 
+    private static $instance;
+
     protected static $options = [
         'dateFormat' => 'd-M-Y',
         'logFormat' => 'H:i:s d-M-Y'
@@ -130,15 +132,15 @@ class Logger implements LoggerInterface
         }
     }
 
-//    public function __wakeup(){
-//        throw new \Exception("Cannot unserialize a singleton.");
-//    }
+    public function __wakeup(){
+        throw new \Exception("Cannot unserialize a singleton.");
+    }
 
-//    public static function getInstance(){
-//        if (is_null(self::$instance)) {
-//            self::$instance = new self();
-//        }
-//        return self::$instance;
-//    }
+    public static function getInstance(){
+        if (is_null(self::$instance)) {
+            self::$instance = new self();
+        }
+        return self::$instance;
+    }
 
 }

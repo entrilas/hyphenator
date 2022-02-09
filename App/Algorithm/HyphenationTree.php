@@ -18,7 +18,7 @@ class HyphenationTree implements HyphenationInterface
     public function __construct($patterns){
         $this->patterns = $patterns;
         $this->formPatternTrie();
-        $this->logger = new Logger();
+        $this->logger = Logger::getInstance();
     }
 
     public function hyphenate($word){

@@ -2,7 +2,6 @@
 
 namespace App\Services;
 
-use App\Core\Cache\Cache;
 use App\Models\Pattern;
 
 class FileReaderService extends FileReader

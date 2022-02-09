@@ -5,9 +5,10 @@ spl_autoload_register(function($class){
 });
 
 $fileReader = new App\Services\FileReaderService();
+$patternReader = new \App\Services\PatternReaderService();
 $timer = new \App\Core\Timer();
 $logger = new \App\Core\Log\Logger();
-$content = $fileReader->readFile(App\Constants\Constants::US_TEX_PATTERNS);
+$content = $patternReader->readFile(App\Constants\Constants::US_TEX_PATTERNS);
 
 $algorithmTree = new App\Algorithm\HyphenationTree($content);
 
