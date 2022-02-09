@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Console\Interfaces;
+namespace App\Core\Log\Interfaces;
 
 /**
 * Describes a logger instance.

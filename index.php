@@ -17,4 +17,4 @@ foreach($largeFileData as $word)
     $answer = $algorithmTree->hyphenate($word);
     print_r($answer.PHP_EOL);
 }
-//App\Console\Logger::info("Labas");
+\App\Core\Log\Logger::info("Test");

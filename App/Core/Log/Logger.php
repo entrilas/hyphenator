@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Console;
+namespace App\Core\Log;
 
-use App\Console\Interfaces\LoggerInterface;
+use App\Core\Log\Interfaces\LoggerInterface;
 
 class Logger implements LoggerInterface
 {
@@ -24,7 +24,7 @@ class Logger implements LoggerInterface
     public static function createLogFile()
     {
         $time = date(static::$options['dateFormat']);
-        static::$logFile =  __DIR__ . "/logs/log-{$time}.txt";
+        static::$logFile = __DIR__ . "/logs/log-{$time}.txt";
 
 
         if (!file_exists(__DIR__ . '/logs')) {
@@ -77,11 +77,6 @@ class Logger implements LoggerInterface
     }
 
     public static function log($level, $message, array $context = array()) {
-        static::createLogFile();
-
-        if (!is_resource(static::$file)) {
-            static::openLog();
-        }
 
         $context = [
             'message' => $message,
@@ -93,7 +88,6 @@ class Logger implements LoggerInterface
 
         self::logFile($message);
         self::logConsole($message);
-        static::closeFile();
     }
 
     private static function formatLog($context)
@@ -114,9 +108,16 @@ class Logger implements LoggerInterface
     }
 
     private static function logFile($message){
+        static::createLogFile();
+
+        if (!is_resource(static::$file)) {
+            static::openLog();
+        }
+
         if(self::$logToFileStatus) {
             fwrite(static::$file, $message . PHP_EOL);
         }
+        static::closeFile();
     }
 
     private static function openLog()
@@ -141,29 +142,6 @@ class Logger implements LoggerInterface
 //            self::$instance = new self();
 //        }
 //        return self::$instance;
-//    }
-
-
-//    public static function time($name){
-//        if (!isset(self::$TIME_TRACKERS[$name])) {
-//            self::$TIME_TRACKERS[$name] = microtime(true);
-//            return self::$TIME_TRACKERS[$name];
-//        } else {
-//            return false;
-//        }
-//    }
-//
-//    public static function timeEnd($name){
-//        if (isset(self::$TIME_TRACKERS[$name])) {
-//            $start = self::$TIME_TRACKERS[$name];
-//            $end = microtime(true);
-//            $elapsedTime = number_format(($end - $start), 4);
-//            unset(self::$TIME_TRACKERS[$name]);
-//            self::add(LogLevel::TIME, "'$name' has been done in '$elapsedTime' ", array());
-//            return $elapsedTime;
-//        } else {
-//            return false;
-//        }
 //    }
 
 }
