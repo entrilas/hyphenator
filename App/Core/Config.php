@@ -33,7 +33,6 @@ class Config
         if (!file_exists($path)) {
             throw new FileNotFoundException("Configuration file: [$path] cannot be found");
         }
-
         return $path;
     }
 
