@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Algorithm;
 
 use App\Algorithm\Interfaces\HyphenationInterface;
@@ -13,17 +15,20 @@ class Hyphenation implements HyphenationInterface
 
     private array $patterns;
 
-    public function __construct($patterns){
+    public function __construct(array $patterns)
+    {
         $this->patterns = $patterns;
     }
 
-    public function hyphenate($word){
+    public function hyphenate($word) : string
+    {
         $correctPatterns = $this->findCorrectPatterns($word);
         $breakpoints = $this->findBreakpoints($correctPatterns);
         return $this->insertHyphen('-', $word, $breakpoints);
     }
 
-    private function findCorrectPatterns($word){
+    private function findCorrectPatterns(string $word) : array
+    {
         $correctPatterns = [];
         $patterns = $this->patterns;
         foreach ($patterns as $pattern) {
@@ -37,14 +42,20 @@ class Hyphenation implements HyphenationInterface
         return $correctPatterns;
     }
 
-    private function formCorrectPattern($pattern, $patternStartPosition){
+    private function formCorrectPattern(string $pattern, int $patternStartPosition) : array
+    {
         preg_match_all('/[0-9]+/', $pattern, $patternOffsets, PREG_OFFSET_CAPTURE);
         return array('pattern' => $pattern,
             'patternOffsets' => $patternOffsets[0],
             'startPosition' => $patternStartPosition);
     }
 
-    private function positionChecker($pattern, $clearedPattern, $patternPosition, $word){
+    private function positionChecker(
+        string $pattern,
+        string $clearedPattern,
+        int $patternPosition,
+        string $word
+    ) : bool {
         //Not sure yet if all the rules are applied, will read TeX algorithm documentation later
         //First rule checks if position is not found
         //Second rule checks if pattern does not start at the beginning (if pattern contains dot at the start)
@@ -58,7 +69,8 @@ class Hyphenation implements HyphenationInterface
         }
     }
 
-    private function findBreakpoints($patterns){
+    private function findBreakpoints(array $patterns) : array
+    {
         $breakpoints = array();
         foreach ($patterns as $pattern) {
             foreach ($pattern['patternOffsets'] as $key => $offset) {
@@ -69,7 +81,8 @@ class Hyphenation implements HyphenationInterface
         return $breakpoints;
     }
 
-    private function setBreakpoint($position, $value, &$breakpoints){
+    private function setBreakpoint(int $position, string $value, array &$breakpoints) : void
+    {
         if(isset($breakpoints[$position])){
             $breakpoints[$position] = max($breakpoints[$position], $value);
         }
@@ -78,7 +91,8 @@ class Hyphenation implements HyphenationInterface
         }
     }
 
-    private function insertHyphen($hyphen, $word, $breakpoints){
+    private function insertHyphen(string $hyphen, string $word, array $breakpoints) : array
+    {
         $hyphenatedWord = '';
         $chars = str_split($word);
         for ($i = 0; $i < strlen($word); $i++) {

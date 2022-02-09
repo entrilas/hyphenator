@@ -3,13 +3,15 @@
   <component name="ChangeListManager">
     <list default="true" id="80446ad4-d831-40fc-954f-105377b38c5e" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/App/Algorithm/Hyphenation.php" beforeDir="false" afterPath="$PROJECT_DIR$/App/Algorithm/Hyphenation.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/App/Algorithm/HyphenationTree.php" beforeDir="false" afterPath="$PROJECT_DIR$/App/Algorithm/HyphenationTree.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/App/Algorithm/Interfaces/HyphenationInterface.php" beforeDir="false" afterPath="$PROJECT_DIR$/App/Algorithm/Interfaces/HyphenationInterface.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/App/Core/Cache/Cache.php" beforeDir="false" afterPath="$PROJECT_DIR$/App/Core/Cache/Cache.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/App/Core/Log/Interfaces/LoggerInterface.php" beforeDir="false" afterPath="$PROJECT_DIR$/App/Core/Log/Interfaces/LoggerInterface.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/App/Core/Log/Logger.php" beforeDir="false" afterPath="$PROJECT_DIR$/App/Core/Log/Logger.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/App/Core/Log/logs/log-09-Feb-2022.txt" beforeDir="false" afterPath="$PROJECT_DIR$/App/Core/Log/logs/log-09-Feb-2022.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/App/Services/FileReaderService.php" beforeDir="false" afterPath="$PROJECT_DIR$/App/Services/FileReaderService.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/App/Services/PatternReaderService.php" beforeDir="false" afterPath="$PROJECT_DIR$/App/Services/PatternReaderService.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/index.php" beforeDir="false" afterPath="$PROJECT_DIR$/index.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/App/Core/Timer.php" beforeDir="false" afterPath="$PROJECT_DIR$/App/Core/Timer.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/App/Traits/FormatString.php" beforeDir="false" afterPath="$PROJECT_DIR$/App/Traits/FormatString.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -85,7 +87,7 @@
       <workItem from="1644228544514" duration="16782000" />
       <workItem from="1644305408100" duration="25205000" />
       <workItem from="1644352659059" duration="722000" />
-      <workItem from="1644392492619" duration="33148000" />
+      <workItem from="1644392492619" duration="34845000" />
     </task>
     <servers />
   </component>

@@ -21,8 +21,6 @@ class Logger implements LoggerInterface
         'logFormat' => 'H:i:s d-M-Y'
     ];
 
-//    private static $instance;
-
     public static function createLogFile()
     {
         $time = date(static::$options['dateFormat']);
@@ -130,10 +128,6 @@ class Logger implements LoggerInterface
         if (static::$file) {
             fclose(static::$file);
         }
-    }
-
-    public function __wakeup(){
-        throw new \Exception("Cannot unserialize a singleton.");
     }
 
     public static function getInstance(){
