@@ -10,6 +10,11 @@ final class Constants
     final public const LARGE_FILE_NAME = 'largetext.txt';
     final public const LARGE_FILE = self::RESOURCES_FILE_PATH . self::LARGE_FILE_NAME;
 
+    final public const DIR_MODE = 0775;
+    final public const FILE_MODE = 0664;
+    final public const DEFAULT_TTL = 3600;
+    final public const CACHE_PATH = 'cache';
+
     private function __construct(){
         throw new Exception("Can't get an instance of Constants");
     }

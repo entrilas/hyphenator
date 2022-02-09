@@ -15,5 +15,4 @@ class LogLevel
     final public const NOTICE    = 'notice';
     final public const INFO      = 'info';
     final public const DEBUG     = 'debug';
-    final public const TIME     = 'time';
 }

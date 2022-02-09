@@ -3,6 +3,7 @@
 namespace App\Algorithm;
 
 use App\Algorithm\Interfaces\HyphenationInterface;
+use App\Core\Log\Logger;
 use App\Models\Word;
 use App\Traits\FormatString;
 
@@ -12,13 +13,16 @@ class HyphenationTree implements HyphenationInterface
 
     private $patterns;
     private $patternTrie;
+    private $logger;
 
     public function __construct($patterns){
         $this->patterns = $patterns;
         $this->formPatternTrie();
+        $this->logger = new Logger();
     }
 
     public function hyphenate($word){
+        Logger::info("Algorithm started for word {$word}");
         $breakpoints = $this->findBreakpoints($word);
         return $this->insertHyphen($word, $breakpoints);
     }
@@ -35,6 +39,7 @@ class HyphenationTree implements HyphenationInterface
             for ($step = $start; $step < $charLength; $step++) {
                 if (isset($node['patternName'])) {
                     $this->findMaxBreakpointValue($node, $start, $breakpoints);
+                    $this->logger->info("Found pattern for word {$word} : {$node['patternName']['pattern']}");
                 }
                 if (!isset($node[$chars[$step]])) {
                     break;
@@ -51,8 +56,7 @@ class HyphenationTree implements HyphenationInterface
             $offset = $patternOffset[1] + $start - $offsetIndex;
             if(isset($breakpoints[$offset])){
                 $breakpoints[$offset] = max($breakpoints[$offset], $value);
-            }
-            else{
+            }else{
                 $breakpoints[$offset] = $value;
             }
         }
@@ -94,6 +98,7 @@ class HyphenationTree implements HyphenationInterface
                 $hyphenatedWord = substr_replace($hyphenatedWord, '-', $offset-1, 0);
             }
         }
+        $this->logger->info("Word {$word} was hyphenated : {$hyphenatedWord}");
         return $hyphenatedWord;
     }
 }

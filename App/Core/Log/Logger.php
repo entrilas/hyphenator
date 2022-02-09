@@ -26,7 +26,6 @@ class Logger implements LoggerInterface
         $time = date(static::$options['dateFormat']);
         static::$logFile = __DIR__ . "/logs/log-{$time}.txt";
 
-
         if (!file_exists(__DIR__ . '/logs')) {
             mkdir(__DIR__ . '/logs', 0777, true);
         }
@@ -120,14 +119,12 @@ class Logger implements LoggerInterface
         static::closeFile();
     }
 
-    private static function openLog()
-    {
+    private static function openLog(){
         $openFile = static::$logFile;
         static::$file = fopen($openFile, 'a') or exit("Can't open $openFile!");
     }
 
-    public static function closeFile()
-    {
+    public static function closeFile(){
         if (static::$file) {
             fclose(static::$file);
         }

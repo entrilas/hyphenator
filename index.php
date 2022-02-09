@@ -5,16 +5,17 @@ spl_autoload_register(function($class){
 });
 
 $fileReader = new App\Services\FileReaderService();
+$timer = new \App\Core\Timer();
+$logger = new \App\Core\Log\Logger();
 $content = $fileReader->readFile(App\Constants\Constants::US_TEX_PATTERNS);
 
-$algorithm = new App\Algorithm\Hyphenation($content);
 $algorithmTree = new App\Algorithm\HyphenationTree($content);
 
 $largeFileData = $fileReader->readFile('App/Resources/text.txt');
 
-foreach($largeFileData as $word)
-{
-    $answer = $algorithmTree->hyphenate($word);
-    print_r($answer.PHP_EOL);
-}
-\App\Core\Log\Logger::info("Test");
+$timer->start();
+$answer = $algorithmTree->hyphenate("priceless");
+$timer->finish();
+$logger::info("Algorithm finished in {$timer->getTime()} seconds");
+print_r($answer.PHP_EOL);
+
