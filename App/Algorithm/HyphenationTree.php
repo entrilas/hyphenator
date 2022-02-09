@@ -3,6 +3,7 @@
 namespace App\Algorithm;
 
 use App\Algorithm\Interfaces\HyphenationInterface;
+use App\Core\Log\Interfaces\LoggerInterface;
 use App\Core\Log\Logger;
 use App\Models\Word;
 use App\Traits\FormatString;
@@ -15,16 +16,16 @@ class HyphenationTree implements HyphenationInterface
     private $patternTrie;
     private $logger;
 
-    public function __construct(array $patterns)
+    public function __construct(array $patterns, LoggerInterface $logger)
     {
         $this->patterns = $patterns;
         $this->formPatternTrie();
-        $this->logger = Logger::getInstance();
+        $this->logger = $logger;
     }
 
     public function hyphenate(string $word) : string
     {
-        Logger::info("Algorithm started for word {$word}");
+        $this->logger->info("Algorithm started for word {$word}");
         $breakpoints = $this->findBreakpoints($word);
         return $this->insertHyphen($word, $breakpoints);
     }

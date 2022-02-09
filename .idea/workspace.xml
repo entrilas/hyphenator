@@ -2,22 +2,18 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="80446ad4-d831-40fc-954f-105377b38c5e" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/App/Core/Config.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/App/Core/Exceptions/FileNotFoundException.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/App/Core/Exceptions/ParseException.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/App/Core/Exceptions/UnsupportedFormatException.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/App/Core/Parser/JSONParser.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/config/config.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/config/logger.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/App/Application.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/index.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/App/Constants/Constants.php" beforeDir="false" afterPath="$PROJECT_DIR$/App/Constants/Constants.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/App/Core/Cache/Cache.php" beforeDir="false" afterPath="$PROJECT_DIR$/App/Core/Cache/Cache.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/App/Core/Exceptions/InvalidArgumentException.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/App/Core/Log/Interfaces/LoggerInterface.php" beforeDir="false" afterPath="$PROJECT_DIR$/App/Core/Log/Interfaces/LoggerInterface.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/App/Core/Log/LogLevel.php" beforeDir="false" afterPath="$PROJECT_DIR$/App/Core/Log/LogLevel.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/App/Core/Log/Logger.php" beforeDir="false" afterPath="$PROJECT_DIR$/App/Core/Log/Logger.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/App/Core/Log/logs/log-09-Feb-2022.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/index.php" beforeDir="false" afterPath="$PROJECT_DIR$/index.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/App/Algorithm/HyphenationTree.php" beforeDir="false" afterPath="$PROJECT_DIR$/App/Algorithm/HyphenationTree.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/App/Resources/largetext.txt" beforeDir="false" afterPath="$PROJECT_DIR$/resources/largetext.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/App/Resources/tex-hyphenation-patterns.txt" beforeDir="false" afterPath="$PROJECT_DIR$/resources/tex-hyphenation-patterns.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/App/Resources/text.txt" beforeDir="false" afterPath="$PROJECT_DIR$/resources/text.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cache/1/5/54c4e086b184e187871fc7232e6359fd76aff32b5a2e847ebb7de10e8c9715" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/config/config.json" beforeDir="false" afterPath="$PROJECT_DIR$/config/config.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config/logger.json" beforeDir="false" afterPath="$PROJECT_DIR$/config/logger.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/index.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/logs/log-09-Feb-2022.txt" beforeDir="false" afterPath="$PROJECT_DIR$/logs/log-09-Feb-2022.txt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -53,7 +49,7 @@
     <setting file="file://$PROJECT_DIR$/App/Algorithm/Hyphenation.php" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/App/Constants/Constants.php" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/App/Core/Timer.php" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/index.php" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/public/index.php" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/App/Core/Cache/Interfaces/CacheInterface.php" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/App/Core/Log/Logger.php" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/App/Algorithm/HyphenationTree.php" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" />
@@ -82,11 +78,11 @@
       <recent name="$PROJECT_DIR$/App/Models" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$" />
+      <recent name="$PROJECT_DIR$/public" />
       <recent name="$PROJECT_DIR$/App/Core/Cache/Interfaces" />
       <recent name="$PROJECT_DIR$/App/Core/Exceptions" />
       <recent name="$PROJECT_DIR$/App/Core/Log" />
-      <recent name="$PROJECT_DIR$" />
-      <recent name="$PROJECT_DIR$/public" />
     </key>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
@@ -100,7 +96,7 @@
       <workItem from="1644228544514" duration="16782000" />
       <workItem from="1644305408100" duration="25205000" />
       <workItem from="1644352659059" duration="722000" />
-      <workItem from="1644392492619" duration="44389000" />
+      <workItem from="1644392492619" duration="46631000" />
     </task>
     <servers />
   </component>
