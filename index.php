@@ -12,20 +12,9 @@ $algorithmTree = new App\Algorithm\HyphenationTree($content);
 
 $largeFileData = $fileReader->readFile('App/Resources/text.txt');
 
-App\Console\Logger::time("Hyphenation (Simple)");
-foreach($largeFileData as $word)
-{
-    $answer = $algorithm->hyphenate($word);
-//    print_r($answer.PHP_EOL);
-}
-App\Console\Logger::timeEnd("Hyphenation (Simple)");
-
-App\Console\Logger::time("Hyphenation (Tree)");
 foreach($largeFileData as $word)
 {
     $answer = $algorithmTree->hyphenate($word);
-//    print_r($answer.PHP_EOL);
+    print_r($answer.PHP_EOL);
 }
-App\Console\Logger::timeEnd("Hyphenation (Tree)");
-
-
+//App\Console\Logger::info("Labas");

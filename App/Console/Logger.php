@@ -2,106 +2,168 @@
 
 namespace App\Console;
 
-class Logger
+use App\Console\Interfaces\LoggerInterface;
+
+class Logger implements LoggerInterface
 {
-    protected static $LOGS = [];
+    protected static $logFile;
 
-    public static $PRINT_LOG_STATUS = true;
+    protected static $logToFileStatus = true;
 
-    private static $LOGGER_STATUS = false;
+    protected static $logToConsoleStatus = false;
 
-    private static $TIME_TRACKERS = [];
+    protected static $file;
 
-    private static $OUTPUT_STREAMS = [];
+    protected static $options = [
+        'dateFormat' => 'd-M-Y',
+        'logFormat' => 'H:i:s d-M-Y'
+    ];
 
-    public static function info($message, $name = '')
+//    private static $instance;
+
+    public static function createLogFile()
     {
-        return self::add($message, $name, 'info');
-    }
+        $time = date(static::$options['dateFormat']);
+        static::$logFile =  __DIR__ . "/logs/log-{$time}.txt";
 
-    public static function debug($message, $name = '')
-    {
-        return self::add($message, $name, 'debug');
-    }
 
-    public static function warning($message, $name = '')
-    {
-        return self::add($message, $name, 'warning');
-    }
+        if (!file_exists(__DIR__ . '/logs')) {
+            mkdir(__DIR__ . '/logs', 0777, true);
+        }
 
-    public static function error($message, $name = '')
-    {
-        return self::add($message, $name, 'error');
-    }
+        if (!file_exists(static::$logFile)) {
+            fopen(static::$logFile, 'w') or exit("Can't create {static::log_file}!");
+        }
 
-    public static function time($name)
-    {
-        if (!isset(self::$TIME_TRACKERS[$name])) {
-            self::$TIME_TRACKERS[$name] = microtime(true);
-            return self::$TIME_TRACKERS[$name];
-        } else {
-            return false;
+        if (!is_writable(static::$logFile)) {
+            throw new Exception("ERROR: Unable to write to file!", 1);
         }
     }
 
-    public static function timeEnd($name)
-    {
-        if (isset(self::$TIME_TRACKERS[$name])) {
-            $start = self::$TIME_TRACKERS[$name];
-            $end = microtime(true);
-            $elapsedTime = number_format(($end - $start), 4);
-            unset(self::$TIME_TRACKERS[$name]);
-            self::add("$elapsedTime seconds", "'$name' has been done in", "time frame");
-            return $elapsedTime;
-        } else {
-            return false;
-        }
+    public static function setOptions($options = []) {
+        static::$options = array_merge(static::$options, $options);
     }
 
-    private static function add($message, $name = '', $level = 'debug')
-    {
-        $logEntry = [
-            'timestamp' => time(),
-            'name' => $name,
+    public static function info($message, array $context = []) {
+        static::log(LogLevel::INFO, $message, $context);
+    }
+
+    public static function alert($message, array $context = []) {
+        static::log(LogLevel::ALERT, $message, $context);
+    }
+
+    public static function critical($message, array $context = []) {
+        static::log(LogLevel::CRITICAL, $message, $context);
+    }
+
+    public static function notice($message, array $context = []) {
+        static::log(LogLevel::NOTICE, $message, $context);
+    }
+
+    public static function debug($message, array $context = []) {
+        static::log(LogLevel::DEBUG, $message, $context);
+    }
+
+    public static function warning($message, array $context = []){
+        static::log(LogLevel::WARNING, $message, $context);
+    }
+
+    public static function error($message, array $context = []) {
+        static::log(LogLevel::ERROR, $message, $context);
+    }
+
+    public static function emergency($message, array $context = []) {
+        static::log(LogLevel::EMERGENCY, $message, $context);
+    }
+
+    public static function log($level, $message, array $context = array()) {
+        static::createLogFile();
+
+        if (!is_resource(static::$file)) {
+            static::openLog();
+        }
+
+        $context = [
             'message' => $message,
             'level' => $level,
+            'context' => $context
         ];
 
-        self::$LOGS[] = $logEntry;
+        $message = self::formatLog($context);
 
-        if (!self::$LOGGER_STATUS) {
-            self::init();
-        }
-
-        if (self::$LOGGER_STATUS && count(self::$OUTPUT_STREAMS) > 0) {
-            $outputLine = self::formatLog($logEntry) . PHP_EOL;
-            foreach (self::$OUTPUT_STREAMS as $key => $stream) {
-                fputs($stream, $outputLine);
-            }
-        }
-        return $logEntry;
+        self::logFile($message);
+        self::logConsole($message);
+        static::closeFile();
     }
 
-    public static function formatLog(array $logEntry)
+    private static function formatLog($context)
     {
-        $logMessage = "";
-        $logMessage .= date('r', $logEntry['timestamp']) . " ";
-        $logMessage .= "[" . strtoupper($logEntry['level']) . "] : ";
-        if (!empty($logEntry['name'])) {
-            $logMessage .= $logEntry['name'] . " => ";
-        }
-        $logMessage .= $logEntry['message'];
-
-        return $logMessage;
+        $time = date(static::$options['logFormat']);
+        $timeLog = is_null($time) ? "[N/A] " : "[{$time}] ";
+        $levelLog = is_null($context['level']) ? "[N/A]" : "[{$context['level']}]";
+        $messageLog = is_null($context['message']) ? "N/A" : "{$context['message']}";
+        $contextLog = empty($args['context']) ? "" : "{$context}";
+        $message = "{$timeLog} {$levelLog}: - {$messageLog} {$contextLog}" . PHP_EOL;
+        return $message;
     }
 
-    public static function init()
+    private static function logConsole($message){
+        if(self::$logToConsoleStatus) {
+            print_r($message);
+        }
+    }
+
+    private static function logFile($message){
+        if(self::$logToFileStatus) {
+            fwrite(static::$file, $message . PHP_EOL);
+        }
+    }
+
+    private static function openLog()
     {
-        if (!self::$LOGGER_STATUS) {
-            if (true === self::$PRINT_LOG_STATUS) {
-                self::$OUTPUT_STREAMS['stdout'] = STDOUT;
-            }
-        }
-        self::$LOGGER_STATUS = true;
+        $openFile = static::$logFile;
+        static::$file = fopen($openFile, 'a') or exit("Can't open $openFile!");
     }
+
+    public static function closeFile()
+    {
+        if (static::$file) {
+            fclose(static::$file);
+        }
+    }
+
+//    public function __wakeup(){
+//        throw new \Exception("Cannot unserialize a singleton.");
+//    }
+
+//    public static function getInstance(){
+//        if (is_null(self::$instance)) {
+//            self::$instance = new self();
+//        }
+//        return self::$instance;
+//    }
+
+
+//    public static function time($name){
+//        if (!isset(self::$TIME_TRACKERS[$name])) {
+//            self::$TIME_TRACKERS[$name] = microtime(true);
+//            return self::$TIME_TRACKERS[$name];
+//        } else {
+//            return false;
+//        }
+//    }
+//
+//    public static function timeEnd($name){
+//        if (isset(self::$TIME_TRACKERS[$name])) {
+//            $start = self::$TIME_TRACKERS[$name];
+//            $end = microtime(true);
+//            $elapsedTime = number_format(($end - $start), 4);
+//            unset(self::$TIME_TRACKERS[$name]);
+//            self::add(LogLevel::TIME, "'$name' has been done in '$elapsedTime' ", array());
+//            return $elapsedTime;
+//        } else {
+//            return false;
+//        }
+//    }
+
 }

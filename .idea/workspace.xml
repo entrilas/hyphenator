@@ -2,17 +2,27 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="80446ad4-d831-40fc-954f-105377b38c5e" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/App/Console/Interfaces/LoggerInterface.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/App/Console/LogLevel.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/App/Algorithm/Hyphenation.php" beforeDir="false" afterPath="$PROJECT_DIR$/App/Algorithm/Hyphenation.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/App/Algorithm/HyphenationTree.php" beforeDir="false" afterPath="$PROJECT_DIR$/App/Algorithm/HyphenationTree.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/App/Algorithm/Interfaces/HyphenationInterface.php" beforeDir="false" afterPath="$PROJECT_DIR$/App/Algorithm/Interfaces/HyphenationInterface.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/App/Console/Logger.php" beforeDir="false" afterPath="$PROJECT_DIR$/App/Console/Logger.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/App/Constants/Constants.php" beforeDir="false" afterPath="$PROJECT_DIR$/App/Constants/Constants.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/App/Services/FileReaderService.php" beforeDir="false" afterPath="$PROJECT_DIR$/App/Services/FileReaderService.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/App/Traits/FormatString.php" beforeDir="false" afterPath="$PROJECT_DIR$/App/Traits/FormatString.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/index.php" beforeDir="false" afterPath="$PROJECT_DIR$/index.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="ComposerSettings">
-    <execution />
+  <component name="ComposerSettings" synchronizationState="SYNCHRONIZE">
+    <execution>
+      <executable path="composer" />
+    </execution>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -39,7 +49,7 @@
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/App/Algorithm" />
     <property name="nodejs_package_manager_path" value="npm" />
-    <property name="settings.editor.selected.configurable" value="vcs.Git" />
+    <property name="settings.editor.selected.configurable" value="preferences.sourceCode.PHP" />
     <property name="vue.rearranger.settings.migration" value="true" />
   </component>
   <component name="RecentsManager">
@@ -64,7 +74,7 @@
       <workItem from="1644228544514" duration="16782000" />
       <workItem from="1644305408100" duration="25205000" />
       <workItem from="1644352659059" duration="722000" />
-      <workItem from="1644392492619" duration="745000" />
+      <workItem from="1644392492619" duration="11221000" />
     </task>
     <servers />
   </component>

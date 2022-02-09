@@ -13,20 +13,17 @@ class HyphenationTree implements HyphenationInterface
     private $patterns;
     private $patternTrie;
 
-    public function __construct($patterns)
-    {
+    public function __construct($patterns){
         $this->patterns = $patterns;
         $this->formPatternTrie();
     }
 
-    public function hyphenate($word)
-    {
+    public function hyphenate($word){
         $breakpoints = $this->findBreakpoints($word);
         return $this->insertHyphen($word, $breakpoints);
     }
 
-    private function findBreakpoints($word)
-    {
+    private function findBreakpoints($word){
         $word   = '.'.$word.'.';
         $chars  = str_split(strtolower($word));
         $charLength = sizeof($chars);
@@ -48,20 +45,20 @@ class HyphenationTree implements HyphenationInterface
         return $breakpoints;
     }
 
-    private function findMaxBreakpointValue($node, $start, &$breakpoints)
-    {
+    private function findMaxBreakpointValue($node, $start, &$breakpoints){
         foreach ($node['patternName']['offsets'] as $offsetIndex => $patternOffset) {
             $value  = $patternOffset[0];
             $offset = $patternOffset[1] + $start - $offsetIndex;
-            if(isset($breakpoints[$offset]))
+            if(isset($breakpoints[$offset])){
                 $breakpoints[$offset] = max($breakpoints[$offset], $value);
-            else
+            }
+            else{
                 $breakpoints[$offset] = $value;
+            }
         }
     }
 
-    private function formPatternTrie()
-    {
+    private function formPatternTrie(){
         $trie = &$this->patternTrie;
         foreach ($this->patterns as $pattern) {
             $pattern = $this->removeSymbols($pattern);
@@ -71,8 +68,7 @@ class HyphenationTree implements HyphenationInterface
             $this->insertAllCharacters($pattern, $clearPattern, $node);
         }
     }
-    private function insertAllCharacters($pattern, $clearPattern, &$node)
-    {
+    private function insertAllCharacters($pattern, $clearPattern, &$node){
         foreach (str_split($clearPattern) as $char) {
             if (!isset($node[$char])) {
                 $node[$char] = array();
@@ -82,8 +78,7 @@ class HyphenationTree implements HyphenationInterface
         $node['patternName'] = $this->formPatternData($pattern);
     }
 
-    private function formPatternData($pattern)
-    {
+    private function formPatternData($pattern){
         preg_match_all('/([0-9]+)/', $pattern, $offsetsData, PREG_OFFSET_CAPTURE);
         return array(
             'pattern' => $pattern,
@@ -91,13 +86,15 @@ class HyphenationTree implements HyphenationInterface
         );
     }
 
-    private function insertHyphen($word, $breakpoints)
-    {
+    private function insertHyphen($word, $breakpoints){
         krsort($breakpoints);
         $hyphenatedWord = $word;
-        foreach($breakpoints as $offset => $value)
-            if(($value % 2 != 0) && $offset > 1)
+        foreach($breakpoints as $offset => $value){
+            if(($value % 2 != 0) && $offset > 1){
                 $hyphenatedWord = substr_replace($hyphenatedWord, '-', $offset-1, 0);
+            }
+        }
         return $hyphenatedWord;
     }
 }
+
