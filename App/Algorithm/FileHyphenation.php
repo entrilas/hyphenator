@@ -6,7 +6,7 @@ use App\Algorithm\Interfaces\HyphenationInterface;
 use App\Core\Exceptions\FileNotFoundException;
 use App\Services\FileReader;
 
-class FileHyphenation extends HyphenationTree
+class FileHyphenation
 {
     private HyphenationInterface $hyphenator;
     private FileReader $fileReader;

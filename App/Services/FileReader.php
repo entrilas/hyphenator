@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Services;
 
-abstract class FileReader
+class FileReader
 {
     public function readFile($path): array
     {

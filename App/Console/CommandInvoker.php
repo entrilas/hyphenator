@@ -18,7 +18,7 @@ class CommandInvoker
     {
         $this->command = $command;
     }
-    public function handle()
+    public function handle(): mixed
     {
         return $this->command->execute();
     }

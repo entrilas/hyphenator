@@ -34,7 +34,7 @@ class Config
     /**
      * @throws UnsupportedFormatException
      */
-    private function validateFormat($path)
+    private function validateFormat($path): void
     {
         $fileInformation = pathinfo($path);
         if (!in_array($fileInformation['extension'], $this->extension())) {
@@ -46,7 +46,7 @@ class Config
     /**
      * @throws FileNotFoundException
      */
-    private function validatePath($path)
+    private function validatePath($path): void
     {
         if (!file_exists($path)) {
             throw new FileNotFoundException("Configuration file: [$path] cannot be found");

@@ -23,6 +23,11 @@ trait FormatString
         return preg_replace('/\s+/', '', $word);
     }
 
+    public function splitSentenceIntoWords(string $sentence) : array
+    {
+        return preg_split('/\s+/', $sentence, -1, PREG_SPLIT_NO_EMPTY);
+    }
+
     public function removeSymbols(string $word) : string
     {
         return trim($word);
