@@ -9,12 +9,6 @@ Hyphenator for English language made in plain PHP.
 
 ## Getting Started
 
-Project has three different use cases :
-
-* CLI
-* REST API
-* Internet Application
-
 Usage in Console :
 
 * php index.php [flag] [data] 
