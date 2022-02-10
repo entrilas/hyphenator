@@ -15,8 +15,7 @@ trait FormatString
     {
         $word = $this->removeSymbols($word);
         $word = $this->removeNumbers($word);
-        $word = $this->removeSpaces($word);
-        return $word;
+        return $this->removeSpaces($word);
     }
 
     public function removeSpaces(string $word) : string|null

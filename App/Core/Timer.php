@@ -6,8 +6,8 @@ namespace App\Core;
 
 class Timer
 {
-    private $beginTime;
-    private $endTime;
+    private float $beginTime;
+    private float $endTime;
 
     public function start() : void
     {

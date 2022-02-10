@@ -1,9 +1,16 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Core\Parser;
+
+use App\Core\Exceptions\ParseException;
 
 class JSONParser
 {
+    /**
+     * @throws ParseException
+     */
     public function parse($path)
     {
         $data = json_decode(file_get_contents($path), true);
@@ -27,7 +34,7 @@ class JSONParser
         return $data;
     }
 
-    public function extension()
+    public function extension(): array
     {
         return array('json');
     }

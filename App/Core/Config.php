@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Core;
 
 use App\Constants\Constants;
@@ -20,6 +22,9 @@ class Config
         return $parser->parse($realPath);
     }
 
+    /**
+     * @throws UnsupportedFormatException
+     */
     private function checkFileFormat($extension, $parser)
     {
         if (!in_array($extension, $parser->extension())) {
@@ -28,6 +33,9 @@ class Config
         }
     }
 
+    /**
+     * @throws FileNotFoundException
+     */
     private function checkValidPath($path)
     {
         if (!file_exists($path)) {
@@ -36,7 +44,7 @@ class Config
         return $path;
     }
 
-    private function getPath(string $name)
+    private function getPath(string $name): string
     {
         return dirname(__FILE__, 3) . Constants::CONFIG_PATH . $name . ".json";
     }

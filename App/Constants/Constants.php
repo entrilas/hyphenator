@@ -2,6 +2,8 @@
 
 namespace App\Constants;
 
+use Exception;
+
 final class Constants
 {
     final public const CONFIG_FILE_NAME = "config";
@@ -13,7 +15,8 @@ final class Constants
     final public const DEFAULT_TTL = 3600;
     final public const CACHE_PATH = 'cache';
 
-    private function __construct(){
+    private function __construct()
+    {
         throw new Exception("Can't get an instance of Constants");
     }
 }

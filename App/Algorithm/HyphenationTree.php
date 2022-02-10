@@ -4,17 +4,15 @@ namespace App\Algorithm;
 
 use App\Algorithm\Interfaces\HyphenationInterface;
 use App\Core\Log\Interfaces\LoggerInterface;
-use App\Core\Log\Logger;
-use App\Models\Word;
 use App\Traits\FormatString;
 
 class HyphenationTree implements HyphenationInterface
 {
     use FormatString;
 
-    private $patterns;
+    private array $patterns;
     private $patternTrie;
-    private $logger;
+    private LoggerInterface $logger;
 
     public function __construct(array $patterns, LoggerInterface $logger)
     {
@@ -23,14 +21,14 @@ class HyphenationTree implements HyphenationInterface
         $this->logger = $logger;
     }
 
-    public function hyphenate(string $word) : string
+    public function hyphenate(string $word): string
     {
-        $this->logger->info("Algorithm started for word {$word}");
+        $this->logger->info("Algorithm started for word $word");
         $breakpoints = $this->findBreakpoints($word);
         return $this->insertHyphen($word, $breakpoints);
     }
 
-    private function findBreakpoints(string $word) : array
+    private function findBreakpoints(string $word): array
     {
         $word   = '.'.$word.'.';
         $chars  = str_split(strtolower($word));
@@ -43,7 +41,7 @@ class HyphenationTree implements HyphenationInterface
             for ($step = $start; $step < $charLength; $step++) {
                 if (isset($node['patternName'])) {
                     $this->findMaxBreakpointValue($node, $start, $breakpoints);
-                    $this->logger->info("Found pattern for word {$word} : {$node['patternName']['pattern']}");
+                    $this->logger->info("Found pattern for word $word : {$node['patternName']['pattern']}");
                 }
                 if (!isset($node[$chars[$step]])) {
                     break;
@@ -58,13 +56,13 @@ class HyphenationTree implements HyphenationInterface
         array $node,
         int $start,
         array &$breakpoints
-    ) : void {
+    ): void {
         foreach ($node['patternName']['offsets'] as $offsetIndex => $patternOffset) {
             $value  = $patternOffset[0];
             $offset = $patternOffset[1] + $start - $offsetIndex;
-            if(isset($breakpoints[$offset])){
+            if (isset($breakpoints[$offset])) {
                 $breakpoints[$offset] = max($breakpoints[$offset], $value);
-            }else{
+            } else {
                 $breakpoints[$offset] = $value;
             }
         }
@@ -85,7 +83,7 @@ class HyphenationTree implements HyphenationInterface
         string $pattern,
         string $clearPattern,
         array &$node = null
-    ) : void {
+    ): void {
         foreach (str_split($clearPattern) as $char) {
             if (!isset($node[$char])) {
                 $node[$char] = array();
@@ -95,7 +93,7 @@ class HyphenationTree implements HyphenationInterface
         $node['patternName'] = $this->formPatternData($pattern);
     }
 
-    private function formPatternData(string $pattern) : array
+    private function formPatternData(string $pattern): array
     {
         preg_match_all('/([0-9]+)/', $pattern, $offsetsData, PREG_OFFSET_CAPTURE);
         return array(
@@ -104,17 +102,16 @@ class HyphenationTree implements HyphenationInterface
         );
     }
 
-    private function insertHyphen(string $word, array $breakpoints) : string
+    private function insertHyphen(string $word, array $breakpoints): string
     {
         krsort($breakpoints);
         $hyphenatedWord = $word;
-        foreach($breakpoints as $offset => $value){
-            if(($value % 2 != 0) && $offset > 1){
+        foreach ($breakpoints as $offset => $value) {
+            if (($value % 2 != 0) && $offset > 1) {
                 $hyphenatedWord = substr_replace($hyphenatedWord, '-', $offset-1, 0);
             }
         }
-        $this->logger->info("Word {$word} was hyphenated : {$hyphenatedWord}");
+        $this->logger->info("Word $word was hyphenated : $hyphenatedWord");
         return $hyphenatedWord;
     }
 }
-

@@ -9,15 +9,19 @@ use App\Core\Log\Logger;
 use App\Core\Timer;
 use App\Services\FileReaderService;
 use App\Services\PatternReaderService;
+use Exception;
 
 class Application
 {
+    /**
+     * @throws Exception
+     */
     public function __construct()
     {
         $config = new Config();
         $settings = $config->get(Constants::CONFIG_FILE_NAME);
 
-        $fileReader = new FileReaderService();
+        //$fileReader = new FileReaderService();
         $patternReader = new PatternReaderService();
 
         $timer = new Timer();
