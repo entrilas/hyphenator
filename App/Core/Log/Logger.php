@@ -6,6 +6,9 @@ namespace App\Core\Log;
 
 use App\Constants\Constants;
 use App\Core\Config;
+use App\Core\Exceptions\FileNotFoundException;
+use App\Core\Exceptions\ParseException;
+use App\Core\Exceptions\UnsupportedFormatException;
 use App\Core\Log\Interfaces\LoggerInterface;
 use Exception;
 
@@ -14,6 +17,11 @@ class Logger implements LoggerInterface
     private $config;
     private $openedFile;
 
+    /**
+     * @throws ParseException
+     * @throws FileNotFoundException
+     * @throws UnsupportedFormatException
+     */
     public function __construct(Config $config)
     {
         $this->config = $config->get(Constants::LOGGER_FILE_NAME);
@@ -22,12 +30,20 @@ class Logger implements LoggerInterface
     private function getLogFile(): string
     {
         $time = date($this->config['LOG_DATE_FORMAT']);
-        return dirname(__FILE__, 4) . $this->config['LOG_PATH'] . "/". "log-$time.txt";
+        return $this->getRoot()
+            . $this->config['LOG_PATH']
+            . DIRECTORY_SEPARATOR
+            . "log-$time.txt";
     }
 
     private function getLogDirectory(): string
     {
-        return dirname(__FILE__, 4) . $this->config['LOG_PATH'];
+        return $this->getRoot() . $this->config['LOG_PATH'];
+    }
+
+    private function getRoot(): string
+    {
+        return dirname(__FILE__, 4);
     }
 
     /**

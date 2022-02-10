@@ -15,6 +15,10 @@ final class Constants
     final public const DEFAULT_TTL = 3600;
     final public const CACHE_PATH = 'cache';
 
+    final public const WORD_COMMAND = "word";
+    final public const SENTENCE_COMMAND = "sentence";
+    final public const FILE_COMMAND = "file";
+
     private function __construct()
     {
         throw new Exception("Can't get an instance of Constants");

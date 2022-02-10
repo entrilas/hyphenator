@@ -2,10 +2,14 @@
 
 namespace App;
 
+use App\Algorithm\FileHyphenation;
 use App\Algorithm\HyphenationTree;
+use App\Algorithm\SentenceHyphenation;
+use App\Console\Console;
 use App\Constants\Constants;
 use App\Core\Config;
 use App\Core\Log\Logger;
+use App\Core\Parser\JSONParser;
 use App\Core\Timer;
 use App\Services\FileReaderService;
 use App\Services\PatternReaderService;
@@ -18,22 +22,32 @@ class Application
      */
     public function __construct()
     {
-        $config = new Config();
+        $config = new Config(new JSONParser());
         $settings = $config->get(Constants::CONFIG_FILE_NAME);
 
-        //$fileReader = new FileReaderService();
+        $fileReader = new FileReaderService();
         $patternReader = new PatternReaderService();
 
-        $timer = new Timer();
+        //$timer = new Timer();
         $logger = new Logger($config);
-        $patternPath = (dirname(__FILE__, 2) .$settings['RESOURCES_PATH'].$settings['PATTERNS_NAME']);
+        $patternPath = (dirname(__FILE__, 2)
+            . $settings['RESOURCES_PATH']
+            . DIRECTORY_SEPARATOR
+            . $settings['PATTERNS_NAME']);
         $patterns = $patternReader->readFile($patternPath);
-        $algorithmTree = new HyphenationTree($patterns, $logger);
+        $hyphenationAlgorithm = new HyphenationTree($patterns, $logger);
+        $fileHyphenation = new FileHyphenation($hyphenationAlgorithm, $fileReader);
+        $sentenceHyphenation = new SentenceHyphenation($hyphenationAlgorithm);
 
-        $timer->start();
-        $answer = $algorithmTree->hyphenate("priceless");
-        print_r($answer.PHP_EOL);
-        $timer->finish();
-        $logger->info("Algorithm finished in {$timer->getTime()} seconds");
+        $console = new Console(
+            $hyphenationAlgorithm,
+            $fileHyphenation,
+            $sentenceHyphenation
+        );
+
+        if(PHP_SAPI == "cli")
+        {
+            $console->runConsole();
+        }
     }
 }

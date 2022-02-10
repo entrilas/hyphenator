@@ -2,7 +2,24 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="80446ad4-d831-40fc-954f-105377b38c5e" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/App/Algorithm/FileHyphenation.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/App/Algorithm/SentenceHyphenation.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/App/Console/CommandInvoker.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/App/Console/Commands/FileCommand.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/App/Console/Commands/SentenceCommand.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/App/Console/Commands/WordCommand.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/App/Console/Console.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/App/Console/Interfaces/CommandInterface.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/App/Application.php" beforeDir="false" afterPath="$PROJECT_DIR$/App/Application.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/App/Constants/Constants.php" beforeDir="false" afterPath="$PROJECT_DIR$/App/Constants/Constants.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/App/Core/Config.php" beforeDir="false" afterPath="$PROJECT_DIR$/App/Core/Config.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/App/Core/Log/Logger.php" beforeDir="false" afterPath="$PROJECT_DIR$/App/Core/Log/Logger.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/App/Core/Parser/JSONParser.php" beforeDir="false" afterPath="$PROJECT_DIR$/App/Core/Parser/JSONParser.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/App/Services/FileReaderService.php" beforeDir="false" afterPath="$PROJECT_DIR$/App/Services/FileReaderService.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/App/Services/PatternReaderService.php" beforeDir="false" afterPath="$PROJECT_DIR$/App/Services/PatternReaderService.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config/config.json" beforeDir="false" afterPath="$PROJECT_DIR$/config/config.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/text.txt" beforeDir="false" afterPath="$PROJECT_DIR$/resources/text.txt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -58,13 +75,14 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/App/Algorithm" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/App/Core/Cache" />
     <property name="nodejs_package_manager_path" value="npm" />
     <property name="settings.editor.selected.configurable" value="preferences.sourceCode.PHP" />
     <property name="vue.rearranger.settings.migration" value="true" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/App/Core/Cache" />
       <recent name="$PROJECT_DIR$/App/Algorithm" />
       <recent name="$PROJECT_DIR$/App/Core/Exceptions" />
       <recent name="$PROJECT_DIR$/App/Models" />
@@ -90,7 +108,7 @@
       <workItem from="1644352659059" duration="722000" />
       <workItem from="1644392492619" duration="48433000" />
       <workItem from="1644478810626" duration="1446000" />
-      <workItem from="1644486948676" duration="5653000" />
+      <workItem from="1644486948676" duration="22930000" />
     </task>
     <servers />
   </component>

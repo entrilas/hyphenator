@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Core\Cache\Cache;
+use App\Core\Exceptions\InvalidArgumentException;
 
 class PatternReaderService extends FileReader
 {
@@ -12,6 +13,9 @@ class PatternReaderService extends FileReader
         $this->cache = Cache::getInstanceOf();
     }
 
+    /**
+     * @throws InvalidArgumentException
+     */
     public function readFile($path): array
     {
         if(!$this->cache->has('patterns')) {

@@ -13,12 +13,20 @@ class JSONParser
      */
     public function parse($path)
     {
-        $data = json_decode(file_get_contents($path), true);
+        $parsedData = json_decode(file_get_contents($path), true);
+        $this->validateResponse($path);
+        return $parsedData;
+    }
 
+    /**
+     * @throws ParseException
+     */
+    private function validateResponse($path)
+    {
         if (function_exists('json_last_error_msg')) {
             $error_message = json_last_error_msg();
         } else {
-            $error_message  = 'Syntax error';
+            $error_message  = 'Syntax Error';
         }
 
         if (json_last_error() !== JSON_ERROR_NONE) {
@@ -27,15 +35,7 @@ class JSONParser
                 'type'    => json_last_error(),
                 'file'    => $path,
             );
-
             throw new ParseException($error);
         }
-
-        return $data;
-    }
-
-    public function extension(): array
-    {
-        return array('json');
     }
 }

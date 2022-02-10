@@ -11,23 +11,33 @@ use App\Core\Parser\JSONParser;
 
 class Config
 {
+    private JSONParser $jsonParser;
+
+    public function __construct(JSONParser $jsonParser)
+    {
+        $this->jsonParser = $jsonParser;
+    }
+
+    /**
+     * @throws FileNotFoundException
+     * @throws Exceptions\ParseException
+     * @throws UnsupportedFormatException
+     */
     public function get($path)
     {
         $realPath = $this->getPath($path);
-        $pathInfo = $this->checkValidPath($realPath);
-        $info = pathinfo($pathInfo);
-        $extension = isset($info['extension']) ? $info['extension'] : '';
-        $parser = new JSONParser();
-        $this->checkFileFormat($extension, $parser);
-        return $parser->parse($realPath);
+        $this->validatePath($realPath);
+        $this->validateFormat($realPath);
+        return $this->jsonParser->parse($realPath);
     }
 
     /**
      * @throws UnsupportedFormatException
      */
-    private function checkFileFormat($extension, $parser)
+    private function validateFormat($path)
     {
-        if (!in_array($extension, $parser->extension())) {
+        $fileInformation = pathinfo($path);
+        if (!in_array($fileInformation['extension'], $this->extension())) {
             throw new UnsupportedFormatException('Unsupported configuration format.
              At this moment, only JSON file is supported');
         }
@@ -36,16 +46,20 @@ class Config
     /**
      * @throws FileNotFoundException
      */
-    private function checkValidPath($path)
+    private function validatePath($path)
     {
         if (!file_exists($path)) {
             throw new FileNotFoundException("Configuration file: [$path] cannot be found");
         }
-        return $path;
+    }
+
+    public function extension(): array
+    {
+        return array('json');
     }
 
     private function getPath(string $name): string
     {
-        return dirname(__FILE__, 3) . Constants::CONFIG_PATH . $name . ".json";
+        return dirname(__FILE__, 3) . Constants::CONFIG_PATH . "/" . $name . ".json";
     }
 }
