@@ -4,14 +4,14 @@ namespace App\Algorithm;
 
 use App\Algorithm\Interfaces\HyphenationInterface;
 use App\Core\Exceptions\FileNotFoundException;
-use App\Services\FileReader;
+use App\Services\FileReaderService;
 
 class FileHyphenation
 {
     private HyphenationInterface $hyphenator;
-    private FileReader $fileReader;
+    private FileReaderService $fileReader;
 
-    public function __construct(HyphenationInterface $hyphenator, FileReader $fileReader)
+    public function __construct(HyphenationInterface $hyphenator, FileReaderService $fileReader)
     {
         $this->hyphenator = $hyphenator;
         $this->fileReader = $fileReader;

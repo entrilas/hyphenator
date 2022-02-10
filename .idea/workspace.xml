@@ -4,17 +4,10 @@
     <list default="true" id="80446ad4-d831-40fc-954f-105377b38c5e" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/App/Algorithm/FileHyphenation.php" beforeDir="false" afterPath="$PROJECT_DIR$/App/Algorithm/FileHyphenation.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/App/Algorithm/SentenceHyphenation.php" beforeDir="false" afterPath="$PROJECT_DIR$/App/Algorithm/SentenceHyphenation.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/App/Console/CommandInvoker.php" beforeDir="false" afterPath="$PROJECT_DIR$/App/Console/CommandInvoker.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/App/Console/Commands/FileCommand.php" beforeDir="false" afterPath="$PROJECT_DIR$/App/Console/Commands/FileCommand.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/App/Console/Commands/SentenceCommand.php" beforeDir="false" afterPath="$PROJECT_DIR$/App/Console/Commands/SentenceCommand.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/App/Console/Console.php" beforeDir="false" afterPath="$PROJECT_DIR$/App/Console/Console.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/App/Core/Config.php" beforeDir="false" afterPath="$PROJECT_DIR$/App/Core/Config.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/App/Services/FileReader.php" beforeDir="false" afterPath="$PROJECT_DIR$/App/Services/FileReader.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/App/Services/FileReader.php" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/App/Services/FileReaderService.php" beforeDir="false" afterPath="$PROJECT_DIR$/App/Services/FileReaderService.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/App/Traits/FormatString.php" beforeDir="false" afterPath="$PROJECT_DIR$/App/Traits/FormatString.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config/logger.json" beforeDir="false" afterPath="$PROJECT_DIR$/config/logger.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/logs/log-10-Feb-2022.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/App/Services/PatternReaderService.php" beforeDir="false" afterPath="$PROJECT_DIR$/App/Services/PatternReaderService.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -46,7 +39,6 @@
   </component>
   <component name="HighlightingSettingsPerFile">
     <setting file="file://$PROJECT_DIR$/App/Core/Cache/Cache.php" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/App/Services/FileReaderService.php" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/App/Algorithm/Hyphenation.php" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/App/Constants/Constants.php" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/App/Core/Timer.php" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" />
@@ -104,7 +96,7 @@
       <workItem from="1644392492619" duration="48433000" />
       <workItem from="1644478810626" duration="1446000" />
       <workItem from="1644486948676" duration="23568000" />
-      <workItem from="1644522070823" duration="5954000" />
+      <workItem from="1644522070823" duration="7189000" />
     </task>
     <servers />
   </component>

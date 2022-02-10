@@ -5,7 +5,7 @@ namespace App\Services;
 use App\Core\Cache\Cache;
 use App\Core\Exceptions\InvalidArgumentException;
 
-class PatternReaderService extends FileReader
+class PatternReaderService extends FileReaderService
 {
     private Cache $cache;
 
