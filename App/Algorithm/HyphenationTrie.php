@@ -25,7 +25,7 @@ class HyphenationTrie implements HyphenationInterface
         return $this->insertHyphen($word, $breakpoints);
     }
 
-    private function findBreakpoints($word)
+    private function findBreakpoints($word): array
     {
         $word   = '.'.$word.'.';
         $chars  = str_split(strtolower($word));
@@ -48,7 +48,7 @@ class HyphenationTrie implements HyphenationInterface
         return $breakpoints;
     }
 
-    private function findMaxBreakpointValue($node, $start, &$breakpoints)
+    private function findMaxBreakpointValue($node, $start, &$breakpoints): void
     {
         foreach ($node['patternName']['offsets'] as $offsetIndex => $patternOffset) {
             $value  = $patternOffset[0];
@@ -60,7 +60,7 @@ class HyphenationTrie implements HyphenationInterface
         }
     }
 
-    private function formPatternTrie()
+    private function formPatternTrie(): void
     {
         $trie = &$this->patternTrie;
         foreach ($this->patterns as $pattern) {
@@ -71,7 +71,7 @@ class HyphenationTrie implements HyphenationInterface
             $this->insertAllCharacters($pattern, $clearPattern, $node);
         }
     }
-    private function insertAllCharacters($pattern, $clearPattern, &$node)
+    private function insertAllCharacters($pattern, $clearPattern, &$node): void
     {
         foreach (str_split($clearPattern) as $char) {
             if (!isset($node[$char])) {
@@ -82,7 +82,7 @@ class HyphenationTrie implements HyphenationInterface
         $node['patternName'] = $this->formPatternData($pattern);
     }
 
-    private function formPatternData($pattern)
+    private function formPatternData($pattern): array
     {
         preg_match_all('/([0-9]+)/', $pattern, $offsetsData, PREG_OFFSET_CAPTURE);
         return array(
@@ -91,7 +91,7 @@ class HyphenationTrie implements HyphenationInterface
         );
     }
 
-    private function insertHyphen($word, $breakpoints)
+    private function insertHyphen($word, $breakpoints): array|string
     {
         krsort($breakpoints);
         $hyphenatedWord = $word;
