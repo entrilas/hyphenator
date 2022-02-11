@@ -39,8 +39,8 @@ class Console
     public function runConsole()
     {
         $this->validateArguments();
-        $this->validateData();
         $this->validateCommand();
+        $this->validateData();
         $this->runCommand();
     }
 
@@ -126,11 +126,15 @@ class Console
 
     private function getFlag() : mixed
     {
-        return $this->argv[1];
+        if(isset($this->argv[1]))
+            return $this->argv[1];
+        return null;
     }
 
     private function getData() : mixed
     {
-        return $this->argv[2];
+        if(isset($this->argv[2]))
+            return $this->argv[2];
+        return null;
     }
 }
