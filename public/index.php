@@ -1,9 +1,7 @@
 <?php
 
-use App\Application;
+require_once ("autoloader.php");
 
-spl_autoload_register(function ($class) {
-    require_once((dirname(__FILE__, 2).'/'.str_replace('\\', '/', $class).'.php'));
-});
+use App\Application;
 
 $App = new Application();
