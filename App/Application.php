@@ -32,14 +32,14 @@ class Application
         $patternReader = new PatternReaderService();
         $fileExportService = new FileExportService();
 
-        //$timer = new Timer();
+        $timer = new Timer();
         $logger = new Logger($config);
         $patternPath = (dirname(__FILE__, 2)
             . $settings['RESOURCES_PATH']
             . DIRECTORY_SEPARATOR
             . $settings['PATTERNS_NAME']);
         $patterns = $patternReader->readFile($patternPath);
-        $hyphenationAlgorithm = new HyphenationTrie($patterns, $logger);
+        $hyphenationAlgorithm = new HyphenationTrie($patterns);
         $fileHyphenation = new FileHyphenation($hyphenationAlgorithm, $fileReader);
         $sentenceHyphenation = new SentenceHyphenation($hyphenationAlgorithm);
 
@@ -47,7 +47,9 @@ class Application
             $hyphenationAlgorithm,
             $fileHyphenation,
             $sentenceHyphenation,
-            $fileExportService
+            $fileExportService,
+            $logger,
+            $timer
         );
 
         if(PHP_SAPI == "cli")

@@ -3,6 +3,7 @@
 namespace App\Algorithm;
 
 use App\Algorithm\Interfaces\HyphenationInterface;
+use App\Core\Log\Logger;
 use App\Models\Word;
 use App\Traits\FormatString;
 
@@ -10,10 +11,10 @@ class HyphenationTrie implements HyphenationInterface
 {
     use FormatString;
 
-    private $patterns;
-    private $patternTrie;
+    private array $patterns;
+    private mixed $patternTrie;
 
-    public function __construct($patterns)
+    public function __construct(array $patterns)
     {
         $this->patterns = $patterns;
         $this->formPatternTrie();
@@ -91,7 +92,7 @@ class HyphenationTrie implements HyphenationInterface
         );
     }
 
-    private function insertHyphen($word, $breakpoints): array|string
+    private function insertHyphen($word, $breakpoints): string
     {
         krsort($breakpoints);
         $hyphenatedWord = $word;

@@ -12,6 +12,8 @@ use App\Console\Commands\SentenceCommand;
 use App\Console\Commands\WordCommand;
 use App\Constants\Constants;
 use App\Core\Exceptions\InvalidArgumentException;
+use App\Core\Log\Logger;
+use App\Core\Timer;
 use App\Services\FileExportService;
 
 class Console
@@ -22,12 +24,16 @@ class Console
     private FileHyphenation $fileHyphenation;
     private SentenceHyphenation $sentenceHyphenation;
     private FileExportService $fileExportService;
+    private Logger $logger;
+    private Timer $timer;
 
     public function __construct(
         HyphenationInterface $hyphenation,
         FileHyphenation $fileHyphenation,
         SentenceHyphenation $sentenceHyphenation,
-        FileExportService $fileExportService
+        FileExportService $fileExportService,
+        Logger $logger,
+        Timer $timer
     ) {
         $this->argv = $_SERVER['argv'];
         $this->argc = $_SERVER['argc'];
@@ -35,6 +41,8 @@ class Console
         $this->fileHyphenation = $fileHyphenation;
         $this->sentenceHyphenation = $sentenceHyphenation;
         $this->fileExportService = $fileExportService;
+        $this->logger = $logger;
+        $this->timer = $timer;
     }
 
     /**
@@ -48,8 +56,12 @@ class Console
         $this->runCommand();
     }
 
+    /**
+     * @throws \Exception
+     */
     private function runCommand(): void
     {
+        $this->timer->start();
         switch ($this->getFlag()) {
             case Constants::WORD_COMMAND:
                 $invoker = $this->formWordInvoker();
@@ -61,8 +73,11 @@ class Console
                 $invoker = $this->formFileInvoker();
                 break;
         }
+        $this->timer->finish();
+        $executionTime = $this->timer->getTime();
+        $this->logger->info("Hyphenation Algorithm is finished in [$executionTime] seconds");
         $this->fileExportService->exportFile($invoker->handle());
-
+        $this->logger->info("The data has been printed into the file!");
     }
 
     private function formWordInvoker(): CommandInvoker
