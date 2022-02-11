@@ -3,9 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="80446ad4-d831-40fc-954f-105377b38c5e" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/App/Algorithm/Trie.php" beforeDir="false" afterPath="$PROJECT_DIR$/App/Algorithm/Trie.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/App/Services/FileReaderService.php" beforeDir="false" afterPath="$PROJECT_DIR$/App/Services/FileReaderService.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/logs/log-11-Feb-2022.txt" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -94,7 +91,7 @@
       <workItem from="1644478810626" duration="1446000" />
       <workItem from="1644486948676" duration="23568000" />
       <workItem from="1644522070823" duration="7405000" />
-      <workItem from="1644566004677" duration="8087000" />
+      <workItem from="1644566004677" duration="8148000" />
     </task>
     <servers />
   </component>
