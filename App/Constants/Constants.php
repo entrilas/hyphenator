@@ -20,6 +20,9 @@ final class Constants
     final public const SENTENCE_COMMAND = "sentence";
     final public const FILE_COMMAND = "file";
 
+    /**
+     * @throws Exception
+     */
     private function __construct()
     {
         throw new Exception("Can't get an instance of Constants");

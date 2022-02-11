@@ -15,7 +15,7 @@ use Exception;
 class Logger implements LoggerInterface
 {
     private $config;
-    private $openedFile;
+    private mixed $openedFile;
 
     /**
      * @throws ParseException

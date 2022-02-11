@@ -3,8 +3,6 @@
 namespace App\Algorithm;
 
 use App\Algorithm\Interfaces\HyphenationInterface;
-use App\Core\Log\Logger;
-use App\Models\Word;
 use App\Traits\FormatString;
 
 class HyphenationTrie implements HyphenationInterface

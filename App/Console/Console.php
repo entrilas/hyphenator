@@ -15,6 +15,7 @@ use App\Core\Exceptions\InvalidArgumentException;
 use App\Core\Log\Logger;
 use App\Core\Timer;
 use App\Services\FileExportService;
+use Exception;
 
 class Console
 {
@@ -47,6 +48,7 @@ class Console
 
     /**
      * @throws InvalidArgumentException
+     * @throws Exception
      */
     public function runConsole()
     {
@@ -57,7 +59,7 @@ class Console
     }
 
     /**
-     * @throws \Exception
+     * @throws Exception
      */
     private function runCommand(): void
     {
