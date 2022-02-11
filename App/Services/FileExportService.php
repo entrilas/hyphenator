@@ -8,6 +8,12 @@ class FileExportService
 {
     public function exportFile($data)
     {
-        file_put_contents(Constants::EXPORT_FILE_PATH, implode(PHP_EOL, $data));
+        if(is_array($data)){
+            file_put_contents(Constants::EXPORT_FILE_PATH, implode(PHP_EOL, $data));
+        }else{
+            file_put_contents(Constants::EXPORT_FILE_PATH, $data);
+        }
+
+
     }
 }
