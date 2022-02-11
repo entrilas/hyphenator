@@ -13,6 +13,7 @@ use App\Core\Config;
 use App\Core\Log\Logger;
 use App\Core\Parser\JSONParser;
 use App\Core\Timer;
+use App\Services\FileExportService;
 use App\Services\FileReaderService;
 use App\Services\PatternReaderService;
 use Exception;
@@ -29,6 +30,7 @@ class Application
 
         $fileReader = new FileReaderService();
         $patternReader = new PatternReaderService();
+        $fileExportService = new FileExportService();
 
         //$timer = new Timer();
         $logger = new Logger($config);
@@ -44,7 +46,8 @@ class Application
         $console = new Console(
             $hyphenationAlgorithm,
             $fileHyphenation,
-            $sentenceHyphenation
+            $sentenceHyphenation,
+            $fileExportService
         );
 
         if(PHP_SAPI == "cli")

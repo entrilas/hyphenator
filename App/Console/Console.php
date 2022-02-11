@@ -12,6 +12,7 @@ use App\Console\Commands\SentenceCommand;
 use App\Console\Commands\WordCommand;
 use App\Constants\Constants;
 use App\Core\Exceptions\InvalidArgumentException;
+use App\Services\FileExportService;
 
 class Console
 {
@@ -20,17 +21,20 @@ class Console
     private HyphenationInterface $hyphenation;
     private FileHyphenation $fileHyphenation;
     private SentenceHyphenation $sentenceHyphenation;
+    private FileExportService $fileExportService;
 
     public function __construct(
         HyphenationInterface $hyphenation,
         FileHyphenation $fileHyphenation,
         SentenceHyphenation $sentenceHyphenation,
+        FileExportService $fileExportService
     ) {
         $this->argv = $_SERVER['argv'];
         $this->argc = $_SERVER['argc'];
         $this->hyphenation = $hyphenation;
         $this->fileHyphenation = $fileHyphenation;
         $this->sentenceHyphenation = $sentenceHyphenation;
+        $this->fileExportService = $fileExportService;
     }
 
     /**
@@ -57,7 +61,8 @@ class Console
                 $invoker = $this->formFileInvoker();
                 break;
         }
-        print_r($invoker->handle());
+        $this->fileExportService->exportFile($invoker->handle());
+
     }
 
     private function formWordInvoker(): CommandInvoker

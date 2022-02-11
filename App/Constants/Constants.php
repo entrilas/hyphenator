@@ -9,6 +9,7 @@ final class Constants
     final public const CONFIG_FILE_NAME = "config";
     final public const LOGGER_FILE_NAME = "logger";
     final public const CONFIG_PATH = "/config/";
+    final public const EXPORT_FILE_PATH = __DIR__."/../../resources/export.txt";
 
     final public const DIR_MODE = 0775;
     final public const FILE_MODE = 0664;

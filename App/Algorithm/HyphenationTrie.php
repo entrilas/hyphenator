@@ -3,34 +3,29 @@
 namespace App\Algorithm;
 
 use App\Algorithm\Interfaces\HyphenationInterface;
-use App\Core\Log\Interfaces\LoggerInterface;
+use App\Models\Word;
 use App\Traits\FormatString;
 
 class HyphenationTrie implements HyphenationInterface
 {
     use FormatString;
 
-    private array $patterns;
-    private mixed $patternTrie;
-    private LoggerInterface $logger;
+    private $patterns;
+    private $patternTrie;
 
-    public function __construct(array $patterns, LoggerInterface $logger)
+    public function __construct($patterns)
     {
-        $this->logger = $logger;
         $this->patterns = $patterns;
-        $this->patternTrie = new Trie();
         $this->formPatternTrie();
-        $this->patternTrie = $this->patternTrie->getTrie();
     }
 
-    public function hyphenate(string $word): string
+    public function hyphenate($word): string
     {
-        $this->logger->info("Algorithm started for word $word");
         $breakpoints = $this->findBreakpoints($word);
         return $this->insertHyphen($word, $breakpoints);
     }
 
-    private function findBreakpoints(string $word): array
+    private function findBreakpoints($word)
     {
         $word   = '.'.$word.'.';
         $chars  = str_split(strtolower($word));
@@ -43,7 +38,6 @@ class HyphenationTrie implements HyphenationInterface
             for ($step = $start; $step < $charLength; $step++) {
                 if (isset($node['patternName'])) {
                     $this->findMaxBreakpointValue($node, $start, $breakpoints);
-                    $this->logger->info("Found pattern for word $word : {$node['patternName']['pattern']}");
                 }
                 if (!isset($node[$chars[$step]])) {
                     break;
@@ -54,39 +48,56 @@ class HyphenationTrie implements HyphenationInterface
         return $breakpoints;
     }
 
-    private function findMaxBreakpointValue(
-        array $node,
-        int $start,
-        array &$breakpoints
-    ): void {
+    private function findMaxBreakpointValue($node, $start, &$breakpoints)
+    {
         foreach ($node['patternName']['offsets'] as $offsetIndex => $patternOffset) {
             $value  = $patternOffset[0];
             $offset = $patternOffset[1] + $start - $offsetIndex;
-            if (isset($breakpoints[$offset])) {
+            if(isset($breakpoints[$offset]))
                 $breakpoints[$offset] = max($breakpoints[$offset], $value);
-            } else {
+            else
                 $breakpoints[$offset] = $value;
-            }
         }
     }
 
-    private function formPatternTrie(): void
+    private function formPatternTrie()
     {
-        foreach($this->patterns as $pattern) {
-            $this->patternTrie->insert($pattern);
+        $trie = &$this->patternTrie;
+        foreach ($this->patterns as $pattern) {
+            $pattern = $this->removeSymbols($pattern);
+            $clearPattern = $this->removeNumbers($pattern);
+            $this->patterns[$clearPattern] = $pattern;
+            $node = &$trie;
+            $this->insertAllCharacters($pattern, $clearPattern, $node);
         }
     }
+    private function insertAllCharacters($pattern, $clearPattern, &$node)
+    {
+        foreach (str_split($clearPattern) as $char) {
+            if (!isset($node[$char])) {
+                $node[$char] = array();
+            }
+            $node = &$node[$char];
+        }
+        $node['patternName'] = $this->formPatternData($pattern);
+    }
 
-    private function insertHyphen(string $word, array $breakpoints): string
+    private function formPatternData($pattern)
+    {
+        preg_match_all('/([0-9]+)/', $pattern, $offsetsData, PREG_OFFSET_CAPTURE);
+        return array(
+            'pattern' => $pattern,
+            'offsets' => $offsetsData[1]
+        );
+    }
+
+    private function insertHyphen($word, $breakpoints)
     {
         krsort($breakpoints);
         $hyphenatedWord = $word;
-        foreach ($breakpoints as $offset => $value) {
-            if (($value % 2 != 0) && $offset > 1) {
+        foreach($breakpoints as $offset => $value)
+            if(($value % 2 != 0) && $offset > 1)
                 $hyphenatedWord = substr_replace($hyphenatedWord, '-', $offset-1, 0);
-            }
-        }
-        $this->logger->info("Word $word was hyphenated : $hyphenatedWord");
         return $hyphenatedWord;
     }
 }
