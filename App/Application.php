@@ -4,7 +4,9 @@ namespace App;
 
 use App\Algorithm\FileHyphenation;
 use App\Algorithm\HyphenationTree;
+use App\Algorithm\HyphenationTrie;
 use App\Algorithm\SentenceHyphenation;
+use App\Algorithm\Trie;
 use App\Console\Console;
 use App\Constants\Constants;
 use App\Core\Config;
@@ -35,7 +37,7 @@ class Application
             . DIRECTORY_SEPARATOR
             . $settings['PATTERNS_NAME']);
         $patterns = $patternReader->readFile($patternPath);
-        $hyphenationAlgorithm = new HyphenationTree($patterns, $logger);
+        $hyphenationAlgorithm = new HyphenationTrie($patterns, $logger);
         $fileHyphenation = new FileHyphenation($hyphenationAlgorithm, $fileReader);
         $sentenceHyphenation = new SentenceHyphenation($hyphenationAlgorithm);
 

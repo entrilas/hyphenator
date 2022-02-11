@@ -6,19 +6,21 @@ use App\Algorithm\Interfaces\HyphenationInterface;
 use App\Core\Log\Interfaces\LoggerInterface;
 use App\Traits\FormatString;
 
-class HyphenationTree implements HyphenationInterface
+class HyphenationTrie implements HyphenationInterface
 {
     use FormatString;
 
     private array $patterns;
-    private $patternTrie;
+    private mixed $patternTrie;
     private LoggerInterface $logger;
 
     public function __construct(array $patterns, LoggerInterface $logger)
     {
-        $this->patterns = $patterns;
-        $this->formPatternTrie();
         $this->logger = $logger;
+        $this->patterns = $patterns;
+        $this->patternTrie = new Trie();
+        $this->formPatternTrie();
+        $this->patternTrie = $this->patternTrie->getTrie();
     }
 
     public function hyphenate(string $word): string
@@ -68,38 +70,11 @@ class HyphenationTree implements HyphenationInterface
         }
     }
 
-    private function formPatternTrie()
+    private function formPatternTrie(): void
     {
-        $trie = &$this->patternTrie;
-        foreach ($this->patterns as $pattern) {
-            $pattern = $this->removeSymbols($pattern);
-            $clearPattern = $this->removeNumbers($pattern);
-            $this->patterns[$clearPattern] = $pattern;
-            $node = &$trie;
-            $this->insertAllCharacters($pattern, $clearPattern, $node);
+        foreach($this->patterns as $pattern) {
+            $this->patternTrie->insert($pattern);
         }
-    }
-    private function insertAllCharacters(
-        string $pattern,
-        string $clearPattern,
-        array &$node = null
-    ): void {
-        foreach (str_split($clearPattern) as $char) {
-            if (!isset($node[$char])) {
-                $node[$char] = array();
-            }
-            $node = &$node[$char];
-        }
-        $node['patternName'] = $this->formPatternData($pattern);
-    }
-
-    private function formPatternData(string $pattern): array
-    {
-        preg_match_all('/([0-9]+)/', $pattern, $offsetsData, PREG_OFFSET_CAPTURE);
-        return array(
-            'pattern' => $pattern,
-            'offsets' => $offsetsData[1]
-        );
     }
 
     private function insertHyphen(string $word, array $breakpoints): string
