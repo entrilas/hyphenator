@@ -15,11 +15,10 @@ class Trie
     public function insert($pattern): void
     {
         $trie = &$this->trie;
-            $pattern = $this->removeSymbols($pattern);
-            $clearPattern = $this->removeNumbers($pattern);
-            $this->patterns[$clearPattern] = $pattern;
-            $node = &$trie;
-            $this->insertAllCharacters($pattern, $clearPattern, $node);
+        $pattern = $this->removeSymbols($pattern);
+        $clearPattern = $this->removeNumbers($pattern);
+        $node = &$trie;
+        $this->insertAllCharacters($pattern, $clearPattern, $node);
     }
 
     private function insertAllCharacters(
