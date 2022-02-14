@@ -10,6 +10,7 @@ use App\Constants\Constants;
 use App\Core\Config;
 use App\Core\Database\Database;
 use App\Core\Database\Migration;
+use App\Core\Database\QueryBuilder;
 use App\Core\Log\Logger;
 use App\Core\Parser\JSONParser;
 use App\Core\Timer;
@@ -51,7 +52,8 @@ class Application
             $fileExportService,
             $logger,
             $timer,
-            $migration
+            $migration,
+            $patterns
         );
 
         if(PHP_SAPI == "cli")

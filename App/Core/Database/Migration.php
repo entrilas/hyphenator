@@ -9,7 +9,7 @@ use Exception;
 class Migration
 {
     private $database;
-    private $logger;
+    private Logger $logger;
 
     public function __construct(Logger $logger)
     {

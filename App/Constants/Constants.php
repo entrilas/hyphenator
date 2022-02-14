@@ -23,6 +23,7 @@ final class Constants
     final public const SENTENCE_COMMAND = "sentence";
     final public const FILE_COMMAND = "file";
     final public const MIGRATE_COMMAND = "migrate";
+    final public const IMPORT_PATTERNS_COMMAND = "patterns";
 
     /**
      * @throws Exception

@@ -21,8 +21,6 @@ use Exception;
 
 class Console
 {
-    private mixed $argc;
-    private mixed $argv;
     private HyphenationInterface $hyphenation;
     private FileHyphenation $fileHyphenation;
     private SentenceHyphenation $sentenceHyphenation;
@@ -30,6 +28,8 @@ class Console
     private Logger $logger;
     private Timer $timer;
     private Migration $migration;
+    private InvokerFormer $invokerFormer;
+    private array $patterns;
 
     public function __construct(
         HyphenationInterface $hyphenation,
@@ -38,10 +38,9 @@ class Console
         FileExportService $fileExportService,
         Logger $logger,
         Timer $timer,
-        Migration $migration
+        Migration $migration,
+        array $patterns
     ) {
-        $this->argv = $_SERVER['argv'];
-        $this->argc = $_SERVER['argc'];
         $this->hyphenation = $hyphenation;
         $this->fileHyphenation = $fileHyphenation;
         $this->sentenceHyphenation = $sentenceHyphenation;
@@ -49,6 +48,14 @@ class Console
         $this->logger = $logger;
         $this->timer = $timer;
         $this->migration = $migration;
+        $this->patterns = $patterns;
+        $this->invokerFormer = new InvokerFormer(
+            $this->hyphenation,
+            $this->fileHyphenation,
+            $this->sentenceHyphenation,
+            $this->migration,
+            $this->patterns);
+
     }
 
     /**
@@ -57,9 +64,9 @@ class Console
      */
     public function runConsole()
     {
-        $this->validateArguments();
-        $this->validateCommand();
-        $this->validateData();
+        $this->invokerFormer->validateArguments();
+        $this->invokerFormer->validateCommand();
+        $this->invokerFormer->validateData();
         $this->runCommand();
     }
 
@@ -69,18 +76,21 @@ class Console
     private function runCommand(): void
     {
         $this->timer->start();
-        switch ($this->getFlag()) {
+        switch ($this->invokerFormer->getFlag()) {
             case Constants::WORD_COMMAND:
-                $invoker = $this->formWordInvoker();
+                $invoker = $this->invokerFormer->formWordInvoker();
                 break;
             case Constants::SENTENCE_COMMAND:
-                $invoker = $this->formSentenceInvoker();
+                $invoker = $this->invokerFormer->formSentenceInvoker();
                 break;
             case Constants::FILE_COMMAND:
-                $invoker = $this->formFileInvoker();
+                $invoker = $this->invokerFormer->formFileInvoker();
                 break;
             case Constants::MIGRATE_COMMAND:
-                $invoker = $this->formMigrationInvoker();
+                $invoker = $this->invokerFormer->formMigrationInvoker();
+                break;
+            case Constants::IMPORT_PATTERNS_COMMAND:
+                $invoker = $this->invokerFormer->formImportPatternsInvoker();
                 break;
         }
         $this->timer->finish();
@@ -88,94 +98,5 @@ class Console
         $this->logger->info("Hyphenation Algorithm is finished in [$executionTime] seconds");
         $this->fileExportService->exportFile($invoker->handle());
         $this->logger->info("The data has been printed into the file!");
-    }
-
-    private function formWordInvoker(): CommandInvoker
-    {
-        return new CommandInvoker(
-            new WordCommand(
-                $this->hyphenation,
-                $this->getData()
-            )
-        );
-    }
-
-    private function formFileInvoker(): CommandInvoker
-    {
-        return new CommandInvoker(
-            new FileCommand(
-                $this->fileHyphenation,
-                $this->getData()
-            )
-        );
-    }
-
-    private function formSentenceInvoker(): CommandInvoker
-    {
-        return new CommandInvoker(
-            new SentenceCommand(
-                $this->sentenceHyphenation,
-                $this->getData()
-            )
-        );
-    }
-
-    private function formMigrationInvoker(): CommandInvoker
-    {
-        return new CommandInvoker(
-            new MigrationCommand(
-                $this->migration
-            )
-        );
-    }
-
-    /**
-     * @throws InvalidArgumentException
-     */
-    private function validateCommand(): void
-    {
-        if ($this->getFlag() == Constants::FILE_COMMAND ||
-            $this->getFlag() == Constants::SENTENCE_COMMAND ||
-            $this->getFlag() == Constants::WORD_COMMAND ||
-            $this->getFlag() == Constants::MIGRATE_COMMAND
-        ) {
-        }else{
-            throw new InvalidArgumentException("Command does not exist 
-            (php index.php [flag] '[content]')");
-        }
-    }
-
-    /**
-     * @throws InvalidArgumentException
-     */
-    private function validateData() : void
-    {
-        if(($this->getData() == null || $this->getData() == '')
-            && $this->getFlag() != Constants::MIGRATE_COMMAND)
-            throw new InvalidArgumentException("Data provided is null or empty");
-    }
-
-    /**
-     * @throws InvalidArgumentException
-     */
-    private function validateArguments() : void
-    {
-        if($this->argc > 3)
-            throw new InvalidArgumentException("Too much arguments provided 
-            (php index.php [flag] '[content]')");
-    }
-
-    private function getFlag() : mixed
-    {
-        if(isset($this->argv[1]))
-            return $this->argv[1];
-        return null;
-    }
-
-    private function getData() : mixed
-    {
-        if(isset($this->argv[2]))
-            return $this->argv[2];
-        return null;
     }
 }

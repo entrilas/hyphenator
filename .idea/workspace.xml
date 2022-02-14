@@ -2,18 +2,15 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="80446ad4-d831-40fc-954f-105377b38c5e" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/App/Console/Commands/MigrationCommand.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/App/Core/Database/Database.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/App/Core/Database/Migration.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/App/Core/Database/QueryBuilder.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/App/Migrations/migrate.sql" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/config/database.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/App/Console/Commands/PatternCommand.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/App/Console/InvokerFormer.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/App/Core/Database/PatternImport.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/App/Application.php" beforeDir="false" afterPath="$PROJECT_DIR$/App/Application.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/App/Console/Console.php" beforeDir="false" afterPath="$PROJECT_DIR$/App/Console/Console.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/App/Constants/Constants.php" beforeDir="false" afterPath="$PROJECT_DIR$/App/Constants/Constants.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/App/Core/Log/Logger.php" beforeDir="false" afterPath="$PROJECT_DIR$/App/Core/Log/Logger.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/App/Traits/FormatString.php" beforeDir="false" afterPath="$PROJECT_DIR$/App/Traits/FormatString.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/App/Core/Database/Migration.php" beforeDir="false" afterPath="$PROJECT_DIR$/App/Core/Database/Migration.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/App/Core/Database/QueryBuilder.php" beforeDir="false" afterPath="$PROJECT_DIR$/App/Core/Database/QueryBuilder.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/resources/export.txt" beforeDir="false" afterPath="$PROJECT_DIR$/resources/export.txt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -105,7 +102,7 @@
       <workItem from="1644522070823" duration="7405000" />
       <workItem from="1644566004677" duration="14891000" />
       <workItem from="1644783561854" duration="606000" />
-      <workItem from="1644824429834" duration="18095000" />
+      <workItem from="1644824429834" duration="30991000" />
     </task>
     <servers />
   </component>
