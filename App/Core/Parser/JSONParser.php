@@ -11,7 +11,7 @@ class JSONParser
     /**
      * @throws ParseException
      */
-    public function parse($path)
+    public function parse($path): mixed
     {
         $parsedData = json_decode(file_get_contents($path), true);
         $this->validateResponse($path);
@@ -21,7 +21,7 @@ class JSONParser
     /**
      * @throws ParseException
      */
-    private function validateResponse($path)
+    private function validateResponse($path): void
     {
         if (function_exists('json_last_error_msg')) {
             $error_message = json_last_error_msg();

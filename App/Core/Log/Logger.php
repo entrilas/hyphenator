@@ -158,7 +158,8 @@ class Logger implements LoggerInterface
         return "$timeLog $levelLog: - $messageLog $contextLog" . PHP_EOL;
     }
 
-    private function logConsole($message){
+    private function logConsole($message): void
+    {
         if($this->config['LOG_TO_CONSOLE']) {
             print_r($message);
         }
@@ -167,7 +168,8 @@ class Logger implements LoggerInterface
     /**
      * @throws Exception
      */
-    private function logFile($message){
+    private function logFile($message): void
+    {
         $this->createLogFile();
 
         if (!is_resource($this->getLogFile())) {
@@ -180,12 +182,14 @@ class Logger implements LoggerInterface
         $this->closeFile();
     }
 
-    private function openLog(){
+    private function openLog(): void
+    {
         $openFile = $this->getLogFile();
         $this->openedFile = fopen($openFile, 'a') or exit("Can't open $openFile!");
     }
 
-    public function closeFile(){
+    public function closeFile(): void
+    {
         if ($this->getLogFile()) {
             fclose($this->openedFile);
         }

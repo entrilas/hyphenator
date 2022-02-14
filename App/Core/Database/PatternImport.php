@@ -21,7 +21,7 @@ class PatternImport
     /**
      * @throws InvalidArgumentException
      */
-    private function import($path): void
+    public function import($path): void
     {
         $this->validatePath($path);
         $patterns = $this->patternReaderService->readFile($path);
