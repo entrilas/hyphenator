@@ -8,6 +8,8 @@ use App\Algorithm\SentenceHyphenation;
 use App\Console\Console;
 use App\Constants\Constants;
 use App\Core\Config;
+use App\Core\Database\Database;
+use App\Core\Database\Migration;
 use App\Core\Log\Logger;
 use App\Core\Parser\JSONParser;
 use App\Core\Timer;
@@ -36,6 +38,7 @@ class Application
             . $settings['RESOURCES_PATH']
             . DIRECTORY_SEPARATOR
             . $settings['PATTERNS_NAME']);
+        $migration = new Migration($logger);
         $patterns = $patternReader->readFile($patternPath);
         $hyphenationAlgorithm = new HyphenationTrie($patterns);
         $fileHyphenation = new FileHyphenation($hyphenationAlgorithm, $fileReader);
@@ -47,7 +50,8 @@ class Application
             $sentenceHyphenation,
             $fileExportService,
             $logger,
-            $timer
+            $timer,
+            $migration
         );
 
         if(PHP_SAPI == "cli")

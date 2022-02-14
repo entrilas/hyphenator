@@ -14,7 +14,7 @@ use Exception;
 
 class Logger implements LoggerInterface
 {
-    private $config;
+    private mixed $config;
     private mixed $openedFile;
 
     /**

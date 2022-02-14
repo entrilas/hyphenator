@@ -11,25 +11,30 @@ trait FormatString
         return preg_replace('/\d/', '', $word);
     }
 
-    public function clearString(string $word) : string
+    public function clearString(string $word): string
     {
         $word = $this->removeSymbols($word);
         $word = $this->removeNumbers($word);
         return $this->removeSpaces($word);
     }
 
-    public function removeSpaces(string $word) : string|null
+    public function removeSpaces(string $word): string|null
     {
         return preg_replace('/\s+/', '', $word);
     }
 
-    public function splitSentenceIntoWords(string $sentence) : array
+    public function splitSentenceIntoWords(string $sentence): array
     {
         return preg_split('/\s+/', $sentence, -1, PREG_SPLIT_NO_EMPTY);
     }
 
-    public function removeSymbols(string $word) : string
+    public function removeSymbols(string $word): string
     {
         return trim($word);
+    }
+
+    public function validateEmail(string $word): bool
+    {
+        return preg_match($word, '\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,6}');
     }
 }

@@ -8,9 +8,11 @@ use App\Algorithm\FileHyphenation;
 use App\Algorithm\Interfaces\HyphenationInterface;
 use App\Algorithm\SentenceHyphenation;
 use App\Console\Commands\FileCommand;
+use App\Console\Commands\MigrationCommand;
 use App\Console\Commands\SentenceCommand;
 use App\Console\Commands\WordCommand;
 use App\Constants\Constants;
+use App\Core\Database\Migration;
 use App\Core\Exceptions\InvalidArgumentException;
 use App\Core\Log\Logger;
 use App\Core\Timer;
@@ -27,6 +29,7 @@ class Console
     private FileExportService $fileExportService;
     private Logger $logger;
     private Timer $timer;
+    private Migration $migration;
 
     public function __construct(
         HyphenationInterface $hyphenation,
@@ -34,7 +37,8 @@ class Console
         SentenceHyphenation $sentenceHyphenation,
         FileExportService $fileExportService,
         Logger $logger,
-        Timer $timer
+        Timer $timer,
+        Migration $migration
     ) {
         $this->argv = $_SERVER['argv'];
         $this->argc = $_SERVER['argc'];
@@ -44,6 +48,7 @@ class Console
         $this->fileExportService = $fileExportService;
         $this->logger = $logger;
         $this->timer = $timer;
+        $this->migration = $migration;
     }
 
     /**
@@ -73,6 +78,9 @@ class Console
                 break;
             case Constants::FILE_COMMAND:
                 $invoker = $this->formFileInvoker();
+                break;
+            case Constants::MIGRATE_COMMAND:
+                $invoker = $this->formMigrationInvoker();
                 break;
         }
         $this->timer->finish();
@@ -112,6 +120,15 @@ class Console
         );
     }
 
+    private function formMigrationInvoker(): CommandInvoker
+    {
+        return new CommandInvoker(
+            new MigrationCommand(
+                $this->migration
+            )
+        );
+    }
+
     /**
      * @throws InvalidArgumentException
      */
@@ -119,7 +136,8 @@ class Console
     {
         if ($this->getFlag() == Constants::FILE_COMMAND ||
             $this->getFlag() == Constants::SENTENCE_COMMAND ||
-            $this->getFlag() == Constants::WORD_COMMAND
+            $this->getFlag() == Constants::WORD_COMMAND ||
+            $this->getFlag() == Constants::MIGRATE_COMMAND
         ) {
         }else{
             throw new InvalidArgumentException("Command does not exist 
@@ -132,7 +150,8 @@ class Console
      */
     private function validateData() : void
     {
-        if($this->getData() == null || $this->getData() == '')
+        if(($this->getData() == null || $this->getData() == '')
+            && $this->getFlag() != Constants::MIGRATE_COMMAND)
             throw new InvalidArgumentException("Data provided is null or empty");
     }
 
