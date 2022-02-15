@@ -13,8 +13,9 @@ use App\Console\Commands\PatternCommand;
 use App\Console\Commands\SentenceCommand;
 use App\Console\Commands\WordCommand;
 use App\Constants\Constants;
+use App\Core\Database\Export;
 use App\Core\Database\Migration;
-use App\Core\Database\PatternImport;
+use App\Core\Database\Import;
 use App\Core\Exceptions\InvalidArgumentException;
 use App\Core\Log\Logger;
 use App\Core\Timer;
@@ -27,7 +28,8 @@ class Console
     private FileHyphenation $fileHyphenation;
     private SentenceHyphenation $sentenceHyphenation;
     private FileExportService $fileExportService;
-    private PatternImport $patternImportService;
+    private Import $importService;
+    private Export $exportService;
     private Logger $logger;
     private Timer $timer;
     private Migration $migration;
@@ -39,7 +41,8 @@ class Console
         FileHyphenation $fileHyphenation,
         SentenceHyphenation $sentenceHyphenation,
         FileExportService $fileExportService,
-        PatternImport $patternImportService,
+        Import $patternImportService,
+        Export $exportService,
         Logger $logger,
         Timer $timer,
         Migration $migration,
@@ -50,7 +53,8 @@ class Console
         $this->fileHyphenation = $fileHyphenation;
         $this->sentenceHyphenation = $sentenceHyphenation;
         $this->fileExportService = $fileExportService;
-        $this->patternImportService = $patternImportService;
+        $this->importService = $patternImportService;
+        $this->exportService = $exportService;
         $this->logger = $logger;
         $this->timer = $timer;
         $this->migration = $migration;
@@ -104,7 +108,7 @@ class Console
         return new CommandInvoker(
             new PatternCommand(
                 $this->patterns,
-                $this->patternImportService,
+                $this->importService,
                 $this->validator->getData()
             )
         );

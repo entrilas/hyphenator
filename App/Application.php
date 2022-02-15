@@ -8,8 +8,9 @@ use App\Algorithm\SentenceHyphenation;
 use App\Console\Console;
 use App\Constants\Constants;
 use App\Core\Config;
+use App\Core\Database\Export;
 use App\Core\Database\Migration;
-use App\Core\Database\PatternImport;
+use App\Core\Database\Import;
 use App\Core\Database\QueryBuilder;
 use App\Core\Log\Logger;
 use App\Core\Parser\JSONParser;
@@ -33,8 +34,8 @@ class Application
         $patternReaderService = new PatternReaderService();
         $fileExportService = new FileExportService();
         $timer = new Timer();
-
         $logger = new Logger($config);
+
         $patternPath = (dirname(__FILE__, 2)
             . $settings['RESOURCES_PATH']
             . DIRECTORY_SEPARATOR
@@ -45,14 +46,16 @@ class Application
         $hyphenationAlgorithm = new HyphenationTrie($patterns);
         $fileHyphenation = new FileHyphenation($hyphenationAlgorithm, $fileReaderService);
         $sentenceHyphenation = new SentenceHyphenation($hyphenationAlgorithm);
-        $importPatternService = new PatternImport($patternReaderService);
+        $importService = new Import($fileReaderService);
+        $exportService = new Export();
 
         $console = new Console(
             $hyphenationAlgorithm,
             $fileHyphenation,
             $sentenceHyphenation,
             $fileExportService,
-            $importPatternService,
+            $importService,
+            $exportService,
             $logger,
             $timer,
             $migration,
