@@ -6,5 +6,4 @@ namespace App\Core\Exceptions;
 
 interface CacheException
 {
-
 }

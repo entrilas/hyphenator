@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Core\Database;
 
+use App\Core\Cache\Cache;
 use App\Core\Exceptions\InvalidArgumentException;
 use App\Services\PatternReaderService;
 
@@ -11,11 +12,13 @@ class PatternImport
 {
     private QueryBuilder $queryBuilder;
     private PatternReaderService $patternReaderService;
+    private $cache;
 
-    public function __construct(QueryBuilder $queryBuilder, PatternReaderService $patternReaderService)
+    public function __construct(PatternReaderService $patternReaderService)
     {
-        $this->queryBuilder = $queryBuilder;
+        $this->queryBuilder = QueryBuilder::getInstanceOf();
         $this->patternReaderService = $patternReaderService;
+        $this->cache = Cache::getInstanceOf();
     }
 
     /**
@@ -23,6 +26,7 @@ class PatternImport
      */
     public function import($path): void
     {
+        $this->truncateAll();
         $this->validatePath($path);
         $patterns = $this->patternReaderService->readFile($path);
         foreach($patterns as $pattern)
@@ -31,6 +35,26 @@ class PatternImport
                 'pattern' => $pattern
             ]);
         }
+        $this->setCache($patterns);
+    }
+
+    /**
+     * @throws InvalidArgumentException
+     */
+    private function setCache($patterns): void
+    {
+        if($this->cache->has('patterns'))
+        {
+            $this->cache->delete('patterns');
+            $this->cache->set('patterns', $patterns);
+        }
+    }
+
+    private function truncateAll(): void
+    {
+        $this->queryBuilder->truncate("valid_patterns");
+        $this->queryBuilder->truncate("patterns");
+        $this->queryBuilder->truncate("words");
     }
 
     /**

@@ -43,7 +43,7 @@ class Migration
             $this->database->exec($sql);
             $this->logger->info("Migration with name [$name] is successful");
         }catch(Exception $e){
-            $this->logger->error("Migration with name [$name] has failed!");
+            $this->logger->error("Migration with name [$e] has failed!");
         }
     }
 

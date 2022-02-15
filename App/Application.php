@@ -41,12 +41,11 @@ class Application
             . $settings['PATTERNS_NAME']);
 
         $migration = new Migration($logger);
-        $queryBuilder = QueryBuilder::getInstanceOf();
         $patterns = $patternReaderService->readFile($patternPath);
         $hyphenationAlgorithm = new HyphenationTrie($patterns);
         $fileHyphenation = new FileHyphenation($hyphenationAlgorithm, $fileReaderService);
         $sentenceHyphenation = new SentenceHyphenation($hyphenationAlgorithm);
-        $importPatternService = new PatternImport($queryBuilder, $patternReaderService);
+        $importPatternService = new PatternImport($patternReaderService);
 
         $console = new Console(
             $hyphenationAlgorithm,

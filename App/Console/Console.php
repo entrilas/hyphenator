@@ -32,8 +32,7 @@ class Console
     private Timer $timer;
     private Migration $migration;
     private array $patterns;
-    private mixed $argv;
-    private mixed $argc;
+    private Validator $validator;
 
     public function __construct(
         HyphenationInterface $hyphenation,
@@ -56,8 +55,7 @@ class Console
         $this->timer = $timer;
         $this->migration = $migration;
         $this->patterns = $patterns;
-        $this->argv = $_SERVER['argv'];
-        $this->argc = $_SERVER['argc'];
+        $this->validator = Validator::getInstanceOf();
     }
 
     /**
@@ -66,9 +64,9 @@ class Console
      */
     public function runConsole(): void
     {
-        $this->validateArguments();
-        $this->validateCommand();
-        $this->validateData();
+        $this->validator->validateArguments();
+        $this->validator->validateCommand();
+        $this->validator->validateData();
         $this->runCommand();
     }
 
@@ -78,7 +76,7 @@ class Console
     private function runCommand(): void
     {
         $this->timer->start();
-        switch ($this->getFlag()) {
+        switch ($this->validator->getFlag()) {
             case Constants::WORD_COMMAND:
                 $invoker = $this->formWordInvoker();
                 break;
@@ -107,7 +105,7 @@ class Console
             new PatternCommand(
                 $this->patterns,
                 $this->patternImportService,
-                $this->getData()
+                $this->validator->getData()
             )
         );
     }
@@ -117,7 +115,7 @@ class Console
         return new CommandInvoker(
             new WordCommand(
                 $this->hyphenation,
-                $this->getData()
+                $this->validator->getData()
             )
         );
     }
@@ -127,7 +125,7 @@ class Console
         return new CommandInvoker(
             new FileCommand(
                 $this->fileHyphenation,
-                $this->getData()
+                $this->validator->getData()
             )
         );
     }
@@ -137,7 +135,7 @@ class Console
         return new CommandInvoker(
             new SentenceCommand(
                 $this->sentenceHyphenation,
-                $this->getData()
+                $this->validator->getData()
             )
         );
     }
@@ -149,56 +147,5 @@ class Console
                 $this->migration
             )
         );
-    }
-
-    /**
-     * @throws InvalidArgumentException
-     */
-    public function validateCommand(): void
-    {
-        if ($this->getFlag() == Constants::FILE_COMMAND ||
-            $this->getFlag() == Constants::SENTENCE_COMMAND ||
-            $this->getFlag() == Constants::WORD_COMMAND ||
-            $this->getFlag() == Constants::MIGRATE_COMMAND ||
-            $this->getFlag() == Constants::IMPORT_PATTERNS_COMMAND
-        ) {
-        }else{
-            throw new InvalidArgumentException("Command does not exist 
-            (php index.php [flag] '[content]')");
-        }
-    }
-
-    /**
-     * @throws InvalidArgumentException
-     */
-    public function validateData(): void
-    {
-        if(($this->getData() == null || $this->getData() == '')
-            && ($this->getFlag() == Constants::IMPORT_PATTERNS_COMMAND))
-            throw new InvalidArgumentException("Data provided is null or empty");
-    }
-
-    /**
-     * @throws InvalidArgumentException
-     */
-    public function validateArguments(): void
-    {
-        if($this->argc > 3)
-            throw new InvalidArgumentException("Invalid arguments provided 
-            (php index.php [flag] '[content]')");
-    }
-
-    public function getFlag(): mixed
-    {
-        if(isset($this->argv[1]))
-            return $this->argv[1];
-        return null;
-    }
-
-    public function getData(): mixed
-    {
-        if(isset($this->argv[2]))
-            return $this->argv[2];
-        return null;
     }
 }
