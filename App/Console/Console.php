@@ -97,10 +97,10 @@ class Console
                 $invoker = $this->formImportPatternsInvoker();
                 break;
         }
+        $this->fileExportService->exportFile($invoker->handle());
         $this->timer->finish();
         $executionTime = $this->timer->getTime();
         $this->logger->info("Process is finished in [$executionTime] seconds");
-        $this->fileExportService->exportFile($invoker->handle());
         $this->logger->info("Process has been finished!");
     }
     public function formImportPatternsInvoker(): CommandInvoker

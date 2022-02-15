@@ -21,7 +21,7 @@ class Export
 
     public function exportPatterns()
     {
-        return $this->queryBuilder->getAll('patterns');
+//        return $this->queryBuilder->getAll('patterns');
     }
 
     public function export(): void

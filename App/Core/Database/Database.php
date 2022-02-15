@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Core\Database;
 
 use App\Constants\Constants;
@@ -14,7 +16,7 @@ use PDOException;
 
 class Database
 {
-    private $connector = null ;
+    private $connector = null;
     private $config;
     private static $instance = null;
 
@@ -34,7 +36,7 @@ class Database
     /**
      * @throws Exception
      */
-    public function connection($new = false)
+    public function connection($new = false): void
     {
         if (null === $this->connector || true === $new) {
             try {

@@ -66,34 +66,6 @@ class QueryBuilder
         return true;
     }
 
-    public function action(string $action, string $table, array $where = [], string $addition = '')
-    {
-        if (empty($where)) {
-            $sql = "$action FROM `$table` $addition";
-            if (!$this->query($sql)->getError()){
-                return $this;
-            }
-        }
-
-        $condition = $this->prepareCondition($where);
-
-        $sql = "$action FROM `$table` WHERE {$condition['sql']} $addition";
-        if(!$this->query($sql, $condition['values'])->getError()){
-            return $this;
-        }
-        return false;
-    }
-
-    public function get(string $table, array $where = [], string $addition = '')
-    {
-        return $this->action('SELECT *', $table, $where, $addition);
-    }
-
-    public function getAll(string $table, string $addition = '')
-    {
-        return $this->action('SELECT *', $table, [], $addition);
-    }
-
     public function truncate($table): bool
     {
         $sql = "DELETE FROM $table";
@@ -102,6 +74,4 @@ class QueryBuilder
         }
         return true;
     }
-
-
 }
