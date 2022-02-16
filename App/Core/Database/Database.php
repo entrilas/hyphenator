@@ -5,9 +5,7 @@ declare(strict_types=1);
 namespace App\Core\Database;
 
 use App\Constants\Constants;
-use App\Core\Config;
 use App\Core\Exceptions\FileNotFoundException;
-use App\Core\Exceptions\ParseException;
 use App\Core\Exceptions\UnsupportedFormatException;
 use Exception;
 use PDO;
@@ -18,7 +16,6 @@ class Database
     private $connector = null;
 
     /**
-     * @throws ParseException
      * @throws FileNotFoundException
      * @throws UnsupportedFormatException
      * @throws Exception
@@ -32,9 +29,9 @@ class Database
     /**
      * @throws Exception
      */
-    public function connection($new = false): void
+    public function connection(): void
     {
-        if (null === $this->connector || true === $new) {
+        if (null === $this->connector) {
             try {
                 $this->connector = new PDO($this->config['dsn'], $this->config['user'], $this->config['password']);
                 $this->connector->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);

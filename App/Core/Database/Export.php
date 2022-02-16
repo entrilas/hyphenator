@@ -23,7 +23,7 @@ class Export
         return $this->formPatterns($patternsArray);
     }
 
-    private function formPatterns($patternsArray): array
+    private function formPatterns(array $patternsArray): array
     {
         $patterns = [];
         foreach ($patternsArray as $pattern) {

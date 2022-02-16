@@ -31,7 +31,7 @@ class QueryBuilder
         return $this->stmt->execute($data);
     }
 
-    public function select($table, array $columns, $field, $param): string|bool
+    public function select($table, array $columns, string $field, string $param): string|bool
     {
         $this->cols = $this->setColumns($columns);
         $this->stmt = $this->db->prepare("SELECT $this->cols FROM $table WHERE $field = ?");
@@ -40,7 +40,7 @@ class QueryBuilder
         return json_encode($result, JSON_UNESCAPED_UNICODE);
     }
 
-    public function selectAll($table, array $columns): string|bool
+    public function selectAll(string $table, array $columns): string|bool
     {
         $this->cols = $this->setColumns($columns);
         $this->stmt = $this->db->prepare("SELECT $this->cols FROM $table");

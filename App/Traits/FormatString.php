@@ -6,7 +6,7 @@ namespace App\Traits;
 
 trait FormatString
 {
-    public function removeNumbers(string $word): string|null
+    public function removeNumbers(string $word): string
     {
         return preg_replace('/\d/', '', $word);
     }
@@ -18,7 +18,7 @@ trait FormatString
         return $this->removeSpaces($word);
     }
 
-    public function removeSpaces(string $word): string|null
+    public function removeSpaces(string $word): string
     {
         return preg_replace('/\s+/', '', $word);
     }

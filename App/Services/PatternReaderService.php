@@ -14,7 +14,7 @@ class PatternReaderService extends FileReaderService
     /**
      * @throws InvalidArgumentException
      */
-    public function readFile($path): array
+    public function readFile(string $path): array
     {
         if(!$this->cache->has('patterns')) {
             $patterns = parent::readFile($path);

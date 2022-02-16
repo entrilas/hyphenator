@@ -6,6 +6,7 @@ namespace App\Console\Commands;
 
 use App\Algorithm\SentenceHyphenation;
 use App\Console\Interfaces\CommandInterface;
+use App\Constants\Constants;
 
 class SentenceCommand implements CommandInterface
 {
@@ -18,5 +19,10 @@ class SentenceCommand implements CommandInterface
     public function execute(): string
     {
         return $this->hyphenator->hyphenateSentence($this->filePath);
+    }
+
+    public static function getCommand(): string
+    {
+        return Constants::SENTENCE_COMMAND;
     }
 }

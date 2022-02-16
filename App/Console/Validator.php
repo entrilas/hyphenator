@@ -4,6 +4,11 @@ declare(strict_types=1);
 
 namespace App\Console;
 
+use App\Console\Commands\FileCommand;
+use App\Console\Commands\MigrationCommand;
+use App\Console\Commands\PatternCommand;
+use App\Console\Commands\SentenceCommand;
+use App\Console\Commands\WordCommand;
 use App\Constants\Constants;
 use App\Core\Exceptions\InvalidArgumentException;
 
@@ -23,11 +28,11 @@ class Validator
      */
     public function validateCommand(): void
     {
-        if ($this->getFlag() == Constants::FILE_COMMAND ||
-            $this->getFlag() == Constants::SENTENCE_COMMAND ||
-            $this->getFlag() == Constants::WORD_COMMAND ||
-            $this->getFlag() == Constants::MIGRATE_COMMAND ||
-            $this->getFlag() == Constants::IMPORT_PATTERNS_COMMAND
+        if ($this->getFlag() == FileCommand::getCommand() ||
+            $this->getFlag() == SentenceCommand::getCommand() ||
+            $this->getFlag() == WordCommand::getCommand() ||
+            $this->getFlag() == MigrationCommand::getCommand() ||
+            $this->getFlag() == PatternCommand::getCommand()
         ) {
         }else{
             throw new InvalidArgumentException("Command does not exist 

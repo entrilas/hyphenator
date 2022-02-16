@@ -19,4 +19,9 @@ class MigrationCommand implements CommandInterface
     {
         return $this->migration->migrate('migrate.sql');
     }
+
+    public static function getCommand(): string
+    {
+        return Constants::MIGRATE_COMMAND;
+    }
 }

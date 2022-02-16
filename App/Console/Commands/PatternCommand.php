@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Console\Commands;
 
 use App\Console\Interfaces\CommandInterface;
+use App\Constants\Constants;
 use App\Core\Database\Import;
 use App\Core\Database\QueryBuilder;
 use App\Core\Exceptions\InvalidArgumentException;
@@ -23,5 +24,10 @@ class PatternCommand implements CommandInterface
     public function execute(): mixed
     {
         return $this->patternImportService->importPatterns($this->path);
+    }
+
+    public static function getCommand(): string
+    {
+        return Constants::IMPORT_PATTERNS_COMMAND;
     }
 }

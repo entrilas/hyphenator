@@ -6,14 +6,12 @@ namespace App\Console;
 
 use App\Algorithm\DatabaseHyphenation;
 use App\Algorithm\FileHyphenation;
-use App\Algorithm\Interfaces\HyphenationInterface;
 use App\Algorithm\SentenceHyphenation;
 use App\Console\Commands\FileCommand;
 use App\Console\Commands\MigrationCommand;
 use App\Console\Commands\PatternCommand;
 use App\Console\Commands\SentenceCommand;
 use App\Console\Commands\WordCommand;
-use App\Constants\Constants;
 use App\Core\Config;
 use App\Core\Database\Export;
 use App\Core\Database\Migration;
@@ -59,23 +57,16 @@ class Console
     private function runCommand(): void
     {
         $this->timer->start();
-        switch ($this->validator->getFlag()) {
-            case Constants::WORD_COMMAND:
-                $invoker = $this->formWordInvoker();
-                break;
-            case Constants::SENTENCE_COMMAND:
-                $invoker = $this->formSentenceInvoker();
-                break;
-            case Constants::FILE_COMMAND:
-                $invoker = $this->formFileInvoker();
-                break;
-            case Constants::MIGRATE_COMMAND:
-                $invoker = $this->formMigrationInvoker();
-                break;
-            case Constants::IMPORT_PATTERNS_COMMAND:
-                $invoker = $this->formImportPatternsInvoker();
-                break;
-        }
+        $invoker = match ($this->validator->getFlag()) {
+            WordCommand::getCommand() => $this->formWordInvoker(),
+            SentenceCommand::getCommand() => $this->formSentenceInvoker(),
+            FileCommand::getCommand() => $this->formFileInvoker(),
+            MigrationCommand::getCommand() => $this->formMigrationInvoker(),
+            PatternCommand::getCommand() => $this->formImportPatternsInvoker(),
+            default => throw new InvalidArgumentException(
+                "Command was not found!"
+            ),
+        };
         $this->fileExportService->exportFile($invoker->handle());
         $this->timer->finish();
         $executionTime = $this->timer->getTime();

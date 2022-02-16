@@ -9,9 +9,6 @@ class Settings
 {
     private array $patterns;
 
-    /**
-     * @throws Exceptions\InvalidArgumentException
-     */
     public function __construct(
         private PatternReaderService $patternReaderService,
         private Export $exportService,

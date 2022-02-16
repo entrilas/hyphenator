@@ -6,6 +6,7 @@ namespace App\Console\Commands;
 
 use App\Algorithm\FileHyphenation;
 use App\Console\Interfaces\CommandInterface;
+use App\Constants\Constants;
 use App\Core\Exceptions\FileNotFoundException;
 
 class FileCommand implements CommandInterface
@@ -22,5 +23,10 @@ class FileCommand implements CommandInterface
     public function execute(): array
     {
         return $this->hyphenator->hyphenateFile($this->filePath);
+    }
+
+    public static function getCommand(): string
+    {
+        return Constants::FILE_COMMAND;
     }
 }

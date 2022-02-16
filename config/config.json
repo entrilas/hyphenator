@@ -1,6 +1,5 @@
 {
   "CACHE_OUTPUT" : "/var/cache",
-  "LOG_PATH" : "/var/logs",
   "PATTERNS_NAME" : "tex-hyphenation-patterns.txt",
   "RESOURCES_PATH" : "/resources",
   "USE_DATABASE" : "true"

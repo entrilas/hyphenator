@@ -39,7 +39,7 @@ class Import
     /**
      * @throws InvalidArgumentException
      */
-    private function setCache($patterns): void
+    private function setCache(array $patterns): void
     {
         if($this->cache->has('patterns'))
         {
@@ -58,7 +58,7 @@ class Import
     /**
      * @throws InvalidArgumentException
      */
-    private function validatePath($path): void
+    private function validatePath(string $path): void
     {
         if(!file_exists($path))
             throw new InvalidArgumentException("File in provided path [$path] does not exist.");

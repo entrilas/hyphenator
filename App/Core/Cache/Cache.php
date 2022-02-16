@@ -28,7 +28,7 @@ class Cache implements CacheInterface
         private int $fileMode = Constants::FILE_MODE
     ) {
         $settings = $config->get(Constants::CONFIG_FILE_NAME);
-        $this->cachePath = $settings['CACHE_OUTPUT'];
+        $this->cachePath = $this->realPath($settings['CACHE_OUTPUT']);
         if (! file_exists($this->cachePath) && file_exists(dirname($this->cachePath))) {
             $this->makeDirectory($this->cachePath);
         }
@@ -39,11 +39,17 @@ class Cache implements CacheInterface
             throw new InvalidArgumentException(sprintf("Cache path (%s) does not exist", $this->cachePath));
         }
 
-        if (! is_writable($path . DIRECTORY_SEPARATOR)) {
+        if (!is_writable($path . DIRECTORY_SEPARATOR)) {
             throw new InvalidArgumentException(sprintf("Cache path (%s) is not writable", $this->cachePath));
         }
 
         $this->cachePath = $path;
+    }
+
+    private function realPath(string $name): string
+    {
+        return dirname(__FILE__, 4)
+            . $name;
     }
 
     /**
