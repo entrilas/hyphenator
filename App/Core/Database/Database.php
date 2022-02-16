@@ -9,7 +9,6 @@ use App\Core\Config;
 use App\Core\Exceptions\FileNotFoundException;
 use App\Core\Exceptions\ParseException;
 use App\Core\Exceptions\UnsupportedFormatException;
-use App\Core\Parser\JSONParser;
 use Exception;
 use PDO;
 use PDOException;
@@ -17,8 +16,6 @@ use PDOException;
 class Database
 {
     private $connector = null;
-    private $config;
-    private static $instance = null;
 
     /**
      * @throws ParseException
@@ -26,9 +23,8 @@ class Database
      * @throws UnsupportedFormatException
      * @throws Exception
      */
-    public function __construct()
+    public function __construct(private $config)
     {
-        $this->config = new Config(new JSONParser());
         $this->config = $this->config->get(Constants::DATABASE_FILE_NAME);
         $this->connection();
     }
@@ -46,14 +42,6 @@ class Database
                 throw new Exception($e->getMessage());
             }
         }
-    }
-
-    public static function getInstanceOf(): ?Database
-    {
-        if (!self::$instance) {
-            self::$instance = new Database();
-        }
-        return self::$instance;
     }
 
     public function getConnector()

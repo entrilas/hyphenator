@@ -6,8 +6,11 @@ use App\Algorithm\FileHyphenation;
 use App\Algorithm\HyphenationTrie;
 use App\Algorithm\SentenceHyphenation;
 use App\Console\Console;
+use App\Console\Validator;
 use App\Constants\Constants;
+use App\Core\Cache\Cache;
 use App\Core\Config;
+use App\Core\Database\Database;
 use App\Core\Database\Export;
 use App\Core\Database\Migration;
 use App\Core\Database\Import;
@@ -27,11 +30,12 @@ class Application
      */
     public function __construct()
     {
-        $config = new Config(new JSONParser());
+        $config = new Config();
         $settings = $config->get(Constants::CONFIG_FILE_NAME);
 
+        $cache = new Cache();
         $fileReaderService = new FileReaderService();
-        $patternReaderService = new PatternReaderService();
+        $patternReaderService = new PatternReaderService($cache);
         $fileExportService = new FileExportService();
         $timer = new Timer();
         $logger = new Logger($config);
@@ -41,13 +45,17 @@ class Application
             . DIRECTORY_SEPARATOR
             . $settings['PATTERNS_NAME']);
 
-        $migration = new Migration($logger);
+        $database = new Database($config);
+        $migration = new Migration($logger, $database);
         $patterns = $patternReaderService->readFile($patternPath);
         $hyphenationAlgorithm = new HyphenationTrie($patterns);
         $fileHyphenation = new FileHyphenation($hyphenationAlgorithm, $fileReaderService);
         $sentenceHyphenation = new SentenceHyphenation($hyphenationAlgorithm);
-        $importService = new Import($fileReaderService);
-        $exportService = new Export();
+
+        $queryBuilder = new QueryBuilder($database);
+        $importService = new Import($queryBuilder, $cache, $fileReaderService);
+        $exportService = new Export($queryBuilder, $cache);
+        $validator = new Validator();
 
         $console = new Console(
             $hyphenationAlgorithm,
@@ -59,7 +67,8 @@ class Application
             $logger,
             $timer,
             $migration,
-            $patterns
+            $patterns,
+            $validator
         );
 
         if(PHP_SAPI == "cli")

@@ -10,13 +10,10 @@ use App\Core\Exceptions\FileNotFoundException;
 
 class FileCommand implements CommandInterface
 {
-    private FileHyphenation $hyphenator;
-    private string $filePath;
-
-    public function __construct(FileHyphenation $hyphenator, $filePath)
-    {
-        $this->hyphenator = $hyphenator;
-        $this->filePath = $filePath;
+    public function __construct(
+        private FileHyphenation $hyphenator,
+        private string $filePath
+    ) {
     }
 
     /**

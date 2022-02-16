@@ -7,10 +7,8 @@ use App\Core\Exceptions\InvalidArgumentException;
 
 class PatternReaderService extends FileReaderService
 {
-    private Cache $cache;
-
-    public function __construct(){
-        $this->cache = Cache::getInstanceOf();
+    public function __construct(private Cache $cache)
+    {
     }
 
     /**

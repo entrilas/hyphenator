@@ -8,13 +8,10 @@ use Exception;
 
 class Migration
 {
-    private $database;
-    private Logger $logger;
-
-    public function __construct(Logger $logger)
-    {
-        $this->database = Database::getInstanceOf()->getConnector();
-        $this->logger = $logger;
+    public function __construct(
+        private Logger $logger,
+        private Database $database
+    ) {
     }
 
     /**
@@ -34,16 +31,16 @@ class Migration
     private function validateFile(string $path): void
     {
         if(!file_exists($path))
-            throw new Exception("File in location [$path] does not exist.");
+            throw new Exception(sprintf("File location with path [ $path ] does not exist", $path));
     }
 
     private function execSQL(string $sql, string $name): void
     {
         try {
             $this->database->exec($sql);
-            $this->logger->info("Migration with name [$name] is successful");
+            $this->logger->info(sprintf("Migration with name [ %s ] is successful", $name));
         }catch(Exception $e){
-            $this->logger->error("Migration with name [$e] has failed!");
+            $this->logger->error(sprintf("Migration with name [ %s ] is unsuccessful", $name));
         }
     }
 

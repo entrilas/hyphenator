@@ -24,42 +24,19 @@ use Exception;
 
 class Console
 {
-    private HyphenationInterface $hyphenation;
-    private FileHyphenation $fileHyphenation;
-    private SentenceHyphenation $sentenceHyphenation;
-    private FileExportService $fileExportService;
-    private Import $importService;
-    private Export $exportService;
-    private Logger $logger;
-    private Timer $timer;
-    private Migration $migration;
-    private array $patterns;
-    private Validator $validator;
-
     public function __construct(
-        HyphenationInterface $hyphenation,
-        FileHyphenation $fileHyphenation,
-        SentenceHyphenation $sentenceHyphenation,
-        FileExportService $fileExportService,
-        Import $patternImportService,
-        Export $exportService,
-        Logger $logger,
-        Timer $timer,
-        Migration $migration,
-        array $patterns
-    )
-    {
-        $this->hyphenation = $hyphenation;
-        $this->fileHyphenation = $fileHyphenation;
-        $this->sentenceHyphenation = $sentenceHyphenation;
-        $this->fileExportService = $fileExportService;
-        $this->importService = $patternImportService;
-        $this->exportService = $exportService;
-        $this->logger = $logger;
-        $this->timer = $timer;
-        $this->migration = $migration;
-        $this->patterns = $patterns;
-        $this->validator = Validator::getInstanceOf();
+        private HyphenationInterface $hyphenation,
+        private FileHyphenation $fileHyphenation,
+        private SentenceHyphenation $sentenceHyphenation,
+        private FileExportService $fileExportService,
+        private Import $patternImportService,
+        private Export $exportService,
+        private Logger $logger,
+        private Timer $timer,
+        private Migration $migration,
+        private array $patterns,
+        private Validator $validator
+    ) {
     }
 
     /**
@@ -100,7 +77,7 @@ class Console
         $this->fileExportService->exportFile($invoker->handle());
         $this->timer->finish();
         $executionTime = $this->timer->getTime();
-        $this->logger->info("Process is finished in [$executionTime] seconds");
+        $this->logger->info(sprintf("Process is finished in %s seconds", $executionTime));
         $this->logger->info("Process has been finished!");
     }
     public function formImportPatternsInvoker(): CommandInvoker

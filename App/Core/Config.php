@@ -11,16 +11,8 @@ use App\Core\Parser\JSONParser;
 
 class Config
 {
-    private JSONParser $jsonParser;
-
-    public function __construct(JSONParser $jsonParser)
-    {
-        $this->jsonParser = $jsonParser;
-    }
-
     /**
      * @throws FileNotFoundException
-     * @throws Exceptions\ParseException
      * @throws UnsupportedFormatException
      */
     public function get($path)
@@ -28,7 +20,7 @@ class Config
         $realPath = $this->getPath($path);
         $this->validatePath($realPath);
         $this->validateFormat($realPath);
-        return $this->jsonParser->parse($realPath);
+        return $this->parse($realPath);
     }
 
     /**
@@ -37,7 +29,7 @@ class Config
     private function validateFormat($path): void
     {
         $fileInformation = pathinfo($path);
-        if (!in_array($fileInformation['extension'], $this->extension())) {
+        if ($fileInformation['extension'] != "json") {
             throw new UnsupportedFormatException('Unsupported configuration format.
              At this moment, only JSON file is supported');
         }
@@ -53,13 +45,17 @@ class Config
         }
     }
 
-    public function extension(): array
+    public function parse($path): array
     {
-        return array('json');
+        return json_decode(file_get_contents($path), true);
     }
 
     private function getPath(string $name): string
     {
-        return dirname(__FILE__, 3) . Constants::CONFIG_PATH . "/" . $name . ".json";
+        return dirname(__FILE__, 3)
+            . DIRECTORY_SEPARATOR
+            . Constants::CONFIG_PATH
+            . DIRECTORY_SEPARATOR
+            . $name;
     }
 }

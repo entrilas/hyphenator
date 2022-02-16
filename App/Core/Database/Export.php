@@ -10,13 +10,10 @@ use App\Services\PatternReaderService;
 
 class Export
 {
-    private QueryBuilder $queryBuilder;
-    private $cache;
-
-    public function __construct()
-    {
-        $this->queryBuilder = QueryBuilder::getInstanceOf();
-        $this->cache = Cache::getInstanceOf();
+    public function __construct(
+        private QueryBuilder $queryBuilder,
+        private Cache $cache
+    ) {
     }
 
     public function exportPatterns()

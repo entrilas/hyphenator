@@ -9,13 +9,10 @@ use App\Console\Interfaces\CommandInterface;
 
 class WordCommand implements CommandInterface
 {
-    private HyphenationInterface $hyphenator;
-    private string $word;
-
-    public function __construct(HyphenationInterface $hyphenator, $word)
-    {
-        $this->hyphenator = $hyphenator;
-        $this->word = $word;
+    public function __construct(
+        private HyphenationInterface $hyphenator,
+        private string $word
+    ) {
     }
 
     public function execute(): string

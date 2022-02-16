@@ -11,17 +11,12 @@ use App\Core\Exceptions\InvalidArgumentException;
 
 class PatternCommand implements CommandInterface
 {
-    private array $patterns;
-    private QueryBuilder $queryBuilder;
-    private Import $patternImportService;
-    private string $path;
+    public function __construct(
+        private array $patterns,
+        private Import $patternImportService,
+        private string $path
+    ) {
 
-    public function __construct(array $patterns, Import $patternImportService, string $path)
-    {
-        $this->patterns = $patterns;
-        $this->queryBuilder = QueryBuilder::getInstanceOf();
-        $this->patternImportService = $patternImportService;
-        $this->path = $path;
     }
 
     /**

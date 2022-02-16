@@ -15,37 +15,28 @@ use RecursiveDirectoryIterator;
 class Cache implements CacheInterface
 {
     public const PSR16_RESERVED = '/{|}|\(|\)|\/|\\\\|@|:/u';
-    private string $cachePath;
-    private int $defaultTTL;
-    private int $dirMode;
-    private int $fileMode;
-    private static $instance;
 
     /**
      * @throws InvalidArgumentException
      */
     public function __construct(
-        string $cachePath,
-        int $defaultTtl,
-        int $dirMode = 0775,
-        int $fileMode = 0664
+        private string $cachePath = Constants::CACHE_PATH,
+        private int $defaultTTL = Constants::DEFAULT_TTL,
+        private int $dirMode = Constants::DIR_MODE,
+        private int $fileMode = Constants::FILE_MODE
     ) {
-        $this->defaultTTL = $defaultTtl;
-        $this->dirMode = $dirMode;
-        $this->fileMode = $fileMode;
-
-        if (! file_exists($cachePath) && file_exists(dirname($cachePath))) {
-            $this->makeDirectory($cachePath);
+        if (! file_exists($this->cachePath) && file_exists(dirname($this->cachePath))) {
+            $this->makeDirectory($this->cachePath);
         }
 
-        $path = realpath($cachePath);
+        $path = realpath($this->cachePath);
 
         if ($path === false) {
-            throw new InvalidArgumentException("Cache path doesn't exist: $cachePath");
+            throw new InvalidArgumentException(sprintf("Cache path (%s) does not exist", $this->cachePath));
         }
 
         if (! is_writable($path . DIRECTORY_SEPARATOR)) {
-            throw new InvalidArgumentException("Cache path isn't writable: $cachePath");
+            throw new InvalidArgumentException(sprintf("Cache path (%s) is not writable", $this->cachePath));
         }
 
         $this->cachePath = $path;
@@ -58,19 +49,19 @@ class Cache implements CacheInterface
     {
         $path = $this->getPath($key);
 
-        $expires_at = @filemtime($path);
+        $expires_at = filemtime($path);
 
         if ($expires_at === false) {
             return $default;
         }
 
         if ($this->getTime() >= $expires_at) {
-            @unlink($path);
+            unlink($path);
 
             return $default;
         }
 
-        $data = @file_get_contents($path);
+        $data = file_get_contents($path);
 
         if ($data === false) {
             return $default;
@@ -80,7 +71,7 @@ class Cache implements CacheInterface
             return false;
         }
 
-        $value = @unserialize($data);
+        $value = unserialize($data);
 
         if ($value === false) {
             return $default;
@@ -111,22 +102,22 @@ class Cache implements CacheInterface
         } elseif ($ttl === null) {
             $expires_at = $this->getTime() + $this->defaultTTL;
         } else {
-            throw new InvalidArgumentException("Wrong TTL: " . print_r($ttl, true));
+            throw new InvalidArgumentException("Incorrect TTL");
         }
 
-        if (false === @file_put_contents($temp_path, serialize($value))) {
+        if (false === file_put_contents($temp_path, serialize($value))) {
             return false;
         }
 
-        if (false === @chmod($temp_path, $this->fileMode)) {
+        if (false === chmod($temp_path, $this->fileMode)) {
             return false;
         }
 
-        if (@touch($temp_path, $expires_at) && @rename($temp_path, $path)) {
+        if (touch($temp_path, $expires_at) && rename($temp_path, $path)) {
             return true;
         }
 
-        @unlink($temp_path);
+        unlink($temp_path);
 
         return false;
     }
@@ -140,7 +131,7 @@ class Cache implements CacheInterface
 
         $path = $this->getPath($key);
 
-        return !file_exists($path) || @unlink($path);
+        return !file_exists($path) || unlink($path);
     }
 
     public function clear(): bool
@@ -163,7 +154,7 @@ class Cache implements CacheInterface
     public function getMultiple($keys, $default = null): array
     {
         if (! is_array($keys) && ! $keys instanceof Traversable) {
-            throw new InvalidArgumentException("keys must be either of type array or Traversable");
+            throw new InvalidArgumentException("Keys must be either of type array or Traversable");
         }
 
         $values = [];
@@ -181,7 +172,7 @@ class Cache implements CacheInterface
     public function setMultiple($values, $ttl = null): bool
     {
         if (! is_array($values) && ! $values instanceof Traversable) {
-            throw new InvalidArgumentException("keys must be either of type array or Traversable");
+            throw new InvalidArgumentException("Keys must be either of type array or Traversable");
         }
 
         $ok = true;
@@ -275,7 +266,7 @@ class Cache implements CacheInterface
         if (! is_string($key)) {
             $type = is_object($key) ? get_class($key) : gettype($key);
 
-            throw new InvalidArgumentException("Wrong key type: $type provided");
+            throw new InvalidArgumentException(sprintf("Wrong key type (%s) provided", $type));
         }
 
         if ($key === "") {
@@ -283,21 +274,8 @@ class Cache implements CacheInterface
         }
 
         if (preg_match(self::PSR16_RESERVED, $key, $match) === 1) {
-            throw new InvalidArgumentException("Invalid character in key provided: $match[0]");
+            throw new InvalidArgumentException(sprintf("Invalid character key provided : %s", $match));
         }
-    }
-
-    public static function getInstanceOf(): Cache
-    {
-        if (!self::$instance) {
-            self::$instance = new Cache(
-                Constants::CACHE_PATH,
-                Constants::DEFAULT_TTL,
-                Constants::DIR_MODE,
-                Constants::FILE_MODE
-            );
-        }
-        return self::$instance;
     }
 
     private function makeDirectory($path)

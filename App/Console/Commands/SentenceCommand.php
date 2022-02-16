@@ -9,13 +9,10 @@ use App\Console\Interfaces\CommandInterface;
 
 class SentenceCommand implements CommandInterface
 {
-    private SentenceHyphenation $hyphenator;
-    private string $filePath;
-
-    public function __construct(SentenceHyphenation $hyphenator, $filePath)
-    {
-        $this->hyphenator = $hyphenator;
-        $this->filePath = $filePath;
+    public function __construct(
+        private SentenceHyphenation $hyphenator,
+        private string $filePath
+    ) {
     }
 
     public function execute(): string

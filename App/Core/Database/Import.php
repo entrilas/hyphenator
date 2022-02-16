@@ -10,21 +10,17 @@ use App\Services\FileReaderService;
 
 class Import
 {
-    private QueryBuilder $queryBuilder;
-    private FileReaderService $fileReaderService;
-    private $cache;
-
-    public function __construct(FileReaderService $fileReaderService)
-    {
-        $this->queryBuilder = QueryBuilder::getInstanceOf();
-        $this->fileReaderService = $fileReaderService;
-        $this->cache = Cache::getInstanceOf();
+    public function __construct(
+        private QueryBuilder $queryBuilder,
+        private Cache $cache,
+        private FileReaderService $fileReaderService
+    ) {
     }
 
     /**
      * @throws InvalidArgumentException
      */
-    public function importPatterns($path): void
+    public function importPatterns(string $path): void
     {
         $this->truncateAll();
         $this->validatePath($path);
@@ -36,7 +32,7 @@ class Import
         $this->setCache($patterns);
     }
 
-    public function import($table, $key, $value): void
+    public function import(string $table, string $key, string $value): void
     {
         $this->queryBuilder->insert($table, [
             $key => $value

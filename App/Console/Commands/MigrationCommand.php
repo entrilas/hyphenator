@@ -10,11 +10,9 @@ use App\Core\Database\Migration;
 
 class MigrationCommand implements CommandInterface
 {
-    private Migration $migration;
-
-    public function __construct(Migration $migration)
-    {
-        $this->migration = $migration;
+    public function __construct(
+        Migration $migration
+    ) {
     }
 
     public function execute(): mixed
