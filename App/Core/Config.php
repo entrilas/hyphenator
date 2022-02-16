@@ -15,7 +15,7 @@ class Config
      * @throws FileNotFoundException
      * @throws UnsupportedFormatException
      */
-    public function get($path)
+    public function get(string $path): array
     {
         $realPath = $this->getPath($path);
         $this->validatePath($realPath);
@@ -26,7 +26,7 @@ class Config
     /**
      * @throws UnsupportedFormatException
      */
-    private function validateFormat($path): void
+    private function validateFormat(string $path): void
     {
         $fileInformation = pathinfo($path);
         if ($fileInformation['extension'] != "json") {
@@ -38,14 +38,14 @@ class Config
     /**
      * @throws FileNotFoundException
      */
-    private function validatePath($path): void
+    private function validatePath(string $path): void
     {
         if (!file_exists($path)) {
             throw new FileNotFoundException("Configuration file: [$path] cannot be found");
         }
     }
 
-    public function parse($path): array
+    public function parse(string $path): array
     {
         return json_decode(file_get_contents($path), true);
     }

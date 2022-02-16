@@ -11,12 +11,12 @@ use App\Core\Database\Migration;
 class MigrationCommand implements CommandInterface
 {
     public function __construct(
-        Migration $migration
+        private Migration $migration
     ) {
     }
 
     public function execute(): mixed
     {
-        return $this->migration->migrate('migrate');
+        return $this->migration->migrate('migrate.sql');
     }
 }

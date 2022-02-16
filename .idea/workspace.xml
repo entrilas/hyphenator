@@ -2,33 +2,27 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="80446ad4-d831-40fc-954f-105377b38c5e" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/App/Algorithm/DatabaseHyphenation.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/App/Core/Settings.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/App/Algorithm/FileHyphenation.php" beforeDir="false" afterPath="$PROJECT_DIR$/App/Algorithm/FileHyphenation.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/App/Algorithm/Hyphenation.php" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/App/Algorithm/HyphenationTrie.php" beforeDir="false" afterPath="$PROJECT_DIR$/App/Algorithm/HyphenationTrie.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/App/Algorithm/SentenceHyphenation.php" beforeDir="false" afterPath="$PROJECT_DIR$/App/Algorithm/SentenceHyphenation.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/App/Algorithm/Interfaces/HyphenationInterface.php" beforeDir="false" afterPath="$PROJECT_DIR$/App/Algorithm/Interfaces/HyphenationInterface.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/App/Application.php" beforeDir="false" afterPath="$PROJECT_DIR$/App/Application.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/App/Console/CommandInvoker.php" beforeDir="false" afterPath="$PROJECT_DIR$/App/Console/CommandInvoker.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/App/Console/Commands/FileCommand.php" beforeDir="false" afterPath="$PROJECT_DIR$/App/Console/Commands/FileCommand.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/App/Console/Commands/MigrationCommand.php" beforeDir="false" afterPath="$PROJECT_DIR$/App/Console/Commands/MigrationCommand.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/App/Console/Commands/PatternCommand.php" beforeDir="false" afterPath="$PROJECT_DIR$/App/Console/Commands/PatternCommand.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/App/Console/Commands/SentenceCommand.php" beforeDir="false" afterPath="$PROJECT_DIR$/App/Console/Commands/SentenceCommand.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/App/Console/Commands/WordCommand.php" beforeDir="false" afterPath="$PROJECT_DIR$/App/Console/Commands/WordCommand.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/App/Console/Console.php" beforeDir="false" afterPath="$PROJECT_DIR$/App/Console/Console.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/App/Console/Validator.php" beforeDir="false" afterPath="$PROJECT_DIR$/App/Console/Validator.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/App/Constants/Constants.php" beforeDir="false" afterPath="$PROJECT_DIR$/App/Constants/Constants.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/App/Core/Cache/Cache.php" beforeDir="false" afterPath="$PROJECT_DIR$/App/Core/Cache/Cache.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/App/Core/Config.php" beforeDir="false" afterPath="$PROJECT_DIR$/App/Core/Config.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/App/Core/Database/Database.php" beforeDir="false" afterPath="$PROJECT_DIR$/App/Core/Database/Database.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/App/Core/Database/Export.php" beforeDir="false" afterPath="$PROJECT_DIR$/App/Core/Database/Export.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/App/Core/Database/Import.php" beforeDir="false" afterPath="$PROJECT_DIR$/App/Core/Database/Import.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/App/Core/Database/Migration.php" beforeDir="false" afterPath="$PROJECT_DIR$/App/Core/Database/Migration.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/App/Core/Database/QueryBuilder.php" beforeDir="false" afterPath="$PROJECT_DIR$/App/Core/Database/QueryBuilder.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/App/Core/Exceptions/FileNotFoundException.php" beforeDir="false" afterPath="$PROJECT_DIR$/App/Core/Exceptions/FileNotFoundException.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/App/Core/Exceptions/InvalidArgumentException.php" beforeDir="false" afterPath="$PROJECT_DIR$/App/Core/Exceptions/InvalidArgumentException.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/App/Core/Exceptions/ParseException.php" beforeDir="false" afterPath="$PROJECT_DIR$/App/Core/Exceptions/ParseException.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/App/Core/Exceptions/UnsupportedFormatException.php" beforeDir="false" afterPath="$PROJECT_DIR$/App/Core/Exceptions/UnsupportedFormatException.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/App/Core/Parser/JSONParser.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/App/Services/PatternReaderService.php" beforeDir="false" afterPath="$PROJECT_DIR$/App/Services/PatternReaderService.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config/config.json" beforeDir="false" afterPath="$PROJECT_DIR$/config/config.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config/database.json" beforeDir="false" afterPath="$PROJECT_DIR$/config/database.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config/logger.json" beforeDir="false" afterPath="$PROJECT_DIR$/config/logger.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/cache/1/5/54c4e086b184e187871fc7232e6359fd76aff32b5a2e847ebb7de10e8c9715" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/resources/export.txt" beforeDir="false" afterPath="$PROJECT_DIR$/resources/export.txt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -61,7 +55,6 @@
   </component>
   <component name="HighlightingSettingsPerFile">
     <setting file="file://$PROJECT_DIR$/App/Core/Cache/Cache.php" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/App/Algorithm/Hyphenation.php" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/App/Constants/Constants.php" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/App/Core/Timer.php" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/public/index.php" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" />
@@ -122,7 +115,8 @@
       <workItem from="1644783561854" duration="606000" />
       <workItem from="1644824429834" duration="31126000" />
       <workItem from="1644872997063" duration="4797000" />
-      <workItem from="1644910322687" duration="27160000" />
+      <workItem from="1644910322687" duration="27164000" />
+      <workItem from="1645004564793" duration="22412000" />
     </task>
     <servers />
   </component>

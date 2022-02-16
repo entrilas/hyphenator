@@ -4,6 +4,7 @@ namespace App\Core\Cache;
 
 use App\Constants\Constants;
 use App\Core\Cache\Interfaces\CacheInterface;
+use App\Core\Config;
 use App\Core\Exceptions\InvalidArgumentException;
 use Generator;
 use DateInterval;
@@ -15,16 +16,19 @@ use RecursiveDirectoryIterator;
 class Cache implements CacheInterface
 {
     public const PSR16_RESERVED = '/{|}|\(|\)|\/|\\\\|@|:/u';
+    private string $cachePath;
 
     /**
      * @throws InvalidArgumentException
      */
     public function __construct(
-        private string $cachePath = Constants::CACHE_PATH,
+        private Config $config,
         private int $defaultTTL = Constants::DEFAULT_TTL,
         private int $dirMode = Constants::DIR_MODE,
         private int $fileMode = Constants::FILE_MODE
     ) {
+        $settings = $config->get(Constants::CONFIG_FILE_NAME);
+        $this->cachePath = $settings['CACHE_OUTPUT'];
         if (! file_exists($this->cachePath) && file_exists(dirname($this->cachePath))) {
             $this->makeDirectory($this->cachePath);
         }

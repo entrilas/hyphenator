@@ -7,9 +7,12 @@ namespace App\Core\Database;
 use App\Core\Cache\Cache;
 use App\Core\Exceptions\InvalidArgumentException;
 use App\Services\FileReaderService;
+use App\Traits\FormatString;
 
 class Import
 {
+    use FormatString;
+
     public function __construct(
         private QueryBuilder $queryBuilder,
         private Cache $cache,
@@ -22,21 +25,15 @@ class Import
      */
     public function importPatterns(string $path): void
     {
-        $this->truncateAll();
+        $this->truncatePatternsTable();
         $this->validatePath($path);
         $patterns = $this->fileReaderService->readFile($path);
         foreach($patterns as $pattern)
         {
-            $this->import('patterns', 'pattern', $pattern);
+            $clearedPattern = $this->removeSpaces($pattern);
+            $this->queryBuilder->insert("patterns", [$clearedPattern], ['pattern']);
         }
         $this->setCache($patterns);
-    }
-
-    public function import(string $table, string $key, string $value): void
-    {
-        $this->queryBuilder->insert($table, [
-            $key => $value
-        ]);
     }
 
     /**
@@ -51,11 +48,11 @@ class Import
         }
     }
 
-    private function truncateAll(): void
+    private function truncatePatternsTable(): void
     {
-        $this->queryBuilder->truncate("valid_patterns");
-        $this->queryBuilder->truncate("patterns");
-        $this->queryBuilder->truncate("words");
+        $this->queryBuilder->truncate('valid_patterns');
+        $this->queryBuilder->truncate('patterns');
+        $this->queryBuilder->truncate('words');
     }
 
     /**

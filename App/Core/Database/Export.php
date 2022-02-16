@@ -16,13 +16,19 @@ class Export
     ) {
     }
 
-    public function exportPatterns()
+    public function exportPatterns(): array
     {
-//        return $this->queryBuilder->getAll('patterns');
+        $patternsJson = $this->queryBuilder->selectAll("patterns", ['pattern']);
+        $patternsArray = json_decode($patternsJson, true);
+        return $this->formPatterns($patternsArray);
     }
 
-    public function export(): void
+    private function formPatterns($patternsArray): array
     {
-
+        $patterns = [];
+        foreach ($patternsArray as $pattern) {
+            $patterns[] = $pattern['pattern'];
+        }
+        return $patterns;
     }
 }

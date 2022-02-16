@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Console;
 
+use App\Algorithm\DatabaseHyphenation;
 use App\Algorithm\FileHyphenation;
 use App\Algorithm\Interfaces\HyphenationInterface;
 use App\Algorithm\SentenceHyphenation;
@@ -13,6 +14,7 @@ use App\Console\Commands\PatternCommand;
 use App\Console\Commands\SentenceCommand;
 use App\Console\Commands\WordCommand;
 use App\Constants\Constants;
+use App\Core\Config;
 use App\Core\Database\Export;
 use App\Core\Database\Migration;
 use App\Core\Database\Import;
@@ -25,16 +27,16 @@ use Exception;
 class Console
 {
     public function __construct(
-        private HyphenationInterface $hyphenation,
+        private Config $config,
+        private DatabaseHyphenation $hyphenation,
         private FileHyphenation $fileHyphenation,
         private SentenceHyphenation $sentenceHyphenation,
         private FileExportService $fileExportService,
-        private Import $patternImportService,
+        private Import $importService,
         private Export $exportService,
         private Logger $logger,
         private Timer $timer,
         private Migration $migration,
-        private array $patterns,
         private Validator $validator
     ) {
     }
@@ -84,7 +86,6 @@ class Console
     {
         return new CommandInvoker(
             new PatternCommand(
-                $this->patterns,
                 $this->importService,
                 $this->validator->getData()
             )

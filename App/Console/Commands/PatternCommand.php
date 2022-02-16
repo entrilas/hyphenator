@@ -12,11 +12,9 @@ use App\Core\Exceptions\InvalidArgumentException;
 class PatternCommand implements CommandInterface
 {
     public function __construct(
-        private array $patterns,
         private Import $patternImportService,
         private string $path
     ) {
-
     }
 
     /**

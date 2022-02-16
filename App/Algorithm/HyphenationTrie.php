@@ -3,6 +3,8 @@
 namespace App\Algorithm;
 
 use App\Algorithm\Interfaces\HyphenationInterface;
+use App\Core\Exceptions\InvalidArgumentException;
+use App\Core\Settings;
 use App\Traits\FormatString;
 
 class HyphenationTrie implements HyphenationInterface
@@ -10,16 +12,29 @@ class HyphenationTrie implements HyphenationInterface
     use FormatString;
 
     private mixed $patternTrie;
+    private array $patterns;
+    private array $validPatterns;
 
-    public function __construct(private array $patterns)
+    public function __construct(private Settings $settings)
     {
-        $this->formPatternTrie();
+
     }
 
+    /**
+     * @throws InvalidArgumentException
+     */
     public function hyphenate(string $word): string
     {
+        $this->patterns = $this->settings->getPatterns();
+        $this->formPatternTrie();
+        $this->validPatterns = [];
         $breakpoints = $this->findBreakpoints($word);
         return $this->insertHyphen($word, $breakpoints);
+    }
+
+    public function getValidPatterns(): array
+    {
+        return $this->validPatterns;
     }
 
     private function findBreakpoints(string $word): array
@@ -48,6 +63,7 @@ class HyphenationTrie implements HyphenationInterface
     private function findMaxBreakpointValue($node, int $start, array &$breakpoints): void
     {
         foreach ($node['patternName']['offsets'] as $offsetIndex => $patternOffset) {
+            $this->validPatterns[] = $node['patternName']['pattern'];
             $value  = $patternOffset[0];
             $offset = $patternOffset[1] + $start - $offsetIndex;
             if(isset($breakpoints[$offset]))

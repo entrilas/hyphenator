@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Algorithm\DatabaseHyphenation;
 use App\Algorithm\FileHyphenation;
 use App\Algorithm\HyphenationTrie;
 use App\Algorithm\SentenceHyphenation;
@@ -17,6 +18,7 @@ use App\Core\Database\Import;
 use App\Core\Database\QueryBuilder;
 use App\Core\Log\Logger;
 use App\Core\Parser\JSONParser;
+use App\Core\Settings;
 use App\Core\Timer;
 use App\Services\FileExportService;
 use App\Services\FileReaderService;
@@ -33,32 +35,35 @@ class Application
         $config = new Config();
         $settings = $config->get(Constants::CONFIG_FILE_NAME);
 
-        $cache = new Cache();
+        $cache = new Cache($config);
         $fileReaderService = new FileReaderService();
         $patternReaderService = new PatternReaderService($cache);
         $fileExportService = new FileExportService();
         $timer = new Timer();
         $logger = new Logger($config);
 
-        $patternPath = (dirname(__FILE__, 2)
-            . $settings['RESOURCES_PATH']
-            . DIRECTORY_SEPARATOR
-            . $settings['PATTERNS_NAME']);
-
         $database = new Database($config);
         $migration = new Migration($logger, $database);
-        $patterns = $patternReaderService->readFile($patternPath);
-        $hyphenationAlgorithm = new HyphenationTrie($patterns);
-        $fileHyphenation = new FileHyphenation($hyphenationAlgorithm, $fileReaderService);
-        $sentenceHyphenation = new SentenceHyphenation($hyphenationAlgorithm);
 
         $queryBuilder = new QueryBuilder($database);
         $importService = new Import($queryBuilder, $cache, $fileReaderService);
         $exportService = new Export($queryBuilder, $cache);
         $validator = new Validator();
+        $settings = new Settings($patternReaderService,$exportService, $settings);
+        $hyphenationAlgorithm = new HyphenationTrie($settings);
+        $databaseHyphenation = new DatabaseHyphenation(
+            $hyphenationAlgorithm,
+            $queryBuilder,
+            $settings,
+            $database,
+            $logger
+        );
+        $fileHyphenation = new FileHyphenation($databaseHyphenation, $fileReaderService);
+        $sentenceHyphenation = new SentenceHyphenation($databaseHyphenation);
 
         $console = new Console(
-            $hyphenationAlgorithm,
+            $config,
+            $databaseHyphenation,
             $fileHyphenation,
             $sentenceHyphenation,
             $fileExportService,
@@ -67,7 +72,6 @@ class Application
             $logger,
             $timer,
             $migration,
-            $patterns,
             $validator
         );
 

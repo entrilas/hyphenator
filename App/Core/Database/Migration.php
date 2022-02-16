@@ -37,7 +37,7 @@ class Migration
     private function execSQL(string $sql, string $name): void
     {
         try {
-            $this->database->exec($sql);
+            $this->database->getConnector()->exec($sql);
             $this->logger->info(sprintf("Migration with name [ %s ] is successful", $name));
         }catch(Exception $e){
             $this->logger->error(sprintf("Migration with name [ %s ] is unsuccessful", $name));
@@ -50,7 +50,6 @@ class Migration
             . DIRECTORY_SEPARATOR
             . Constants::MIGRATIONS_FOLDER_NAME
             . DIRECTORY_SEPARATOR
-            . $name
-            . Constants::MIGRATION_FILE_EXTENSION;
+            . $name;
     }
 }

@@ -12,7 +12,6 @@ final class Constants
     final public const LOGGER_FILE_NAME = "logger.json";
     final public const DATABASE_FILE_NAME = "database.json";
     final public const MIGRATIONS_FOLDER_NAME = "Migrations";
-    final public const MIGRATION_FILE_EXTENSION = ".sql";
     final public const CONFIG_PATH = "config";
     final public const EXPORT_FILE_PATH = __DIR__."/../../resources/export.txt";
 
