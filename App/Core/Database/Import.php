@@ -7,46 +7,39 @@ namespace App\Core\Database;
 use App\Core\Cache\Cache;
 use App\Core\Exceptions\InvalidArgumentException;
 use App\Services\FileReaderService;
+use App\Traits\FormatString;
 
 class Import
 {
-    private QueryBuilder $queryBuilder;
-    private FileReaderService $fileReaderService;
-    private $cache;
+    use FormatString;
 
-    public function __construct(FileReaderService $fileReaderService)
-    {
-        $this->queryBuilder = QueryBuilder::getInstanceOf();
-        $this->fileReaderService = $fileReaderService;
-        $this->cache = Cache::getInstanceOf();
+    public function __construct(
+        private QueryBuilder $queryBuilder,
+        private Cache $cache,
+        private FileReaderService $fileReaderService
+    ) {
     }
 
     /**
      * @throws InvalidArgumentException
      */
-    public function importPatterns($path): void
+    public function importPatterns(string $path): void
     {
-        $this->truncateAll();
+        $this->truncatePatternsTable();
         $this->validatePath($path);
         $patterns = $this->fileReaderService->readFile($path);
         foreach($patterns as $pattern)
         {
-            $this->import('patterns', 'pattern', $pattern);
+            $clearedPattern = $this->removeSpaces($pattern);
+            $this->queryBuilder->insert("patterns", [$clearedPattern], ['pattern']);
         }
         $this->setCache($patterns);
-    }
-
-    public function import($table, $key, $value): void
-    {
-        $this->queryBuilder->insert($table, [
-            $key => $value
-        ]);
     }
 
     /**
      * @throws InvalidArgumentException
      */
-    private function setCache($patterns): void
+    private function setCache(array $patterns): void
     {
         if($this->cache->has('patterns'))
         {
@@ -55,17 +48,17 @@ class Import
         }
     }
 
-    private function truncateAll(): void
+    private function truncatePatternsTable(): void
     {
-        $this->queryBuilder->truncate("valid_patterns");
-        $this->queryBuilder->truncate("patterns");
-        $this->queryBuilder->truncate("words");
+        $this->queryBuilder->truncate('valid_patterns');
+        $this->queryBuilder->truncate('patterns');
+        $this->queryBuilder->truncate('words');
     }
 
     /**
      * @throws InvalidArgumentException
      */
-    private function validatePath($path): void
+    private function validatePath(string $path): void
     {
         if(!file_exists($path))
             throw new InvalidArgumentException("File in provided path [$path] does not exist.");

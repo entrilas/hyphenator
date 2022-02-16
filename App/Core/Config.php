@@ -11,33 +11,25 @@ use App\Core\Parser\JSONParser;
 
 class Config
 {
-    private JSONParser $jsonParser;
-
-    public function __construct(JSONParser $jsonParser)
-    {
-        $this->jsonParser = $jsonParser;
-    }
-
     /**
      * @throws FileNotFoundException
-     * @throws Exceptions\ParseException
      * @throws UnsupportedFormatException
      */
-    public function get($path)
+    public function get(string $path): array
     {
         $realPath = $this->getPath($path);
         $this->validatePath($realPath);
         $this->validateFormat($realPath);
-        return $this->jsonParser->parse($realPath);
+        return $this->parse($realPath);
     }
 
     /**
      * @throws UnsupportedFormatException
      */
-    private function validateFormat($path): void
+    private function validateFormat(string $path): void
     {
         $fileInformation = pathinfo($path);
-        if (!in_array($fileInformation['extension'], $this->extension())) {
+        if ($fileInformation['extension'] != "json") {
             throw new UnsupportedFormatException('Unsupported configuration format.
              At this moment, only JSON file is supported');
         }
@@ -46,20 +38,24 @@ class Config
     /**
      * @throws FileNotFoundException
      */
-    private function validatePath($path): void
+    private function validatePath(string $path): void
     {
         if (!file_exists($path)) {
             throw new FileNotFoundException("Configuration file: [$path] cannot be found");
         }
     }
 
-    public function extension(): array
+    public function parse(string $path): array
     {
-        return array('json');
+        return json_decode(file_get_contents($path), true);
     }
 
     private function getPath(string $name): string
     {
-        return dirname(__FILE__, 3) . Constants::CONFIG_PATH . "/" . $name . ".json";
+        return dirname(__FILE__, 3)
+            . DIRECTORY_SEPARATOR
+            . Constants::CONFIG_PATH
+            . DIRECTORY_SEPARATOR
+            . $name;
     }
 }

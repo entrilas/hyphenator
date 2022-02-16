@@ -10,19 +10,16 @@ use App\Services\FileReaderService;
 
 class FileHyphenation
 {
-    private HyphenationInterface $hyphenator;
-    private FileReaderService $fileReader;
-
-    public function __construct(HyphenationInterface $hyphenator, FileReaderService $fileReader)
-    {
-        $this->hyphenator = $hyphenator;
-        $this->fileReader = $fileReader;
+    public function __construct(
+        private HyphenationInterface $hyphenator,
+        private FileReaderService $fileReader
+    ) {
     }
 
     /**
      * @throws FileNotFoundException
      */
-    public function hyphenateFile($filePath): array
+    public function hyphenateFile(string $filePath): array
     {
         $this->validatePath($filePath);
         $fileData = $this->getDataFromFile($filePath);
@@ -34,7 +31,7 @@ class FileHyphenation
         return $hyphenatedData;
     }
 
-    private function getDataFromFile($filePath): array
+    private function getDataFromFile(string $filePath): array
     {
         return $this->fileReader->readFile($filePath);
     }
@@ -42,11 +39,11 @@ class FileHyphenation
     /**
      * @throws FileNotFoundException
      */
-    private function validatePath($filePath)
+    private function validatePath(string $filePath)
     {
         $absPath = realpath($filePath);
         if ($absPath === false) {
-            throw new FileNotFoundException("File with URL [ $filePath ] was not found.");
+            throw new FileNotFoundException(sprintf("File with URL [ %s ] was not found.", $filePath));
         }
     }
 }

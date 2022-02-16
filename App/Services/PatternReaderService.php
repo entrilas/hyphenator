@@ -7,16 +7,14 @@ use App\Core\Exceptions\InvalidArgumentException;
 
 class PatternReaderService extends FileReaderService
 {
-    private Cache $cache;
-
-    public function __construct(){
-        $this->cache = Cache::getInstanceOf();
+    public function __construct(private Cache $cache)
+    {
     }
 
     /**
      * @throws InvalidArgumentException
      */
-    public function readFile($path): array
+    public function readFile(string $path): array
     {
         if(!$this->cache->has('patterns')) {
             $patterns = parent::readFile($path);

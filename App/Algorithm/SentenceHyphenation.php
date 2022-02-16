@@ -11,14 +11,12 @@ class SentenceHyphenation
 {
     use FormatString;
 
-    private $hyphenator;
-
-    public function __construct(HyphenationInterface $hyphenator)
-    {
-        $this->hyphenator = $hyphenator;
+    public function __construct(
+        private HyphenationInterface $hyphenator
+    ) {
     }
 
-    public function hyphenateSentence($sentence): string
+    public function hyphenateSentence(string $sentence): string
     {
         $wordsArray = $this->splitSentenceIntoWords($sentence);
         $hyphenatedSentence = '';

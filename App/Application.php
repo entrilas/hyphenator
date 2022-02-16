@@ -2,18 +2,23 @@
 
 namespace App;
 
+use App\Algorithm\DatabaseHyphenation;
 use App\Algorithm\FileHyphenation;
 use App\Algorithm\HyphenationTrie;
 use App\Algorithm\SentenceHyphenation;
 use App\Console\Console;
+use App\Console\Validator;
 use App\Constants\Constants;
+use App\Core\Cache\Cache;
 use App\Core\Config;
+use App\Core\Database\Database;
 use App\Core\Database\Export;
 use App\Core\Database\Migration;
 use App\Core\Database\Import;
 use App\Core\Database\QueryBuilder;
 use App\Core\Log\Logger;
 use App\Core\Parser\JSONParser;
+use App\Core\Settings;
 use App\Core\Timer;
 use App\Services\FileExportService;
 use App\Services\FileReaderService;
@@ -27,30 +32,38 @@ class Application
      */
     public function __construct()
     {
-        $config = new Config(new JSONParser());
+        $config = new Config();
         $settings = $config->get(Constants::CONFIG_FILE_NAME);
 
+        $cache = new Cache($config);
         $fileReaderService = new FileReaderService();
-        $patternReaderService = new PatternReaderService();
+        $patternReaderService = new PatternReaderService($cache);
         $fileExportService = new FileExportService();
         $timer = new Timer();
         $logger = new Logger($config);
 
-        $patternPath = (dirname(__FILE__, 2)
-            . $settings['RESOURCES_PATH']
-            . DIRECTORY_SEPARATOR
-            . $settings['PATTERNS_NAME']);
+        $database = new Database($config);
+        $migration = new Migration($logger, $database);
 
-        $migration = new Migration($logger);
-        $patterns = $patternReaderService->readFile($patternPath);
-        $hyphenationAlgorithm = new HyphenationTrie($patterns);
-        $fileHyphenation = new FileHyphenation($hyphenationAlgorithm, $fileReaderService);
-        $sentenceHyphenation = new SentenceHyphenation($hyphenationAlgorithm);
-        $importService = new Import($fileReaderService);
-        $exportService = new Export();
+        $queryBuilder = new QueryBuilder($database);
+        $importService = new Import($queryBuilder, $cache, $fileReaderService);
+        $exportService = new Export($queryBuilder, $cache);
+        $validator = new Validator();
+        $settings = new Settings($patternReaderService,$exportService, $settings);
+        $hyphenationAlgorithm = new HyphenationTrie($settings);
+        $databaseHyphenation = new DatabaseHyphenation(
+            $hyphenationAlgorithm,
+            $queryBuilder,
+            $settings,
+            $database,
+            $logger
+        );
+        $fileHyphenation = new FileHyphenation($databaseHyphenation, $fileReaderService);
+        $sentenceHyphenation = new SentenceHyphenation($databaseHyphenation);
 
         $console = new Console(
-            $hyphenationAlgorithm,
+            $config,
+            $databaseHyphenation,
             $fileHyphenation,
             $sentenceHyphenation,
             $fileExportService,
@@ -59,7 +72,7 @@ class Application
             $logger,
             $timer,
             $migration,
-            $patterns
+            $validator
         );
 
         if(PHP_SAPI == "cli")

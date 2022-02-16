@@ -10,15 +10,18 @@ use App\Core\Database\Migration;
 
 class MigrationCommand implements CommandInterface
 {
-    private Migration $migration;
-
-    public function __construct(Migration $migration)
-    {
-        $this->migration = $migration;
+    public function __construct(
+        private Migration $migration
+    ) {
     }
 
     public function execute(): mixed
     {
-        return $this->migration->migrate('migrate');
+        return $this->migration->migrate('migrate.sql');
+    }
+
+    public static function getCommand(): string
+    {
+        return Constants::MIGRATE_COMMAND;
     }
 }

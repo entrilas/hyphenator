@@ -3,30 +3,43 @@
 namespace App\Algorithm;
 
 use App\Algorithm\Interfaces\HyphenationInterface;
+use App\Core\Exceptions\InvalidArgumentException;
+use App\Core\Settings;
 use App\Traits\FormatString;
 
 class HyphenationTrie implements HyphenationInterface
 {
     use FormatString;
 
-    private array $patterns;
     private mixed $patternTrie;
+    private array $patterns;
+    private array $validPatterns;
 
-    public function __construct(array $patterns)
+    public function __construct(private Settings $settings)
     {
-        $this->patterns = $patterns;
-        $this->formPatternTrie();
+
     }
 
-    public function hyphenate($word): string
+    /**
+     * @throws InvalidArgumentException
+     */
+    public function hyphenate(string $word): string
     {
+        $this->patterns = $this->settings->getPatterns();
+        $this->formPatternTrie();
+        $this->validPatterns = [];
         $breakpoints = $this->findBreakpoints($word);
         return $this->insertHyphen($word, $breakpoints);
     }
 
-    private function findBreakpoints($word): array
+    public function getValidPatterns(): array
     {
-        $word   = '.'.$word.'.';
+        return $this->validPatterns;
+    }
+
+    private function findBreakpoints(string $word): array
+    {
+        $word   = sprintf('.%s.', $word);
         $chars  = str_split(strtolower($word));
         $charLength = sizeof($chars);
 
@@ -47,9 +60,10 @@ class HyphenationTrie implements HyphenationInterface
         return $breakpoints;
     }
 
-    private function findMaxBreakpointValue($node, $start, &$breakpoints): void
+    private function findMaxBreakpointValue($node, int $start, array &$breakpoints): void
     {
         foreach ($node['patternName']['offsets'] as $offsetIndex => $patternOffset) {
+            $this->validPatterns[] = $node['patternName']['pattern'];
             $value  = $patternOffset[0];
             $offset = $patternOffset[1] + $start - $offsetIndex;
             if(isset($breakpoints[$offset]))
@@ -70,7 +84,7 @@ class HyphenationTrie implements HyphenationInterface
             $this->insertAllCharacters($pattern, $clearPattern, $node);
         }
     }
-    private function insertAllCharacters($pattern, $clearPattern, &$node): void
+    private function insertAllCharacters(string $pattern, string $clearPattern, &$node): void
     {
         foreach (str_split($clearPattern) as $char) {
             if (!isset($node[$char])) {
@@ -81,16 +95,14 @@ class HyphenationTrie implements HyphenationInterface
         $node['patternName'] = $this->formPatternData($pattern);
     }
 
-    private function formPatternData($pattern): array
+    private function formPatternData(string $pattern): array
     {
         preg_match_all('/([0-9]+)/', $pattern, $offsetsData, PREG_OFFSET_CAPTURE);
-        return array(
-            'pattern' => $pattern,
-            'offsets' => $offsetsData[1]
-        );
+        return ['pattern' => $pattern,
+            'offsets' => $offsetsData[1]];
     }
 
-    private function insertHyphen($word, $breakpoints): string
+    private function insertHyphen(string $word, array $breakpoints): string
     {
         krsort($breakpoints);
         $hyphenatedWord = $word;

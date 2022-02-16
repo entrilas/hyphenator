@@ -1,5 +1,5 @@
 {
-  "LOG_PATH" : "/logs",
+  "LOG_PATH" : "/var/logs",
   "LOG_TO_CONSOLE" : true,
   "LOG_TO_FILE" : false,
   "LOG_DATE_FORMAT" : "d-M-Y",

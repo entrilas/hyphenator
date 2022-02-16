@@ -10,22 +10,25 @@ use App\Services\PatternReaderService;
 
 class Export
 {
-    private QueryBuilder $queryBuilder;
-    private $cache;
-
-    public function __construct()
-    {
-        $this->queryBuilder = QueryBuilder::getInstanceOf();
-        $this->cache = Cache::getInstanceOf();
+    public function __construct(
+        private QueryBuilder $queryBuilder,
+        private Cache $cache
+    ) {
     }
 
-    public function exportPatterns()
+    public function exportPatterns(): array
     {
-//        return $this->queryBuilder->getAll('patterns');
+        $patternsJson = $this->queryBuilder->selectAll("patterns", ['pattern']);
+        $patternsArray = json_decode($patternsJson, true);
+        return $this->formPatterns($patternsArray);
     }
 
-    public function export(): void
+    private function formPatterns(array $patternsArray): array
     {
-
+        $patterns = [];
+        foreach ($patternsArray as $pattern) {
+            $patterns[] = $pattern['pattern'];
+        }
+        return $patterns;
     }
 }

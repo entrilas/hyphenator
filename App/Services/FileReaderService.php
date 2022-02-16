@@ -8,8 +8,9 @@ use SplFileObject;
 
 class FileReaderService
 {
-    public function readFile($path): array
+    public function readFile(string $path): array
     {
+        $data = [];
         foreach (new SplFileObject($path) as $line) {
             $data[] = $line;
         }

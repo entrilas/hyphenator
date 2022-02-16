@@ -5,23 +5,17 @@ declare(strict_types=1);
 namespace App\Console\Commands;
 
 use App\Console\Interfaces\CommandInterface;
+use App\Constants\Constants;
 use App\Core\Database\Import;
 use App\Core\Database\QueryBuilder;
 use App\Core\Exceptions\InvalidArgumentException;
 
 class PatternCommand implements CommandInterface
 {
-    private array $patterns;
-    private QueryBuilder $queryBuilder;
-    private Import $patternImportService;
-    private string $path;
-
-    public function __construct(array $patterns, Import $patternImportService, string $path)
-    {
-        $this->patterns = $patterns;
-        $this->queryBuilder = QueryBuilder::getInstanceOf();
-        $this->patternImportService = $patternImportService;
-        $this->path = $path;
+    public function __construct(
+        private Import $patternImportService,
+        private string $path
+    ) {
     }
 
     /**
@@ -30,5 +24,10 @@ class PatternCommand implements CommandInterface
     public function execute(): mixed
     {
         return $this->patternImportService->importPatterns($this->path);
+    }
+
+    public static function getCommand(): string
+    {
+        return Constants::IMPORT_PATTERNS_COMMAND;
     }
 }

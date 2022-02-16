@@ -4,15 +4,15 @@ declare(strict_types=1);
 
 namespace App\Console;
 
+use App\Algorithm\DatabaseHyphenation;
 use App\Algorithm\FileHyphenation;
-use App\Algorithm\Interfaces\HyphenationInterface;
 use App\Algorithm\SentenceHyphenation;
 use App\Console\Commands\FileCommand;
 use App\Console\Commands\MigrationCommand;
 use App\Console\Commands\PatternCommand;
 use App\Console\Commands\SentenceCommand;
 use App\Console\Commands\WordCommand;
-use App\Constants\Constants;
+use App\Core\Config;
 use App\Core\Database\Export;
 use App\Core\Database\Migration;
 use App\Core\Database\Import;
@@ -24,42 +24,19 @@ use Exception;
 
 class Console
 {
-    private HyphenationInterface $hyphenation;
-    private FileHyphenation $fileHyphenation;
-    private SentenceHyphenation $sentenceHyphenation;
-    private FileExportService $fileExportService;
-    private Import $importService;
-    private Export $exportService;
-    private Logger $logger;
-    private Timer $timer;
-    private Migration $migration;
-    private array $patterns;
-    private Validator $validator;
-
     public function __construct(
-        HyphenationInterface $hyphenation,
-        FileHyphenation $fileHyphenation,
-        SentenceHyphenation $sentenceHyphenation,
-        FileExportService $fileExportService,
-        Import $patternImportService,
-        Export $exportService,
-        Logger $logger,
-        Timer $timer,
-        Migration $migration,
-        array $patterns
-    )
-    {
-        $this->hyphenation = $hyphenation;
-        $this->fileHyphenation = $fileHyphenation;
-        $this->sentenceHyphenation = $sentenceHyphenation;
-        $this->fileExportService = $fileExportService;
-        $this->importService = $patternImportService;
-        $this->exportService = $exportService;
-        $this->logger = $logger;
-        $this->timer = $timer;
-        $this->migration = $migration;
-        $this->patterns = $patterns;
-        $this->validator = Validator::getInstanceOf();
+        private Config $config,
+        private DatabaseHyphenation $hyphenation,
+        private FileHyphenation $fileHyphenation,
+        private SentenceHyphenation $sentenceHyphenation,
+        private FileExportService $fileExportService,
+        private Import $importService,
+        private Export $exportService,
+        private Logger $logger,
+        private Timer $timer,
+        private Migration $migration,
+        private Validator $validator
+    ) {
     }
 
     /**
@@ -80,34 +57,26 @@ class Console
     private function runCommand(): void
     {
         $this->timer->start();
-        switch ($this->validator->getFlag()) {
-            case Constants::WORD_COMMAND:
-                $invoker = $this->formWordInvoker();
-                break;
-            case Constants::SENTENCE_COMMAND:
-                $invoker = $this->formSentenceInvoker();
-                break;
-            case Constants::FILE_COMMAND:
-                $invoker = $this->formFileInvoker();
-                break;
-            case Constants::MIGRATE_COMMAND:
-                $invoker = $this->formMigrationInvoker();
-                break;
-            case Constants::IMPORT_PATTERNS_COMMAND:
-                $invoker = $this->formImportPatternsInvoker();
-                break;
-        }
+        $invoker = match ($this->validator->getFlag()) {
+            WordCommand::getCommand() => $this->formWordInvoker(),
+            SentenceCommand::getCommand() => $this->formSentenceInvoker(),
+            FileCommand::getCommand() => $this->formFileInvoker(),
+            MigrationCommand::getCommand() => $this->formMigrationInvoker(),
+            PatternCommand::getCommand() => $this->formImportPatternsInvoker(),
+            default => throw new InvalidArgumentException(
+                "Command was not found!"
+            ),
+        };
         $this->fileExportService->exportFile($invoker->handle());
         $this->timer->finish();
         $executionTime = $this->timer->getTime();
-        $this->logger->info("Process is finished in [$executionTime] seconds");
+        $this->logger->info(sprintf("Process is finished in %s seconds", $executionTime));
         $this->logger->info("Process has been finished!");
     }
     public function formImportPatternsInvoker(): CommandInvoker
     {
         return new CommandInvoker(
             new PatternCommand(
-                $this->patterns,
                 $this->importService,
                 $this->validator->getData()
             )
