@@ -20,4 +20,14 @@ class Pattern extends Model
                 ['id', 'pattern']
         );
     }
+
+    public function getPattern($id)
+    {
+        return $this->queryBuilder->select(
+            $this->table,
+            ['id', 'pattern'],
+            'id',
+            $id
+        );
+    }
 }

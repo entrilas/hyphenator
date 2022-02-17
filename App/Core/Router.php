@@ -19,29 +19,31 @@ class Router
         $callback = null;
         foreach($this->handlers as $handler)
         {
-            if($handler['path'] === $requestPath && $method === $handler['method'])
+            $pathParsed = preg_replace('/[0-9]+/', ':id', $requestPath);
+            preg_match_all('!\d+!', $requestPath, $idParsed);
+            if($handler['path'] === $pathParsed && $method === $handler['method'])
             {
                 $callback = $handler['handler'];
             }
         }
-        if(is_string($callback)){
-            $parts = explode('::', $callback);
-            if(is_array($parts))
-            {
-                $className = array_shift($parts);
-                $handler = new $className;
-                $method = array_shift($parts);
-                $callback = [$handler, $method];
-            }
-        }
-        if(!$callback){
+//        if(is_string($callback)){
+//            $parts = explode('::', $callback);
+//            if(is_array($parts))
+//            {
+//                $className = array_shift($parts);
+//                $handler = new $className;
+//                $method = array_shift($parts);
+//                $callback = [$handler, $method];
+//            }
+//        }
+        if(!$callback || sizeof($idParsed) > 1){
             header("HTTP/1.0 404 Not Found");
             if(!empty($this->notFoundHandler)){
                 $callback = $this->notFoundHandler;
             }
         }
         call_user_func_array($callback, [
-            array_merge($_GET, $_POST)
+            array_merge($_GET, $_POST, $idParsed)
         ]);
     }
 

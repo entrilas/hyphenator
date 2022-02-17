@@ -18,15 +18,27 @@ $pattern = new Pattern($queryBuilder);
 $word = new Word($queryBuilder);
 
 $router = new Router();
+
 $router->get('/api/words', function() use ($word) {
     $wordController = new WordController($word);
     print_r($wordController->showAll());
 });
-$router->post('/api/words', WordController::class . '::show');
+
+$router->get('/api/words/:id', function(array $params) use ($word){
+    $wordController = new WordController($word);
+    print_r($wordController->show($params[0]));
+});
+
 $router->get('/api/patterns', function() use ($pattern) {
     $patternController = new PatternController($pattern);
     print_r($patternController->showAll());
 });
+
+$router->get('/api/patterns/:id', function(array $params) use ($pattern){
+    $patternController = new PatternController($pattern);
+    print_r($patternController->show($params[0]));
+});
+
 $router->addNotFoundHandler(function(){
     echo "Not Found!";
 });

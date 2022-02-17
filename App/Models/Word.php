@@ -21,4 +21,14 @@ class Word extends Model
             ['id', 'word', 'hyphenated_word']
         );
     }
+
+    public function getWord($id)
+    {
+        return $this->queryBuilder->select(
+            $this->table,
+            ['id', 'word', 'hyphenated_word'],
+            'id',
+            $id
+        );
+    }
 }

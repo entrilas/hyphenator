@@ -3,7 +3,6 @@
 namespace App\Controllers\API;
 
 use App\Models\Pattern;
-use App\Models\Word;
 
 class PatternController
 {
@@ -13,8 +12,13 @@ class PatternController
 
     }
 
-    public function showAll()
+    public function showAll(): bool|string
     {
         return $this->pattern->getPatterns();
+    }
+
+    public function show(array $params = []): bool|string
+    {
+        return $this->pattern->getPattern($params[0]);
     }
 }

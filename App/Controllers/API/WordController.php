@@ -12,8 +12,13 @@ class WordController
 
     }
 
-    public function showAll()
+    public function showAll(): bool|string
     {
         return $this->word->getWords();
+    }
+
+    public function show(array $params = []): bool|string
+    {
+        return $this->word->getWord($params[0]);
     }
 }
