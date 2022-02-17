@@ -75,7 +75,7 @@ class Application
             $validator
         );
 
-        if(PHP_SAPI == "cli")
+        if(PHP_SAPI === "cli")
         {
             $console->runConsole();
         }

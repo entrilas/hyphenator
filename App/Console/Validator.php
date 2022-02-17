@@ -28,11 +28,11 @@ class Validator
      */
     public function validateCommand(): void
     {
-        if ($this->getFlag() == FileCommand::getCommand() ||
-            $this->getFlag() == SentenceCommand::getCommand() ||
-            $this->getFlag() == WordCommand::getCommand() ||
-            $this->getFlag() == MigrationCommand::getCommand() ||
-            $this->getFlag() == PatternCommand::getCommand()
+        if ($this->getFlag() === FileCommand::getCommand() ||
+            $this->getFlag() === SentenceCommand::getCommand() ||
+            $this->getFlag() === WordCommand::getCommand() ||
+            $this->getFlag() === MigrationCommand::getCommand() ||
+            $this->getFlag() === PatternCommand::getCommand()
         ) {
         }else{
             throw new InvalidArgumentException("Command does not exist 
@@ -45,8 +45,8 @@ class Validator
      */
     public function validateData(): void
     {
-        if(($this->getData() == null || $this->getData() == '')
-            && ($this->getFlag() == Constants::IMPORT_PATTERNS_COMMAND))
+        if(($this->getData() === null || $this->getData() === '')
+            && ($this->getFlag() === Constants::IMPORT_PATTERNS_COMMAND))
             throw new InvalidArgumentException("Data provided is null or empty");
     }
 

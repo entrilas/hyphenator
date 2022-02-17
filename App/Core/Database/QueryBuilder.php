@@ -31,8 +31,6 @@ class QueryBuilder
         $this->stmt = $this->db->prepare("INSERT INTO $table ($this->columnNames) VALUES ($this->holders)");
         $this->bindParameters($data);
         $this->stmt->execute();
-        $this->stmt->debugDumpParams();
-
     }
 
     public function select($table, array $columns, string $field, string $param): string|bool
@@ -101,5 +99,3 @@ class QueryBuilder
         }
     }
 }
-
-
