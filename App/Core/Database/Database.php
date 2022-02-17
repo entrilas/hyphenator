@@ -34,7 +34,7 @@ class Database
         if (null === $this->connector) {
             try {
                 $this->connector = new PDO($this->config['dsn'], $this->config['user'], $this->config['password']);
-                $this->connector->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+                $this->connector->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_OBJ);
             } catch(PDOException $e) {
                 throw new Exception($e->getMessage());
             }

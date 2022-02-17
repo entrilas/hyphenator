@@ -2,14 +2,18 @@
 
 namespace App\Controllers\API;
 
+use App\Models\Word;
+
 class WordController
 {
-    public function __construct()
-    {
+    public function __construct(
+        private Word $word
+    ) {
+
     }
 
-    public function show(): void
+    public function showAll()
     {
-        echo "Test";
+        return $this->word->getWords();
     }
 }

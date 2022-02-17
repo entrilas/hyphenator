@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Controllers\API\PatternController;
 use App\Controllers\API\WordController;
 use App\Core\Config;
 use App\Core\Database\Database;
@@ -14,16 +15,18 @@ $config = new Config();
 $database = new Database($config);
 $queryBuilder = new QueryBuilder($database);
 $pattern = new Pattern($queryBuilder);
-$words = new Word($queryBuilder);
+$word = new Word($queryBuilder);
 
 $router = new Router();
-$router->get('/api/words', function() use ($words)
-{
-    print_r($words->getWords());
+$router->get('/api/words', function() use ($word) {
+    $wordController = new WordController($word);
+    print_r($wordController->showAll());
 });
 $router->post('/api/words', WordController::class . '::show');
-$router->post('/api/patterns', WordController::class . '::show');
-$router->get('/api/patterns', WordController::class . '::show');
+$router->get('/api/patterns', function() use ($pattern) {
+    $patternController = new PatternController($pattern);
+    print_r($patternController->showAll());
+});
 $router->addNotFoundHandler(function(){
     echo "Not Found!";
 });
