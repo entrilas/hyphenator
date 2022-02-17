@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Core\Database;
 
+use PDO;
+
 class QueryBuilder
 {
     private $db = null;
@@ -23,7 +25,7 @@ class QueryBuilder
         $this->db = $this->database->getConnector();
     }
 
-    public function insert(string $table, array $data, array $columns)
+    public function insert(string $table, array $data, array $columns): void
     {
         $this->holders = $this->setHolders($data);
         $this->columnNames = $this->setColumns($columns);
@@ -59,10 +61,10 @@ class QueryBuilder
         return $this->stmt->execute();
     }
 
-    public function delete(string $table, array $data, string $param): string|bool
+    public function delete(string $table, string $id, string $param): string|bool
     {
-        $this->stmt = $this->db->prepare("DELETE FROM $table WHERE $param = ?");
-        $this->bindParameters(array($data));
+        $this->stmt = $this->db->prepare("DELETE FROM $table WHERE $param = :id");
+        $this->stmt->bindValue('id', $id, PDO::PARAM_INT);
         return $this->stmt->execute();
     }
 

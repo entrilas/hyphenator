@@ -14,7 +14,7 @@ class Word extends Model
         parent::__construct($queryBuilder);
     }
 
-    public function getWords()
+    public function getWords(): bool|string
     {
         return $this->queryBuilder->selectAll(
             $this->table,
@@ -22,13 +22,31 @@ class Word extends Model
         );
     }
 
-    public function getWord($id)
+    public function getWord($id): bool|string
     {
         return $this->queryBuilder->select(
             $this->table,
             ['id', 'word', 'hyphenated_word'],
             'id',
             $id
+        );
+    }
+
+    public function submitWord(array $params)
+    {
+        return $this->queryBuilder->insert(
+            $this->table,
+            [$params['word'], $params['hyphenated_word']],
+            ['word', 'hyphenated_word']
+        );
+    }
+
+    public function deleteWord(array $params): bool|string
+    {
+        return $this->queryBuilder->delete(
+            $this->table,
+            $params[0],
+            'id'
         );
     }
 }

@@ -19,12 +19,22 @@ $word = new Word($queryBuilder);
 
 $router = new Router();
 
+$router->post('/api/words', function(array $params = []) use ($word) {
+    $wordController = new WordController($word);
+    print_r($wordController->submit($params));
+});
+
+$router->delete('/api/words/:id', function(array $params = []) use ($word) {
+    $wordController = new WordController($word);
+    print_r($wordController->delete($params));
+});
+
 $router->get('/api/words', function() use ($word) {
     $wordController = new WordController($word);
     print_r($wordController->showAll());
 });
 
-$router->get('/api/words/:id', function(array $params) use ($word){
+$router->get('/api/words/:id', function(array $params = []) use ($word){
     $wordController = new WordController($word);
     print_r($wordController->show($params[0]));
 });
@@ -37,6 +47,11 @@ $router->get('/api/patterns', function() use ($pattern) {
 $router->get('/api/patterns/:id', function(array $params) use ($pattern){
     $patternController = new PatternController($pattern);
     print_r($patternController->show($params[0]));
+});
+
+$router->delete('/api/patterns/:id', function(array $params = []) use ($pattern) {
+    $patternController = new PatternController($pattern);
+    print_r($patternController->delete($params[0]));
 });
 
 $router->addNotFoundHandler(function(){

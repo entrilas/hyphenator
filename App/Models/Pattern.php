@@ -13,7 +13,7 @@ class Pattern extends Model
         parent::__construct($queryBuilder);
     }
 
-    public function getPatterns()
+    public function getPatterns(): bool|string
     {
         return $this->queryBuilder->selectAll(
                 $this->table,
@@ -21,7 +21,7 @@ class Pattern extends Model
         );
     }
 
-    public function getPattern($id)
+    public function getPattern($id): bool|string
     {
         return $this->queryBuilder->select(
             $this->table,
