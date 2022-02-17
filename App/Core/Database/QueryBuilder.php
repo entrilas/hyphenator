@@ -7,8 +7,9 @@ namespace App\Core\Database;
 class QueryBuilder
 {
     private $db = null;
+    private string $sql;
     private $stmt;
-    private $cols;
+    private $columnNames;
     private $holders;
     private $fields;
 
@@ -23,27 +24,31 @@ class QueryBuilder
         $this->db = $this->database->getConnector();
     }
 
-    public function insert(string $table, array $data, array $columns): string|bool
+    public function insert(string $table, array $data, array $columns)
     {
-        $this->holders = $this->setHolders($columns);
-        $this->cols = $this->setColumns($columns);
-        $this->stmt = $this->db->prepare("INSERT INTO $table ($this->cols) VALUES ($this->holders)");
-        return $this->stmt->execute($data);
+        $this->holders = $this->setHolders($data);
+        $this->columnNames = $this->setColumns($columns);
+        $this->stmt = $this->db->prepare("INSERT INTO $table ($this->columnNames) VALUES ($this->holders)");
+        $this->bindParameters($data);
+        $this->stmt->execute();
+        $this->stmt->debugDumpParams();
+
     }
 
     public function select($table, array $columns, string $field, string $param): string|bool
     {
-        $this->cols = $this->setColumns($columns);
-        $this->stmt = $this->db->prepare("SELECT $this->cols FROM $table WHERE $field = ?");
-        $this->stmt->execute(array($param));
+        $this->columnNames = $this->setColumns($columns);
+        $this->stmt = $this->db->prepare("SELECT $this->columnNames FROM $table WHERE $field = ?");
+        $this->bindParameters(array($param));
+        $this->stmt->execute();
         $result = $this->stmt->fetch();
         return json_encode($result, JSON_UNESCAPED_UNICODE);
     }
 
     public function selectAll(string $table, array $columns): string|bool
     {
-        $this->cols = $this->setColumns($columns);
-        $this->stmt = $this->db->prepare("SELECT $this->cols FROM $table");
+        $this->columnNames = $this->setColumns($columns);
+        $this->stmt = $this->db->prepare("SELECT $this->columnNames FROM $table");
         $this->stmt->execute();
         $result = $this->stmt->fetchAll();
         return json_encode($result, JSON_UNESCAPED_UNICODE);
@@ -53,13 +58,15 @@ class QueryBuilder
     {
         $this->fields = $this->setFields($columns);
         $this->stmt = $this->db->prepare("UPDATE $table SET $this->fields WHERE $param = ?");
-        return $this->stmt->execute($data);
+        $this->bindParameters(array($data));
+        return $this->stmt->execute();
     }
 
     public function delete(string $table, array $data, string $param): string|bool
     {
         $this->stmt = $this->db->prepare("DELETE FROM $table WHERE $param = ?");
-        return $this->stmt->execute($data);
+        $this->bindParameters(array($data));
+        return $this->stmt->execute();
     }
 
     public function truncate(string $table): string|bool
@@ -84,6 +91,14 @@ class QueryBuilder
     {
         $this->holders = array_fill(1 ,count($columns),'?');
         return implode(', ',array_values($this->holders));
+    }
+
+    private function bindParameters(array $params): void
+    {
+        for($i=0;$i<sizeof($params);$i++)
+        {
+            $this->stmt->bindValue($i+1, $params[$i]);
+        }
     }
 }
 
