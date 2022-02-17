@@ -1,10 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App;
 
 use App\Algorithm\DatabaseHyphenation;
 use App\Algorithm\FileHyphenation;
 use App\Algorithm\HyphenationTrie;
+use App\Algorithm\Interfaces\HyphenationInterface;
 use App\Algorithm\SentenceHyphenation;
 use App\Console\Console;
 use App\Console\Validator;
@@ -18,66 +21,105 @@ use App\Core\Database\Import;
 use App\Core\Database\QueryBuilder;
 use App\Core\Log\Logger;
 use App\Core\Parser\JSONParser;
+use App\Core\Router;
 use App\Core\Settings;
 use App\Core\Timer;
+use App\Models\Pattern;
 use App\Services\FileExportService;
 use App\Services\FileReaderService;
 use App\Services\PatternReaderService;
+use Cassandra\Time;
 use Exception;
 
 class Application
 {
+    public static Application $app;
+    public Config $config;
+    public $settings;
+    public Cache $cache;
+    public FileReaderService $fileReaderService;
+    public PatternReaderService $patternReaderService;
+    public FileExportService $fileExportService;
+    public Timer $timer;
+    public Logger $logger;
+    public Database $database;
+    public Migration $migration;
+    public QueryBuilder $queryBuilder;
+    public Import $importService;
+    public Export $exportService;
+    public Validator $validator;
+    public HyphenationTrie $hyphenationTrie;
+    public DatabaseHyphenation $databaseHyphenation;
+    public FileHyphenation $fileHyphenation;
+    public SentenceHyphenation $sentenceHyphenation;
+    public Console $console;
     /**
      * @throws Exception
      */
     public function __construct()
     {
-        $config = new Config();
-        $settings = $config->get(Constants::CONFIG_FILE_NAME);
-
-        $cache = new Cache($config);
-        $fileReaderService = new FileReaderService();
-        $patternReaderService = new PatternReaderService($cache);
-        $fileExportService = new FileExportService();
-        $timer = new Timer();
-        $logger = new Logger($config);
-
-        $database = new Database($config);
-        $migration = new Migration($logger, $database);
-
-        $queryBuilder = new QueryBuilder($database);
-        $importService = new Import($queryBuilder, $cache, $fileReaderService);
-        $exportService = new Export($queryBuilder, $cache);
-        $validator = new Validator();
-        $settings = new Settings($patternReaderService,$exportService, $settings);
-        $hyphenationAlgorithm = new HyphenationTrie($settings);
-        $databaseHyphenation = new DatabaseHyphenation(
-            $hyphenationAlgorithm,
-            $queryBuilder,
-            $settings,
-            $database,
-            $logger
+        $this->config = new Config();
+        $this->settings = $this->config->get(Constants::CONFIG_FILE_NAME);
+        $this->cache = new Cache($this->config);
+        $this->fileReaderService = new FileReaderService();
+        $this->patternReaderService = new PatternReaderService($this->cache);
+        $this->fileExportService = new FileExportService();
+        $this->timer = new Timer();
+        $this->logger = new Logger($this->config);
+        $this->database = new Database($this->config);
+        $this->migration = new Migration($this->logger, $this->database);
+        $this->queryBuilder = new QueryBuilder($this->database);
+        $this->importService = new Import($this->queryBuilder,
+            $this->cache,
+            $this->fileReaderService
         );
-        $fileHyphenation = new FileHyphenation($databaseHyphenation, $fileReaderService);
-        $sentenceHyphenation = new SentenceHyphenation($databaseHyphenation);
-
-        $console = new Console(
-            $config,
-            $databaseHyphenation,
-            $fileHyphenation,
-            $sentenceHyphenation,
-            $fileExportService,
-            $importService,
-            $exportService,
-            $logger,
-            $timer,
-            $migration,
-            $validator
+        $this->exportService = new Export($this->queryBuilder, $this->cache);
+        $this->validator = new Validator();
+        $this->settings = new Settings(
+            $this->patternReaderService,
+            $this->exportService,
+            $this->settings
         );
+        $this->hyphenationTrie = new HyphenationTrie($this->settings);
+        $this->formDatabaseHyphenation();
+        $this->formFileHyphenation();
+        $this->sentenceHyphenation = new SentenceHyphenation($this->databaseHyphenation);
+        $this->formConsole();
+    }
 
-        if(PHP_SAPI === "cli")
-        {
-            $console->runConsole();
-        }
+    private function formDatabaseHyphenation(): void
+    {
+        $this->databaseHyphenation = new DatabaseHyphenation(
+            $this->hyphenationTrie,
+            $this->queryBuilder,
+            $this->settings,
+            $this->database,
+            $this->logger
+        );
+    }
+
+    private function formFileHyphenation(): void
+    {
+        $this->fileHyphenation = new FileHyphenation(
+            $this->databaseHyphenation,
+            $this->fileReaderService
+        );
+    }
+
+    private function formConsole(): void
+    {
+        $this->console = new Console(
+            $this->config,
+            $this->databaseHyphenation,
+            $this->fileHyphenation,
+            $this->sentenceHyphenation,
+            $this->fileExportService,
+            $this->importService,
+            $this->exportService,
+            $this->logger,
+            $this->timer,
+            $this->migration,
+            $this->validator
+        );
     }
 }

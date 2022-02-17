@@ -7,7 +7,6 @@ namespace App\Core\Database;
 class QueryBuilder
 {
     private $db = null;
-    private string $sql;
     private $stmt;
     private $columnNames;
     private $holders;
@@ -40,7 +39,7 @@ class QueryBuilder
         $this->bindParameters(array($param));
         $this->stmt->execute();
         $result = $this->stmt->fetch();
-        return json_encode($result, JSON_UNESCAPED_UNICODE);
+        return json_encode($result, JSON_PRETTY_PRINT);
     }
 
     public function selectAll(string $table, array $columns): string|bool
@@ -49,7 +48,7 @@ class QueryBuilder
         $this->stmt = $this->db->prepare("SELECT $this->columnNames FROM $table");
         $this->stmt->execute();
         $result = $this->stmt->fetchAll();
-        return json_encode($result, JSON_UNESCAPED_UNICODE);
+        return json_encode($result, JSON_PRETTY_PRINT);
     }
 
     public function update(string $table, array $columns, array $data, string $param): string|bool
@@ -75,8 +74,8 @@ class QueryBuilder
 
     private function setColumns(array $columns): string
     {
-        $this->cols = implode(', ', array_values($columns));
-        return $this->cols;
+        $this->columnNames = implode(', ', array_values($columns));
+        return $this->columnNames;
     }
 
     private function setFields(array $columns): string
