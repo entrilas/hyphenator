@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Algorithm;
 
 use App\Algorithm\Interfaces\HyphenationInterface;
@@ -25,15 +27,16 @@ class DatabaseHyphenation implements HyphenationInterface
     {
         $wordValue = $this->getWord($word);
         $wordValue == "false" ? $isWordFound = false : $isWordFound = true;
+
         if($this->settings->isDatabaseValid() && !$isWordFound) {
             $hyphenatedWord = $this->hyphenator->hyphenate($word);
             $validPatterns = $this->hyphenator->getValidPatterns();
             $this->insertWord($word, $hyphenatedWord, $validPatterns);
             return $hyphenatedWord;
-        }elseif($this->settings->isDatabaseValid() && $isWordFound)
-        {
+        }elseif($this->settings->isDatabaseValid() && $isWordFound) {
             return $this->getHyphenatedWordName($word);
         }
+
         return $this->hyphenator->hyphenate($word);
     }
 
@@ -42,8 +45,14 @@ class DatabaseHyphenation implements HyphenationInterface
         return $this->hyphenator->getValidPatterns();
     }
 
-    private function insertWord(string $word, string $hyphenatedWord, array $validPatterns): void
-    {
+    /**
+     * @throws Exception
+     */
+    private function insertWord(
+        string $word,
+        string $hyphenatedWord,
+        array $validPatterns)
+    : void {
         if($this->settings->isDatabaseValid())
         {
             $this->queryBuilder->insert(
