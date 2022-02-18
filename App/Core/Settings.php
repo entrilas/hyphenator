@@ -2,19 +2,23 @@
 
 namespace App\Core;
 
+use App\Constants\Constants;
 use App\Core\Database\Export;
 use App\Services\PatternReaderService;
 
 class Settings
 {
     private array $patterns;
+    private $settings;
 
     public function __construct(
         private PatternReaderService $patternReaderService,
         private Export $exportService,
-        private $settings
+        private Config $config
     )
-    { }
+    {
+        $this->getSettings();
+    }
 
     /**
      * @throws Exceptions\InvalidArgumentException
@@ -51,5 +55,12 @@ class Settings
     {
         $this->importPatterns();
         return $this->patterns;
+    }
+
+    private function getSettings(): void
+    {
+        $this->settings = $this->config->get(
+            Constants::CONFIG_FILE_NAME
+        );
     }
 }

@@ -59,7 +59,6 @@ class Application
     public function __construct()
     {
         $this->config = new Config();
-        $this->settings = $this->config->get(Constants::CONFIG_FILE_NAME);
         $this->cache = new Cache($this->config);
         $this->fileReaderService = new FileReaderService();
         $this->patternReaderService = new PatternReaderService($this->cache);
@@ -78,7 +77,7 @@ class Application
         $this->settings = new Settings(
             $this->patternReaderService,
             $this->exportService,
-            $this->settings
+            $this->config
         );
         $this->hyphenationTrie = new HyphenationTrie($this->settings);
         $this->formDatabaseHyphenation();

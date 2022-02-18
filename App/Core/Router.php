@@ -11,6 +11,7 @@ class Router
     private const METHOD_POST = 'POST';
     private const METHOD_GET = 'GET';
     private const METHOD_DELETE = 'DELETE';
+    private const METHOD_PUT = 'PUT';
 
     public function run()
     {
@@ -27,16 +28,7 @@ class Router
                 $callback = $handler['handler'];
             }
         }
-//        if(is_string($callback)){
-//            $parts = explode('::', $callback);
-//            if(is_array($parts))
-//            {
-//                $className = array_shift($parts);
-//                $handler = new $className;
-//                $method = array_shift($parts);
-//                $callback = [$handler, $method];
-//            }
-//        }
+
         if(!$callback || sizeof($idParsed) > 1){
             header("HTTP/1.0 404 Not Found");
             if(!empty($this->notFoundHandler)){
@@ -56,6 +48,11 @@ class Router
     public function post(string $path, $handler): void
     {
         $this->addHandler(self::METHOD_POST, $path, $handler);
+    }
+
+    public function update(string $path, $handler): void
+    {
+        $this->addHandler(self::METHOD_PUT, $path, $handler);
     }
 
     public function delete(string $path, $handler): void

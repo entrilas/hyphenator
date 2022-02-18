@@ -30,4 +30,34 @@ class Pattern extends Model
             $id
         );
     }
+
+
+    public function submitPattern(array $params)
+    {
+        return $this->queryBuilder->insert(
+            $this->table,
+            [$params['pattern']],
+            ['pattern',]
+        );
+    }
+
+    public function deletePattern(array $params): bool|string
+    {
+        return $this->queryBuilder->delete(
+            $this->table,
+            $params[0],
+            'id'
+        );
+    }
+
+    public function updatePattern(array $params): bool|string
+    {
+        return $this->queryBuilder->update(
+            $this->table,
+            ['pattern'],
+            [$params['pattern'], $params[0][0]],
+            'id'
+        );
+
+    }
 }

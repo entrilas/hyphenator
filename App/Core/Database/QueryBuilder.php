@@ -57,7 +57,7 @@ class QueryBuilder
     {
         $this->fields = $this->setFields($columns);
         $this->stmt = $this->db->prepare("UPDATE $table SET $this->fields WHERE $param = ?");
-        $this->bindParameters(array($data));
+        $this->bindParameters($data);
         return $this->stmt->execute();
     }
 
@@ -65,7 +65,8 @@ class QueryBuilder
     {
         $this->stmt = $this->db->prepare("DELETE FROM $table WHERE $param = :id");
         $this->stmt->bindValue('id', $id, PDO::PARAM_INT);
-        return $this->stmt->execute();
+        $response = $this->stmt->execute();
+        return $response == 1;
     }
 
     public function truncate(string $table): string|bool
@@ -82,7 +83,7 @@ class QueryBuilder
 
     private function setFields(array $columns): string
     {
-        $this->fields = implode(' = `?`, ', array_values($columns));
+        $this->fields = implode(' = ?, ', array_values($columns));
         return $this->fields.' = ?';
     }
 

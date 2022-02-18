@@ -49,4 +49,15 @@ class Word extends Model
             'id'
         );
     }
+
+    public function updateWord(array $params): bool|string
+    {
+        return $this->queryBuilder->update(
+            $this->table,
+            ['word', 'hyphenated_word'],
+            [$params['word'], $params['hyphenated_word'], $params[0][0]],
+            'id'
+        );
+
+    }
 }
