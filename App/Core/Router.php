@@ -35,8 +35,10 @@ class Router
                 $callback = $this->notFoundHandler;
             }
         }
+
+        $this->getInputData();
         call_user_func_array($callback, [
-            array_merge($_GET, $_POST, $idParsed)
+            array_merge($_GET, $this->getInputData(), $idParsed)
         ]);
     }
 
@@ -63,6 +65,13 @@ class Router
     public function addNotFoundHandler($handler): void
     {
         $this->notFoundHandler = $handler;
+    }
+
+    private function getInputData(): array
+    {
+        $inputData = file_get_contents("php://input");
+        $inputDecoded = json_decode($inputData);
+        return (array)$inputDecoded;
     }
 
     private function addHandler(string $method, string $path, $handler): void

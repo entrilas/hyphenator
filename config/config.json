@@ -2,5 +2,5 @@
   "CACHE_OUTPUT" : "/var/cache",
   "PATTERNS_NAME" : "tex-hyphenation-patterns.txt",
   "RESOURCES_PATH" : "/resources",
-  "USE_DATABASE" : "false"
+  "USE_DATABASE" : "true"
 }

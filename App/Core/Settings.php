@@ -23,7 +23,7 @@ class Settings
     /**
      * @throws Exceptions\InvalidArgumentException
      */
-    private function importPatterns()
+    private function exportPatterns()
     {
         if($this->isDatabaseValid()) {
             $this->patterns = $this->exportService->exportPatterns();
@@ -53,7 +53,7 @@ class Settings
      */
     public function getPatterns(): array
     {
-        $this->importPatterns();
+        $this->exportPatterns();
         return $this->patterns;
     }
 
