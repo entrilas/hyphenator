@@ -17,6 +17,7 @@ use App\Core\Database\Export;
 use App\Core\Database\Migration;
 use App\Core\Database\Import;
 use App\Core\Database\QueryBuilder;
+use App\Core\DI\Container;
 use App\Core\Log\Logger;
 use App\Core\Settings;
 use App\Core\Timer;
@@ -35,61 +36,13 @@ class Application
      */
     public function __construct()
     {
-        $config = new Config();
-        $cache = new Cache($config);
-        $fileReaderService = new FileReaderService();
-        $patternReaderService = new PatternReaderService($cache);
-        $fileExportService = new FileExportService();
-        $timer = new Timer();
-        $logger = new Logger($config);
-        $database = new Database($config);
-        $migration = new Migration($logger, $database);
-        $queryBuilder = new QueryBuilder($database);
-        $importService = new Import(
-            $queryBuilder,
-            $cache,
-            $fileReaderService
-        );
-        $exportService = new Export($queryBuilder, $cache);
-        $validator = new Validator();
-        $settings = new Settings(
-            $patternReaderService,
-            $exportService,
-            $config,
-            $logger
-        );
-        $patterns = $settings->getPatterns();
-        $hyphenationTrie = new HyphenationTrie($patterns);
-        $word = new Word($queryBuilder);
-        $pattern = new Pattern($queryBuilder);
-        $validPattern = new ValidPattern($queryBuilder);
-        $databaseHyphenation = new Hyphenation(
-            $hyphenationTrie,
-            $word,
-            $pattern,
-            $validPattern,
-            $settings,
-            $database,
-            $logger
-        );
-        $fileHyphenation = new FileHyphenation(
-            $databaseHyphenation,
-            $fileReaderService
-        );
-        $sentenceHyphenation = new SentenceHyphenation($databaseHyphenation);
-        $console = new Console(
-            $config,
-            $databaseHyphenation,
-            $fileHyphenation,
-            $sentenceHyphenation,
-            $fileExportService,
-            $importService,
-            $exportService,
-            $logger,
-            $timer,
-            $migration,
-            $validator
-        );
-        $console->runConsole();
+        if(PHP_SAPI === "cli")
+        {
+            $container = new Container;
+            $con = $container->get('App\\Console\\Console');
+            $con->runConsole();
+        }else{
+            require_once __DIR__.'/../App/Routes.php';
+        }
     }
 }

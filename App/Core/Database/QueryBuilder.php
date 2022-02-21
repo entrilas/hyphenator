@@ -9,15 +9,18 @@ use PDO;
 class QueryBuilder
 {
     private $db = null;
+    private string $query;
+    private string $table;
     private $stmt;
-    private $columnNames;
-    private $holders;
-    private $fields;
+    private string $columnNames;
+    private array $holders;
+    private string $fields;
 
     public function __construct(
         private Database $database
     ) {
         $this->receiveHandle();
+        $this->query = '';
     }
 
     private function receiveHandle()
@@ -25,48 +28,98 @@ class QueryBuilder
         $this->db = $this->database->getConnector();
     }
 
-    public function insert(string $table, array $data, array $columns): void
+    public function table(string $table): QueryBuilder
     {
-        $this->holders = $this->setHolders($data);
-        $this->columnNames = $this->setColumns($columns);
-        $this->stmt = $this->db->prepare("INSERT INTO $table ($this->columnNames) VALUES ($this->holders)");
-        $this->bindParameters($data);
-        $this->stmt->execute();
+        $this->table = $table;
+        return $this;
     }
 
-    public function select($table, array $columns, string $field, string $param): string|bool
+    public function insert(): QueryBuilder
+    {
+        $this->resetQuery();
+        $this->query .= "INSERT INTO $this->table";
+        return $this;
+    }
+
+    public function select(array $columns): QueryBuilder
     {
         $this->columnNames = $this->setColumns($columns);
-        $this->stmt = $this->db->prepare("SELECT $this->columnNames FROM $table WHERE $field = ?");
-        $this->bindParameters(array($param));
+        $this->resetQuery();
+        $this->query .= "SELECT $this->columnNames";
+        return $this;
+    }
+
+    public function update(): QueryBuilder
+    {
+        $this->resetQuery();
+        $this->query .= "UPDATE $this->table";
+        return $this;
+    }
+
+    public function delete(): QueryBuilder
+    {
+        $this->resetQuery();
+        $this->query .= "DELETE";
+        return $this;
+    }
+
+    public function columns(array $columns): QueryBuilder
+    {
+        $this->columnNames = $this->setColumns($columns);
+        $this->query .= " ($this->columnNames)";
+        return $this;
+    }
+
+    public function values(array $data): QueryBuilder
+    {
+        $this->holders = $this->setHolders($data);
+        $this->query .= " VALUES ($this->holders)";
+        return $this;
+    }
+
+    public function from(): QueryBuilder
+    {
+        $this->query .= " FROM $this->table";
+        return $this;
+    }
+
+    public function where(string $field): QueryBuilder
+    {
+        $this->query .= " WHERE $field = ?";
+        return $this;
+    }
+
+    public function set(array $columns): QueryBuilder
+    {
+        $this->fields = $this->setFields($columns);
+        $this->query .= " SET $this->fields";
+        return $this;
+    }
+
+    public function resetQuery(): QueryBuilder
+    {
+        $this->query = '';
+        return $this;
+    }
+
+    public function execute($data = null): QueryBuilder
+    {
+        $this->stmt = $this->db->prepare($this->query);
+        $this->bindParameters($data);
         $this->stmt->execute();
+        return $this;
+    }
+
+    public function getJson(): bool|string
+    {
         $result = $this->stmt->fetch();
         return json_encode($result, JSON_PRETTY_PRINT);
     }
 
-    public function selectAll(string $table, array $columns): string|bool
+    public function getAllJson(): bool|string
     {
-        $this->columnNames = $this->setColumns($columns);
-        $this->stmt = $this->db->prepare("SELECT $this->columnNames FROM $table");
-        $this->stmt->execute();
         $result = $this->stmt->fetchAll();
         return json_encode($result, JSON_PRETTY_PRINT);
-    }
-
-    public function update(string $table, array $columns, array $data, string $param): string|bool
-    {
-        $this->fields = $this->setFields($columns);
-        $this->stmt = $this->db->prepare("UPDATE $table SET $this->fields WHERE $param = ?");
-        $this->bindParameters($data);
-        return $this->stmt->execute();
-    }
-
-    public function delete(string $table, string $id, string $param): string|bool
-    {
-        $this->stmt = $this->db->prepare("DELETE FROM $table WHERE $param = :id");
-        $this->stmt->bindValue('id', $id, PDO::PARAM_INT);
-        $response = $this->stmt->execute();
-        return $response == 1;
     }
 
     public function truncate(string $table): string|bool
@@ -93,11 +146,13 @@ class QueryBuilder
         return implode(', ',array_values($this->holders));
     }
 
-    private function bindParameters(array $params): void
+    private function bindParameters(array $params = null): void
     {
-        for($i=0;$i<sizeof($params);$i++)
-        {
-            $this->stmt->bindValue($i+1, $params[$i]);
+        if($params != null){
+            for($i=0;$i<sizeof($params);$i++)
+            {
+                $this->stmt->bindValue($i+1, $params[$i]);
+            }
         }
     }
 }

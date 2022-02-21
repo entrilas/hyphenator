@@ -15,11 +15,13 @@ class ValidPattern extends Model
 
     public function submitValidPattern(array $params)
     {
-        return $this->queryBuilder->insert(
-            $this->table,
-            [$params['fk_word_id'], $params['fk_pattern_id']],
-            ['fk_word_id', 'fk_pattern_id']
-        );
+        return $this->queryBuilder
+            ->table($this->table)
+            ->insert()
+            ->columns(['fk_word_id', 'fk_pattern_id'])
+            ->values([$params['fk_word_id'], $params['fk_pattern_id']])
+            ->execute([$params['fk_word_id'], $params['fk_pattern_id']])
+            ->getJson();
     }
 }
 

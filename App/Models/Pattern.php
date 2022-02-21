@@ -15,60 +15,66 @@ class Pattern extends Model
 
     public function getPatterns(): bool|string
     {
-        return $this->queryBuilder->selectAll(
-                $this->table,
-                ['id', 'pattern']
-        );
+        return $this->queryBuilder
+            ->table($this->table)
+            ->select(['id', 'pattern'])
+            ->from()
+            ->execute()
+            ->getAllJson();
     }
 
     public function getPattern($id): bool|string
     {
-        return $this->queryBuilder->select(
-            $this->table,
-            ['id', 'pattern'],
-            'id',
-            $id
-        );
+        return $this->queryBuilder
+            ->table($this->table)
+            ->select(['id', 'pattern'])
+            ->from()
+            ->where('id')
+            ->execute([$id])
+            ->getJson();
     }
 
     public function getPatternByName(string $pattern): bool|string
     {
-        return $this->queryBuilder->select(
-            $this->table,
-            ['id', 'pattern'],
-            'pattern',
-            $pattern
-        );
+        return $this->queryBuilder
+            ->table($this->table)
+            ->select(['id', 'pattern'])
+            ->from()
+            ->where('pattern')
+            ->execute([$pattern])
+            ->getJson();
     }
-
-
 
     public function submitPattern(array $params)
     {
-        return $this->queryBuilder->insert(
-            $this->table,
-            [$params['pattern']],
-            ['pattern',]
-        );
+        return $this->queryBuilder
+            ->table($this->table)
+            ->insert()
+            ->columns(['pattern'])
+            ->values([$params['pattern']])
+            ->execute([$params['pattern']])
+            ->getJson();
     }
 
     public function deletePattern(array $params): bool|string
     {
-        return $this->queryBuilder->delete(
-            $this->table,
-            $params[0],
-            'id'
-        );
+        return $this->queryBuilder
+            ->table($this->table)
+            ->delete()
+            ->from()
+            ->where('id')
+            ->execute([$params[0]])
+            ->getJson();
     }
 
     public function updatePattern(array $params): bool|string
     {
-        return $this->queryBuilder->update(
-            $this->table,
-            ['pattern'],
-            [$params['pattern'], $params[0][0]],
-            'id'
-        );
-
+        return $this->queryBuilder
+            ->table($this->table)
+            ->update()
+            ->set(['pattern'])
+            ->where('id')
+            ->execute([$params['pattern'], $params[0][0]])
+            ->getJson();
     }
 }

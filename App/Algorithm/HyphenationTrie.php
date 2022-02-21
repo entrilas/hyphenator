@@ -4,6 +4,7 @@ namespace App\Algorithm;
 
 use App\Algorithm\Interfaces\HyphenationInterface;
 use App\Core\Exceptions\InvalidArgumentException;
+use App\Core\Settings;
 use App\Traits\FormatString;
 
 class HyphenationTrie implements HyphenationInterface
@@ -12,9 +13,14 @@ class HyphenationTrie implements HyphenationInterface
 
     private mixed $patternTrie;
     private array $validPatterns;
+    private array $patterns;
 
-    public function __construct(private array $patterns)
+    /**
+     * @throws InvalidArgumentException
+     */
+    public function __construct(private Settings $settings)
     {
+        $this->patterns = $settings->getPatterns();
         $this->formPatternTrie();
     }
 

@@ -2,7 +2,7 @@
 
 namespace App\Controllers\API;
 
-use App\Algorithm\Interfaces\HyphenationInterface;
+use App\Algorithm\Hyphenation;
 use App\Models\Word;
 use PDOException;
 
@@ -10,7 +10,7 @@ class WordController
 {
     public function __construct(
         private Word $word,
-        private HyphenationInterface $hyphenation
+        private Hyphenation $hyphenation
     ) {
     }
 

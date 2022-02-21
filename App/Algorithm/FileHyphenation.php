@@ -11,7 +11,7 @@ use App\Services\FileReaderService;
 class FileHyphenation
 {
     public function __construct(
-        private HyphenationInterface $hyphenator,
+        private Hyphenation $hyphenator,
         private FileReaderService $fileReader
     ) {
     }

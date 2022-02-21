@@ -7,7 +7,6 @@ namespace App\Core;
 use App\Constants\Constants;
 use App\Core\Exceptions\FileNotFoundException;
 use App\Core\Exceptions\UnsupportedFormatException;
-use App\Core\Parser\JSONParser;
 
 class Config
 {

@@ -6,7 +6,6 @@ use App\Constants\Constants;
 use App\Core\Database\Export;
 use App\Core\Log\Logger;
 use App\Services\PatternReaderService;
-use PDOException;
 
 class Settings
 {
@@ -35,14 +34,14 @@ class Settings
         if($this->isDatabaseValid()) {
             try{
                 $this->patterns = $this->exportService->exportPatterns();
-            }catch(PDOException $e)
+            }catch(\Throwable $e)
             {
                 $this->patterns = $this->patternReaderService->readFile(
                     $this->getPatternPath()
                 );
                 $this->logger->warning("Tables in database does not exist, patterns are taken from
                 file. You should migrate tables/insert patterns into database.");
-                throw new PDOException($e->getCode());
+                //throw new \PDOException($e->getCode());
             }
         }else{
             $this->patterns = $this->patternReaderService->readFile(

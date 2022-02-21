@@ -6,6 +6,7 @@ namespace App\Core\Database;
 
 use App\Core\Cache\Cache;
 use App\Core\Exceptions\InvalidArgumentException;
+use App\Models\Pattern;
 use App\Services\FileReaderService;
 use App\Traits\FormatString;
 
@@ -16,7 +17,8 @@ class Import
     public function __construct(
         private QueryBuilder $queryBuilder,
         private Cache $cache,
-        private FileReaderService $fileReaderService
+        private FileReaderService $fileReaderService,
+        private Pattern $pattern
     ) {
     }
 
@@ -31,7 +33,7 @@ class Import
         foreach($patterns as $pattern)
         {
             $clearedPattern = $this->removeSpaces($pattern);
-            $this->queryBuilder->insert("patterns", [$clearedPattern], ['pattern']);
+            $this->pattern->submitPattern(['pattern' => $clearedPattern]);
         }
         $this->setCache($patterns);
     }

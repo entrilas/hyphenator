@@ -17,7 +17,7 @@ use PDOException;
 class Hyphenation implements HyphenationInterface
 {
     public function __construct(
-        private HyphenationInterface $hyphenator,
+        private HyphenationTrie $hyphenator,
         private Word $word,
         private Pattern $pattern,
         private ValidPattern $validPattern,

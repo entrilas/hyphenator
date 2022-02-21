@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Algorithm;
 
-use App\Algorithm\Interfaces\HyphenationInterface;
 use App\Traits\FormatString;
 
 class SentenceHyphenation
@@ -12,10 +11,13 @@ class SentenceHyphenation
     use FormatString;
 
     public function __construct(
-        private HyphenationInterface $hyphenator
+        private Hyphenation $hyphenator
     ) {
     }
 
+    /**
+     * @throws \Exception
+     */
     public function hyphenateSentence(string $sentence): string
     {
         $wordsArray = $this->splitSentenceIntoWords($sentence);

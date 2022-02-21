@@ -16,58 +16,65 @@ class Word extends Model
 
     public function getWords(): bool|string
     {
-        return $this->queryBuilder->selectAll(
-            $this->table,
-            ['id', 'word', 'hyphenated_word']
-        );
+        return $this->queryBuilder
+            ->table($this->table)
+            ->select(['id', 'word', 'hyphenated_word'])
+            ->from()
+            ->execute()
+            ->getAllJson();
     }
 
     public function getWord($id): bool|string
     {
-        return $this->queryBuilder->select(
-            $this->table,
-            ['id', 'word', 'hyphenated_word'],
-            'id',
-            $id
-        );
+        return $this->queryBuilder
+            ->table($this->table)
+            ->select(['id', 'word', 'hyphenated_word'])
+            ->from()
+            ->where('id')
+            ->execute([$id])
+            ->getJson();
     }
 
     public function getWordByName(string $word): bool|string
     {
-        return $this->queryBuilder->select(
-            $this->table,
-            ['id', 'word', 'hyphenated_word'],
-            'word',
-            $word
-        );
+        return $this->queryBuilder
+            ->table($this->table)
+            ->select(['id', 'word', 'hyphenated_word'])
+            ->from()
+            ->where('word')
+            ->execute([$word])
+            ->getJson();
     }
 
     public function submitWord(array $params)
     {
-        return $this->queryBuilder->insert(
-            $this->table,
-            [$params['word'], $params['hyphenated_word']],
-            ['word', 'hyphenated_word']
-        );
+        return $this->queryBuilder
+            ->table($this->table)
+            ->insert()
+            ->columns(['word', 'hyphenated_word'])
+            ->values([$params['word'], $params['hyphenated_word']])
+            ->execute([$params['word'], $params['hyphenated_word']]);
     }
 
     public function deleteWord($id): bool|string
     {
-        return $this->queryBuilder->delete(
-            $this->table,
-            $id,
-            'id'
-        );
+        return $this->queryBuilder
+            ->table($this->table)
+            ->delete()
+            ->from()
+            ->where('id')
+            ->execute([$id])
+            ->getJson();
     }
 
     public function updateWord(array $params): bool|string
     {
-        return $this->queryBuilder->update(
-            $this->table,
-            ['word', 'hyphenated_word'],
-            [$params['word'], $params['hyphenated_word'], $params[0][0]],
-            'id'
-        );
-
+        return $this->queryBuilder
+            ->table($this->table)
+            ->update()
+            ->set(['word', 'hyphenated_word'])
+            ->where('id')
+            ->execute([$params['word'], $params['hyphenated_word'], $params[0][0]])
+            ->getJson();
     }
 }
