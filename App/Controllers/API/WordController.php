@@ -4,6 +4,10 @@ namespace App\Controllers\API;
 
 use App\Algorithm\Hyphenation;
 use App\Models\Word;
+use App\Requests\DeleteWordRequest;
+use App\Requests\ShowWordRequest;
+use App\Requests\StoreWordRequest;
+use App\Requests\UpdateWordRequest;
 use PDOException;
 
 class WordController
@@ -22,7 +26,11 @@ class WordController
     public function show($id): bool|string
     {
         $response = $this->word->getWord($id);
-        $this->validateShow($response);
+        $response == 'false' ? $response = false : null;
+        if(!$response){
+            header('HTTP/1.1 404 Not Found', true, 404);
+            exit();
+        }
         return $response;
     }
 
@@ -31,9 +39,9 @@ class WordController
         return $this->word->getWordByName($name);
     }
 
-    public function submit(array $params = [])
+    public function submit(StoreWordRequest $request)
     {
-        $this->validateSubmit($params);
+        $params = $request->getParams();
         if($this->getIfExists($params['word']) != null){
             return $this->getIfExists($params['word']);
         }
@@ -52,16 +60,16 @@ class WordController
         return null;
     }
 
-    public function delete($id): bool|string
+    public function delete(DeleteWordRequest $request): bool|string
     {
-        $this->validateDelete($id);
+        $id = $request->getId();
         return $this->word->deleteWord($id);
     }
 
-    public function update(array $params = []): bool|string|null
+    public function update(UpdateWordRequest $request): bool|string|null
     {
+        $params = $request->getParams();
         $word = $this->show($params[0][0]);
-        $this->validateUpdate($params);
         try{
             return $this->word->updateWord($params);
         }catch(PDOException $e)
@@ -70,42 +78,5 @@ class WordController
             echo sprintf("Word [ %s ] already exists in database.",$params['word']);
         }
         return null;
-    }
-
-    private function validateSubmit(array $params)
-    {
-        if(is_null($params['word']) || !ctype_alpha($params['word'])){
-            header('HTTP/1.1 422 Unprocessable Entity', true, 422);
-            exit();
-        }
-    }
-
-    private function validateDelete($id)
-    {
-        if(!is_numeric($id)){
-            header('HTTP/1.1 422 Unprocessable Entity', true, 422);
-            exit();
-        }elseif(!$this->show($id)){
-            header('HTTP/1.1 404 Not Found', true, 404);
-            exit();
-        }
-    }
-
-    private function validateShow(string $response)
-    {
-        $response == 'false' ? $response = false : null;
-        if(!$response){
-            header('HTTP/1.1 404 Not Found', true, 404);
-            exit();
-        }
-    }
-
-    private function validateUpdate(array $params = [])
-    {
-         if(is_null($params['word']) &&
-            is_null($params['hyphenated_word'])){
-            header('HTTP/1.1 422 Unprocessable Entity', true, 422);
-            exit();
-        }
     }
 }

@@ -56,14 +56,14 @@ class Pattern extends Model
             ->getJson();
     }
 
-    public function deletePattern(array $params): bool|string
+    public function deletePattern($id): bool|string
     {
         return $this->queryBuilder
             ->table($this->table)
             ->delete()
             ->from()
             ->where('id')
-            ->execute([$params[0]])
+            ->execute([$id])
             ->getJson();
     }
 
