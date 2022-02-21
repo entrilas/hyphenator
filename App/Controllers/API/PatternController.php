@@ -39,8 +39,10 @@ class PatternController
     public function submit(PatternRequest $request)
     {
         $params = $request->getParams();
-        if($this->getIfExists($params['pattern']) != null)
+        var_dump($params);
+        if($this->getIfExists($params['pattern']) != null){
             return $this->getIfExists($params['pattern']);
+        }
         header('HTTP/1.1 201 OK', true, 201);
         return $this->pattern->submitPattern($params);
     }

@@ -4,7 +4,7 @@ namespace App\Requests;
 
 class PatternRequest
 {
-    public function __construct(array $params)
+    public function __construct(private array $params)
     {
         $this->validateNullableData($params);
     }

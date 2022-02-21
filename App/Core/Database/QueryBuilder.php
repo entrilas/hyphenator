@@ -9,12 +9,12 @@ use PDO;
 class QueryBuilder
 {
     private $db = null;
-    private string $query;
-    private string $table;
+    private $query;
+    private $table;
     private $stmt;
-    private string $columnNames;
-    private array $holders;
-    private string $fields;
+    private $columnNames;
+    private $holders;
+    private $fields;
 
     public function __construct(
         private Database $database
