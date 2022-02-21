@@ -32,6 +32,16 @@ class Word extends Model
         );
     }
 
+    public function getWordByName(string $word): bool|string
+    {
+        return $this->queryBuilder->select(
+            $this->table,
+            ['id', 'word', 'hyphenated_word'],
+            'word',
+            $word
+        );
+    }
+
     public function submitWord(array $params)
     {
         return $this->queryBuilder->insert(
@@ -41,11 +51,11 @@ class Word extends Model
         );
     }
 
-    public function deleteWord(array $params): bool|string
+    public function deleteWord($id): bool|string
     {
         return $this->queryBuilder->delete(
             $this->table,
-            $params[0],
+            $id,
             'id'
         );
     }

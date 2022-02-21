@@ -2,15 +2,15 @@
 
 namespace App\Controllers\API;
 
-use App\Algorithm\HyphenationTrie;
-use App\Core\Exceptions\InvalidArgumentException;
+use App\Algorithm\Interfaces\HyphenationInterface;
 use App\Models\Word;
+use PDOException;
 
 class WordController
 {
     public function __construct(
         private Word $word,
-        private HyphenationTrie $hyphenationTrie
+        private HyphenationInterface $hyphenation
     ) {
     }
 
@@ -19,35 +19,57 @@ class WordController
         return $this->word->getWords();
     }
 
-    public function show(array $params = []): bool|string
+    public function show($id): bool|string
     {
-        $response = $this->word->getWord($params[0]);
+        $response = $this->word->getWord($id);
         $this->validateShow($response);
         return $response;
     }
 
-    /**
-     * @throws InvalidArgumentException
-     */
+    public function showByName(string $name): bool|string
+    {
+        return $this->word->getWordByName($name);
+    }
+
     public function submit(array $params = [])
     {
         $this->validateSubmit($params);
-        $hyphenatedWord = $this->hyphenationTrie->hyphenate($params['word']);
+        if($this->getIfExists($params['word']) != null){
+            return $this->getIfExists($params['word']);
+        }
+        $hyphenatedWord = $this->hyphenation->hyphenate($params['word']);
         $params['hyphenated_word'] = $hyphenatedWord;
+        header('HTTP/1.1 201 OK', true, 201);
         return $this->word->submitWord($params);
     }
 
-    public function delete(array $params = []): bool|string
+    private function getIfExists(string $name): string|null
     {
-        $this->validateDelete($params[0]);
-        return $this->word->deleteWord($params[0]);
+        $existingWord = json_decode($this->showByName($name),true);
+        if($existingWord !== false){
+            return json_encode($existingWord, JSON_PRETTY_PRINT);
+        }
+        return null;
     }
 
-    public function update(array $params = []): bool|string
+    public function delete($id): bool|string
     {
-        $word = $this->show($params[0]);
+        $this->validateDelete($id);
+        return $this->word->deleteWord($id);
+    }
+
+    public function update(array $params = []): bool|string|null
+    {
+        $word = $this->show($params[0][0]);
         $this->validateUpdate($params);
-        return $this->word->updateWord($params);
+        try{
+            return $this->word->updateWord($params);
+        }catch(PDOException $e)
+        {
+            header('HTTP/1.1 409 Conflict', true, 409);
+            echo sprintf("Word [ %s ] already exists in database.",$params['word']);
+        }
+        return null;
     }
 
     private function validateSubmit(array $params)
@@ -58,12 +80,12 @@ class WordController
         }
     }
 
-    private function validateDelete(array $params)
+    private function validateDelete($id)
     {
-        if(!is_numeric($params[0])){
+        if(!is_numeric($id)){
             header('HTTP/1.1 422 Unprocessable Entity', true, 422);
             exit();
-        }elseif(!$this->show($params)){
+        }elseif(!$this->show($id)){
             header('HTTP/1.1 404 Not Found', true, 404);
             exit();
         }
@@ -78,7 +100,7 @@ class WordController
         }
     }
 
-    private function validateUpdate(array $params)
+    private function validateUpdate(array $params = [])
     {
          if(is_null($params['word']) &&
             is_null($params['hyphenated_word'])){

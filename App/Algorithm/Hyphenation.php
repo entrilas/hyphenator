@@ -6,38 +6,49 @@ namespace App\Algorithm;
 
 use App\Algorithm\Interfaces\HyphenationInterface;
 use App\Core\Database\Database;
-use App\Core\Database\QueryBuilder;
 use App\Core\Log\Logger;
 use App\Core\Settings;
+use App\Models\Pattern;
+use App\Models\ValidPattern;
+use App\Models\Word;
 use Exception;
 use PDOException;
 
-class DatabaseHyphenation implements HyphenationInterface
+class Hyphenation implements HyphenationInterface
 {
     public function __construct(
         private HyphenationInterface $hyphenator,
-        private QueryBuilder $queryBuilder,
+        private Word $word,
+        private Pattern $pattern,
+        private ValidPattern $validPattern,
         private Settings $settings,
         private Database $database,
         private Logger $logger
     ) {
     }
 
+    /**
+     * @throws Exception
+     */
     public function hyphenate(string $word): string
     {
-        $wordValue = $this->getWord($word);
-        $wordValue == "false" ? $isWordFound = false : $isWordFound = true;
-
-        if($this->settings->isDatabaseValid() && !$isWordFound) {
+        if($this->settings->isDatabaseValid()) {
+            if($this->checkIfWordExists($word)){
+                return $this->getHyphenatedWordName($word);
+            }
             $hyphenatedWord = $this->hyphenator->hyphenate($word);
             $validPatterns = $this->hyphenator->getValidPatterns();
             $this->insertWord($word, $hyphenatedWord, $validPatterns);
             return $hyphenatedWord;
-        }elseif($this->settings->isDatabaseValid() && $isWordFound) {
-            return $this->getHyphenatedWordName($word);
         }
-
         return $this->hyphenator->hyphenate($word);
+    }
+
+    private function checkIfWordExists(string $word): bool
+    {
+        $wordValue = $this->word->getWordByName($word);
+        $wordValue == "false" ? $isWordFound = false : $isWordFound = true;
+        return $isWordFound;
     }
 
     public function getValidPatterns(): array
@@ -55,10 +66,9 @@ class DatabaseHyphenation implements HyphenationInterface
     : void {
         if($this->settings->isDatabaseValid())
         {
-            $this->queryBuilder->insert(
-                'words',
-                [$word, $hyphenatedWord],
-                ['word', 'hyphenated_word']
+            $this->word->submitWord(
+                ['word' => $word,
+                'hyphenated_word' => $hyphenatedWord]
             );
             $this->insertValidPatterns($validPatterns, $word);
         }
@@ -69,18 +79,17 @@ class DatabaseHyphenation implements HyphenationInterface
      */
     private function insertValidPatterns(array $validPatterns, string $word): void
     {
-        $wordID = $this->getDataID($this->getWord($word));
+        $wordID = $this->getDataID($this->word->getWordByName($word));
         $this->logger->info(sprintf('Word to hyphenate: %s', $word));
         foreach($validPatterns as $pattern)
         {
             $this->logger->info(sprintf('Detected pattern : %s', $pattern));
             try{
                 $this->database->getConnector()->beginTransaction();
-                $patternID = $this->getDataID($this->getPattern($pattern));
-                $this->queryBuilder->insert(
-                    'valid_patterns',
-                    [$wordID, $patternID],
-                    ['fk_word_id', 'fk_pattern_id']
+                $patternID = $this->getDataID($this->pattern->getPatternByName($pattern));
+                $this->validPattern->submitValidPattern(
+                    ['fk_word_id' => $wordID,
+                     'fk_pattern_id' => $patternID]
                 );
                 $this->database->getConnector()->commit();
             }catch(PDOException $e)
@@ -90,7 +99,7 @@ class DatabaseHyphenation implements HyphenationInterface
         }
     }
 
-    private function getDataID($data): string
+    private function getDataID($data): int
     {
         $decodedData = json_decode($data, true);
         return $decodedData['id'];
@@ -98,29 +107,8 @@ class DatabaseHyphenation implements HyphenationInterface
 
     private function getHyphenatedWordName(string $word): string
     {
-        $wordData = $this->getWord($word);
+        $wordData = $this->word->getWordByName($word);
         $decodedData = json_decode($wordData, true);
         return $decodedData['hyphenated_word'];
     }
-
-    private function getWord(string $word): bool|string
-    {
-        return $this->queryBuilder->select(
-            'words',
-            ['id', 'hyphenated_word'],
-            'word',
-            $word
-        );
-    }
-
-    private function getPattern(string $pattern): bool|string
-    {
-        return $this->queryBuilder->select(
-            'patterns',
-            ['id'],
-            'pattern',
-            $pattern
-        );
-    }
-
 }

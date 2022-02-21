@@ -4,11 +4,6 @@ declare(strict_types=1);
 
 namespace App\Console;
 
-use App\Console\Commands\FileCommand;
-use App\Console\Commands\MigrationCommand;
-use App\Console\Commands\PatternCommand;
-use App\Console\Commands\SentenceCommand;
-use App\Console\Commands\WordCommand;
 use App\Constants\Constants;
 use App\Core\Exceptions\InvalidArgumentException;
 
@@ -26,23 +21,6 @@ class Validator
     /**
      * @throws InvalidArgumentException
      */
-    public function validateCommand(): void
-    {
-        if ($this->getFlag() === FileCommand::getCommand() ||
-            $this->getFlag() === SentenceCommand::getCommand() ||
-            $this->getFlag() === WordCommand::getCommand() ||
-            $this->getFlag() === MigrationCommand::getCommand() ||
-            $this->getFlag() === PatternCommand::getCommand()
-        ) {
-        }else{
-            throw new InvalidArgumentException("Command does not exist 
-            (php index.php [flag] '[content]')");
-        }
-    }
-
-    /**
-     * @throws InvalidArgumentException
-     */
     public function validateData(): void
     {
         if(($this->getData() === null || $this->getData() === '')
@@ -55,7 +33,7 @@ class Validator
      */
     public function validateArguments(): void
     {
-        if($this->argc > 3)
+        if($this->argc > 3 || $this->argc < 3)
             throw new InvalidArgumentException("Invalid arguments provided 
             (php index.php [flag] '[content]')");
     }

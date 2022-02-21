@@ -4,7 +4,6 @@ namespace App\Algorithm;
 
 use App\Algorithm\Interfaces\HyphenationInterface;
 use App\Core\Exceptions\InvalidArgumentException;
-use App\Core\Settings;
 use App\Traits\FormatString;
 
 class HyphenationTrie implements HyphenationInterface
@@ -12,21 +11,15 @@ class HyphenationTrie implements HyphenationInterface
     use FormatString;
 
     private mixed $patternTrie;
-    private array $patterns;
     private array $validPatterns;
 
-    public function __construct(private Settings $settings)
+    public function __construct(private array $patterns)
     {
-
+        $this->formPatternTrie();
     }
 
-    /**
-     * @throws InvalidArgumentException
-     */
     public function hyphenate(string $word): string
     {
-        $this->patterns = $this->settings->getPatterns();
-        $this->formPatternTrie();
         $this->validPatterns = [];
         $breakpoints = $this->findBreakpoints($word);
         return $this->insertHyphen($word, $breakpoints);

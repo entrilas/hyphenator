@@ -31,6 +31,17 @@ class Pattern extends Model
         );
     }
 
+    public function getPatternByName(string $pattern): bool|string
+    {
+        return $this->queryBuilder->select(
+            $this->table,
+            ['id', 'pattern'],
+            'pattern',
+            $pattern
+        );
+    }
+
+
 
     public function submitPattern(array $params)
     {

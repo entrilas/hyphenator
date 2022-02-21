@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Console;
 
-use App\Algorithm\DatabaseHyphenation;
+use App\Algorithm\Hyphenation;
 use App\Algorithm\FileHyphenation;
 use App\Algorithm\SentenceHyphenation;
 use App\Console\Commands\FileCommand;
@@ -26,7 +26,7 @@ class Console
 {
     public function __construct(
         private Config $config,
-        private DatabaseHyphenation $hyphenation,
+        private Hyphenation $hyphenation,
         private FileHyphenation $fileHyphenation,
         private SentenceHyphenation $sentenceHyphenation,
         private FileExportService $fileExportService,
@@ -46,7 +46,6 @@ class Console
     public function runConsole(): void
     {
         $this->validator->validateArguments();
-        $this->validator->validateCommand();
         $this->validator->validateData();
         $this->runCommand();
     }
@@ -117,7 +116,8 @@ class Console
     {
         return new CommandInvoker(
             new MigrationCommand(
-                $this->migration
+                $this->migration,
+                $this->validator->getData()
             )
         );
     }

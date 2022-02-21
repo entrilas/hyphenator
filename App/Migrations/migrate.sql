@@ -5,14 +5,14 @@ DROP TABLE IF EXISTS `words`;
 CREATE TABLE patterns
 (
     `id` int NOT NULL AUTO_INCREMENT,
-    `pattern` varchar (255),
+    `pattern` varchar (255) UNIQUE,
     PRIMARY KEY(`id`)
 );
 
 CREATE TABLE words
 (
     `id` int NOT NULL AUTO_INCREMENT,
-    `word` varchar (255),
+    `word` varchar (255) UNIQUE,
     `hyphenated_word` varchar (255),
     PRIMARY KEY(`id`)
 );

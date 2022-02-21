@@ -3,6 +3,7 @@
 namespace App\Controllers\API;
 
 use App\Models\Pattern;
+use PDOException;
 
 class PatternController
 {
@@ -24,23 +25,47 @@ class PatternController
         return $response;
     }
 
+    public function showByName(string $name): bool|string
+    {
+        return $this->pattern->getPatternByName($name);
+    }
+
     public function submit(array $params = [])
     {
         $this->validateNullableData($params);
+        if($this->getIfExists($params['pattern']) != null)
+            return $this->getIfExists($params['pattern']);
+        header('HTTP/1.1 201 OK', true, 201);
         return $this->pattern->submitPattern($params);
     }
 
-    public function delete(array $params = []): bool|string
+    private function getIfExists(string $name)
     {
-        $this->validateDelete($params);
-        return $this->pattern->deletePattern($params);
+        $existingPattern = json_decode($this->showByName($name),true);
+        if($existingPattern !== false){
+            return json_encode($existingPattern, JSON_PRETTY_PRINT);
+        }
+        return null;
     }
 
-    public function update(array $params = []): bool|string
+    public function delete($id): bool|string
+    {
+        $this->validateDelete($id);
+        return $this->pattern->deletePattern($id);
+    }
+
+    public function update(array $params = []): bool|string|null
     {
         $pattern = $this->show($params[0]);
         $this->validateNullableData($params);
-        return $this->pattern->updatePattern($params);
+        try{
+            return $this->pattern->updatePattern($params);
+        }catch(PDOException $e)
+        {
+            header('HTTP/1.1 409 Conflict', true, 409);
+            echo sprintf("Pattern [ %s ] already exists in database.",$params['pattern']);
+        }
+        return null;
     }
 
     private function validateShow(string $response)
