@@ -1,0 +1,56 @@
+{
+    "_readme": [
+        "This file locks the dependencies of your project to a known state",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
+        "This file is @generated automatically"
+    ],
+    "content-hash": "bc08e05acfdd6a6462404c92cb3eec11",
+    "packages": [
+        {
+            "name": "entrilas/hyphenation-algorithm",
+            "version": "v1.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/entrilas/hyphenation-algorithm.git",
+                "reference": "d9bf82e8a918e16f50151ce06f2796e291640c92"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/entrilas/hyphenation-algorithm/zipball/d9bf82e8a918e16f50151ce06f2796e291640c92",
+                "reference": "d9bf82e8a918e16f50151ce06f2796e291640c92",
+                "shasum": ""
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Hyphenation\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "entrilas",
+                    "email": "arnasdulinskas@gmail.com"
+                }
+            ],
+            "description": "This is hyphenation algorithm to hyphenate words using TeX algorithm.",
+            "support": {
+                "issues": "https://github.com/entrilas/hyphenation-algorithm/issues",
+                "source": "https://github.com/entrilas/hyphenation-algorithm/tree/v1.3"
+            },
+            "time": "2022-02-22T15:04:00+00:00"
+        }
+    ],
+    "packages-dev": [],
+    "aliases": [],
+    "minimum-stability": "stable",
+    "stability-flags": [],
+    "prefer-stable": false,
+    "prefer-lowest": false,
+    "platform": [],
+    "platform-dev": [],
+    "plugin-api-version": "2.2.0"
+}

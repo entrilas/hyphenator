@@ -6,16 +6,21 @@ namespace App\Algorithm;
 
 use App\Algorithm\Interfaces\HyphenationInterface;
 use App\Core\Database\Database;
+use App\Core\Exceptions\InvalidArgumentException;
 use App\Core\Log\Logger;
 use App\Core\Settings;
 use App\Models\Pattern;
 use App\Models\ValidPattern;
 use App\Models\Word;
 use Exception;
+use Hyphenation\Algorithm\HyphenationTrie;
 use PDOException;
 
 class Hyphenation implements HyphenationInterface
 {
+    /**
+     * @throws InvalidArgumentException
+     */
     public function __construct(
         private HyphenationTrie $hyphenator,
         private Word $word,
@@ -25,6 +30,9 @@ class Hyphenation implements HyphenationInterface
         private Database $database,
         private Logger $logger
     ) {
+        $this->hyphenator->formPatternTrie(
+            $this->settings->getPatterns()
+        );
     }
 
     /**

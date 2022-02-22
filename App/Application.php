@@ -39,8 +39,8 @@ class Application
         if(PHP_SAPI === "cli")
         {
             $container = new Container;
-            $con = $container->get('App\\Console\\Console');
-            $con->runConsole();
+            $console = $container->get('App\\Console\\Console');
+            $console->runConsole();
         }else{
             require_once __DIR__.'/../App/Routes.php';
         }

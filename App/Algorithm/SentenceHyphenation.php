@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Algorithm;
 
 use App\Traits\FormatString;
+use Exception;
 
 class SentenceHyphenation
 {
@@ -16,7 +17,7 @@ class SentenceHyphenation
     }
 
     /**
-     * @throws \Exception
+     * @throws Exception
      */
     public function hyphenateSentence(string $sentence): string
     {
@@ -31,5 +32,4 @@ class SentenceHyphenation
         }
         return $hyphenatedSentence;
     }
-
 }

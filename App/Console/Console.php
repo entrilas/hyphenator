@@ -35,7 +35,8 @@ class Console
         private Logger $logger,
         private Timer $timer,
         private Migration $migration,
-        private Validator $validator
+        private Validator $validator,
+        private InvokerFormer $invokerFormer
     ) {
     }
 
@@ -57,11 +58,11 @@ class Console
     {
         $this->timer->start();
         $invoker = match ($this->validator->getFlag()) {
-            WordCommand::getCommand() => $this->formWordInvoker(),
-            SentenceCommand::getCommand() => $this->formSentenceInvoker(),
-            FileCommand::getCommand() => $this->formFileInvoker(),
-            MigrationCommand::getCommand() => $this->formMigrationInvoker(),
-            PatternCommand::getCommand() => $this->formImportPatternsInvoker(),
+            WordCommand::getCommand() => $this->invokerFormer->formWordInvoker(),
+            SentenceCommand::getCommand() => $this->invokerFormer->formSentenceInvoker(),
+            FileCommand::getCommand() => $this->invokerFormer->formFileInvoker(),
+            MigrationCommand::getCommand() => $this->invokerFormer->formMigrationInvoker(),
+            PatternCommand::getCommand() => $this->invokerFormer->formImportPatternsInvoker(),
             default => throw new InvalidArgumentException(
                 "Command was not found!"
             ),
@@ -71,54 +72,5 @@ class Console
         $executionTime = $this->timer->getTime();
         $this->logger->info(sprintf("Process is finished in %s seconds", $executionTime));
         $this->logger->info("Process has been finished!");
-    }
-    public function formImportPatternsInvoker(): CommandInvoker
-    {
-        return new CommandInvoker(
-            new PatternCommand(
-                $this->importService,
-                $this->validator->getData()
-            )
-        );
-    }
-
-    public function formWordInvoker(): CommandInvoker
-    {
-        return new CommandInvoker(
-            new WordCommand(
-                $this->hyphenation,
-                $this->validator->getData()
-            )
-        );
-    }
-
-    public function formFileInvoker(): CommandInvoker
-    {
-        return new CommandInvoker(
-            new FileCommand(
-                $this->fileHyphenation,
-                $this->validator->getData()
-            )
-        );
-    }
-
-    public function formSentenceInvoker(): CommandInvoker
-    {
-        return new CommandInvoker(
-            new SentenceCommand(
-                $this->sentenceHyphenation,
-                $this->validator->getData()
-            )
-        );
-    }
-
-    public function formMigrationInvoker(): CommandInvoker
-    {
-        return new CommandInvoker(
-            new MigrationCommand(
-                $this->migration,
-                $this->validator->getData()
-            )
-        );
     }
 }
