@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Requests\Pattern;
 
 use App\Core\Response;
@@ -13,7 +15,7 @@ class UpdatePatternRequest
         $this->validateNullableData();
     }
 
-    private function validateNullableData()
+    private function validateNullableData(): void
     {
         if(is_null($this->getPattern())){
             $this->response->response('Unprocessable Entity', 'Data provided is incorrect.');

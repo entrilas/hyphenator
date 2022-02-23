@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Requests\Word;
 
 use App\Core\Response;
@@ -13,7 +15,7 @@ class DeleteWordRequest
         $this->validateDelete();
     }
 
-    private function validateDelete()
+    private function validateDelete(): void
     {
         if(!is_numeric($this->getId())){
             $this->response->response('Unprocessable Entity', 'Data provided is incorrect.');

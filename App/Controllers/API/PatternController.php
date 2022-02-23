@@ -1,8 +1,9 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controllers\API;
 
-use App\Constants\Constants;
 use App\Constants\ResponseCodes;
 use App\Core\Response;
 use App\Models\Pattern;

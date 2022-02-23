@@ -15,7 +15,7 @@ class StoreWordRequest
         $this->validateSubmit();
     }
 
-    private function validateSubmit()
+    private function validateSubmit(): void
     {
         if(is_null($this->getWord()) ||
             !ctype_alpha($this->getWord())

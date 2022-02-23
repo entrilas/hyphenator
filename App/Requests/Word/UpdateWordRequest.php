@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Requests\Word;
 
 use App\Core\Response;
@@ -13,7 +15,7 @@ class UpdateWordRequest
         $this->validateUpdate();
     }
 
-    private function validateUpdate()
+    private function validateUpdate(): void
     {
         if(is_null($this->getWord()) &&
             is_null($this->getHyphenatedWord())){

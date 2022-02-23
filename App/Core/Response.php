@@ -12,7 +12,7 @@ class Response
     public int $statusCode;
     public array $result;
 
-    public function response(string $status, string $message = '', array $data = []): void
+    public function response(string $status, string $message = '', array $data = []): string|null
     {
         $this->formResult($status, $message, $data);
         switch ($this->status) {
@@ -34,7 +34,9 @@ class Response
         }
         $this->setHeader($this->statusCode, $this->status);
         $this->makeMessage();
+        $jsonMessage = json_encode($this->result);
         echo json_encode($this->result);
+        return $jsonMessage;
         exit();
     }
 
@@ -50,9 +52,9 @@ class Response
         $this->message = $message;
         $this->data = $data;
 
-        $this->result = array(
+        $this->result = [
             'status' => $this->status
-        );
+        ];
     }
 
     private function makeMessage(): void
