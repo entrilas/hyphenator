@@ -2,6 +2,8 @@
 
 namespace App\Core;
 
+use App\Constants\ResponseCodes;
+
 class Response
 {
     public string $status;
@@ -14,25 +16,24 @@ class Response
     {
         $this->formResult($status, $message, $data);
         switch ($this->status) {
-            case "Not Found";
-                $this->statusCode = 404;
+            case ResponseCodes::NOT_FOUND_ERROR_NAME;
+                $this->statusCode = ResponseCodes::NOT_FOUND_ERROR_CODE;
                 break;
-            case "Conflict":
-                $this->statusCode = 409;
+            case ResponseCodes::CONFLICT_ERROR_NAME:
+                $this->statusCode = ResponseCodes::CONFLICT_ERROR_CODE;
                 break;
-            case "Unprocessable Entity":
-                $this->statusCode = 422;
+            case ResponseCodes::UNPROCESSABLE_ENTITY_ERROR_NAME:
+                $this->statusCode = ResponseCodes::UNPROCESSABLE_ENTITY_ERROR_CODE;
                 break;
-            case "Ok":
-                $this->statusCode = 200;
+            case ResponseCodes::OK_ERROR_NAME:
+                $this->statusCode = ResponseCodes::OK_ERROR_CODE;
                 break;
-            case "Created":
-                $this->statusCode = 201;
+            case ResponseCodes::CREATED_ERROR_NAME:
+                $this->statusCode = ResponseCodes::CREATED_ERROR_CODE;
                 break;
         }
         $this->setHeader($this->statusCode, $this->status);
         $this->makeMessage();
-
         echo json_encode($this->result);
         exit();
     }

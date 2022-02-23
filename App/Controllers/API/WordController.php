@@ -3,13 +3,13 @@
 namespace App\Controllers\API;
 
 use App\Algorithm\Hyphenation;
+use App\Constants\ResponseCodes;
 use App\Core\Response;
 use App\Models\Word;
-use App\Requests\DeleteWordRequest;
-use App\Requests\ShowWordRequest;
-use App\Requests\StoreWordRequest;
-use App\Requests\UpdateWordRequest;
-use App\Requests\WordRequest;
+use App\Requests\Word\DeleteWordRequest;
+use App\Requests\Word\StoreWordRequest;
+use App\Requests\Word\UpdateWordRequest;
+use App\Requests\Word\WordRequest;
 use Exception;
 use PDOException;
 
@@ -25,7 +25,7 @@ class WordController
     public function showAll(): bool|string
     {
         $words = $this->word->getWords();
-        return $this->response->response('Ok',
+        return $this->response->response(ResponseCodes::OK_ERROR_NAME,
             "Words provided below have been found",
             $words
         );
@@ -35,9 +35,12 @@ class WordController
     {
         $response = $this->word->getWord($request->getId());
         if(!$response){
-            $this->response->response('Not Found', sprintf("Word with id [%s] was not found", $request->getId()));
+            $this->response->response(ResponseCodes::NOT_FOUND_ERROR_NAME,
+                    sprintf("Word with id [%s] was not found",
+                    $request->getId())
+            );
         }
-        return $this->response->response('Ok',
+        return $this->response->response(ResponseCodes::OK_ERROR_NAME,
             sprintf("Word with id [%s] was found", $request->getId()),
             $response
         );
@@ -50,14 +53,14 @@ class WordController
     {
         $params = $request->getParams();
         if($this->word->getWordByName($request->getWord()) !== false){
-            return $this->response->response('Ok',
+            return $this->response->response(ResponseCodes::OK_ERROR_NAME,
                 "Word is already created and found in database.",
                 $this->word->getWordByName($request->getWord()));
         }
         $hyphenatedWord = $this->hyphenation->hyphenate($request->getWord());
         $params['hyphenated_word'] = $hyphenatedWord;
         $this->word->submitWord($params);
-        return $this->response->response('Created',
+        return $this->response->response(ResponseCodes::CREATED_ERROR_NAME,
             "Word has been created.",
             $this->word->getWordByName($request->getWord()));
     }
@@ -66,11 +69,11 @@ class WordController
     {
         $id = $request->getId();
         if(!$this->word->getWord($id)) {
-            return $this->response->response('Not Found',
+            return $this->response->response(ResponseCodes::NOT_FOUND_ERROR_NAME,
                 sprintf("Word with id [%s] has not been found.", $id));
         }
         $this->word->deleteWord($id);
-        return $this->response->response('Ok',
+        return $this->response->response(ResponseCodes::OK_ERROR_NAME,
             sprintf("Word with id [%s] has been deleted.", $id));
     }
 
@@ -79,11 +82,11 @@ class WordController
         $this->checkIfExists($request);
         try{
             $this->word->updateWord($request->getParams());
-            return $this->response->response('Ok',
+            return $this->response->response(ResponseCodes::OK_ERROR_NAME,
                 sprintf("Word with id [%s] has been updated.", $request->getId()));
         }catch(PDOException $e)
         {
-            return $this->response->response('Conflict',
+            return $this->response->response(ResponseCodes::CONFLICT_ERROR_NAME,
                 sprintf("Word with id [%s] is already created.", $request->getId()));
         }
         return null;
@@ -92,7 +95,7 @@ class WordController
     private function checkIfExists(UpdateWordRequest $request)
     {
         if(!$this->word->getWord($request->getId())){
-            return $this->response->response('Not Found',
+            return $this->response->response(ResponseCodes::NOT_FOUND_ERROR_NAME,
                 sprintf("Word with id [%s] has not been found!", $request->getId()));
         }
     }

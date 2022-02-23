@@ -3,14 +3,13 @@
 namespace App;
 
 use App\Core\DI\Container;
-use App\Models\Word;
-use App\Requests\DeletePatternRequest;
-use App\Requests\DeleteWordRequest;
-use App\Requests\PatternRequest;
-use App\Requests\StorePatternRequest;
-use App\Requests\StoreWordRequest;
-use App\Requests\UpdateWordRequest;
-use App\Requests\WordRequest;
+use App\Requests\Pattern\DeletePatternRequest;
+use App\Requests\Word\DeleteWordRequest;
+use App\Requests\Pattern\PatternRequest;
+use App\Requests\Pattern\StorePatternRequest;
+use App\Requests\Word\StoreWordRequest;
+use App\Requests\Word\UpdateWordRequest;
+use App\Requests\Word\WordRequest;
 
 $container = new Container;
 $router = $container->get('App\\Core\\Router');

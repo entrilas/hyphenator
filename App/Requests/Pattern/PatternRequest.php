@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Requests;
+namespace App\Requests\Pattern;
 
 use App\Core\Response;
 
-class WordRequest
+class PatternRequest
 {
     public function __construct(
         private array $params,
@@ -12,14 +12,9 @@ class WordRequest
     ) {
     }
 
-    public function getWord(): string|null
+    public function getPattern(): string|null
     {
-        return $this->params['word'];
-    }
-
-    public function getHyphenatedWord(): string|null
-    {
-        return $this->params['hyphenated_word'];
+        return $this->params['pattern'];
     }
 
     public function getId(): int|null

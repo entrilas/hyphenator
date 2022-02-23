@@ -12,7 +12,7 @@ class Patterns
     private array $patternsSettings;
 
     /**
-     * @throws Exceptions\InvalidArgumentException
+     * @throws Exceptions\InvalidArgumentException|Exceptions\FileNotFoundException
      */
     public function __construct(
         private PatternReaderService $patternReaderService,
@@ -26,7 +26,7 @@ class Patterns
     }
 
     /**
-     * @throws Exceptions\InvalidArgumentException
+     * @throws Exceptions\InvalidArgumentException|Exceptions\FileNotFoundException
      */
     private function exportPatterns()
     {
