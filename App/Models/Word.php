@@ -14,7 +14,7 @@ class Word extends Model
         parent::__construct($queryBuilder);
     }
 
-    public function getWords(): array
+    public function getWords(): array|bool
     {
         return $this->queryBuilder
             ->table($this->table)
@@ -46,7 +46,7 @@ class Word extends Model
             ->getData();
     }
 
-    public function submitWord(array $params)
+    public function submitWord(array $params): bool|array
     {
         return $this->queryBuilder
             ->table($this->table)
