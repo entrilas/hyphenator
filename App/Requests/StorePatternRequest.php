@@ -1,32 +1,28 @@
 <?php
 
-declare(strict_types=1);
-
 namespace App\Requests;
 
 use App\Core\Response;
 
-class StoreWordRequest
+class StorePatternRequest
 {
     public function __construct(
         private array $params,
         private Response $response
     ) {
-        $this->validateSubmit();
+        $this->validateNullableData();
     }
 
-    private function validateSubmit()
+    private function validateNullableData()
     {
-        if(is_null($this->getWord()) ||
-            !ctype_alpha($this->getWord())
-        ) {
+        if(is_null($this->getPattern())){
             $this->response->response('Unprocessable Entity', 'Data provided is incorrect.');
         }
     }
 
-    public function getWord(): string|null
+    public function getPattern(): string|null
     {
-        return $this->params['word'];
+        return $this->params['pattern'];
     }
 
     public function getParams(): array|null

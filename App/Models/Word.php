@@ -14,17 +14,17 @@ class Word extends Model
         parent::__construct($queryBuilder);
     }
 
-    public function getWords(): bool|string
+    public function getWords(): array
     {
         return $this->queryBuilder
             ->table($this->table)
             ->select(['id', 'word', 'hyphenated_word'])
             ->from()
             ->execute()
-            ->getAllJson();
+            ->getAllData();
     }
 
-    public function getWord($id): bool|string
+    public function getWord($id): array|bool
     {
         return $this->queryBuilder
             ->table($this->table)
@@ -32,10 +32,10 @@ class Word extends Model
             ->from()
             ->where('id')
             ->execute([$id])
-            ->getJson();
+            ->getData();
     }
 
-    public function getWordByName(string $word): bool|string
+    public function getWordByName(string $word): array|bool
     {
         return $this->queryBuilder
             ->table($this->table)
@@ -43,7 +43,7 @@ class Word extends Model
             ->from()
             ->where('word')
             ->execute([$word])
-            ->getJson();
+            ->getData();
     }
 
     public function submitWord(array $params)
@@ -53,7 +53,8 @@ class Word extends Model
             ->insert()
             ->columns(['word', 'hyphenated_word'])
             ->values([$params['word'], $params['hyphenated_word']])
-            ->execute([$params['word'], $params['hyphenated_word']]);
+            ->execute([$params['word'], $params['hyphenated_word']])
+            ->getData();
     }
 
     public function deleteWord($id): bool|string
@@ -64,7 +65,7 @@ class Word extends Model
             ->from()
             ->where('id')
             ->execute([$id])
-            ->getJson();
+            ->getData();
     }
 
     public function updateWord(array $params): bool|string
@@ -75,6 +76,6 @@ class Word extends Model
             ->set(['word', 'hyphenated_word'])
             ->where('id')
             ->execute([$params['word'], $params['hyphenated_word'], $params[0][0]])
-            ->getJson();
+            ->getData();
     }
 }

@@ -2,23 +2,26 @@
 
 namespace App\Requests;
 
+use App\Core\Response;
+
 class DeletePatternRequest
 {
-    public function __construct(private array $params)
-    {
-        $this->validateDelete($params);
+    public function __construct(
+        private array $params,
+        private Response $response
+    ) {
+        $this->validateDelete();
     }
 
-    private function validateDelete(array $params)
+    private function validateDelete()
     {
-        if(!is_numeric($params[0][0])){
-            header('HTTP/1.1 422 Unprocessable Entity', true, 422);
-            exit();
+        if(!is_numeric($this->getId())){
+            $this->response->response('Unprocessable Entity', 'Data provided is incorrect.');
         }
     }
 
-    public function getId()
+    public function getId(): int|null
     {
-        return $this->params[0][0];
+        return (int)$this->params[0][0];
     }
 }

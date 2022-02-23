@@ -22,14 +22,13 @@ class Router
         foreach($this->handlers as $handler)
         {
             $pathParsed = preg_replace('/[0-9]+/', ':id', $requestPath);
-            preg_match_all('!\d+!', $requestPath, $idParsed);
-            if($handler['path'] === $pathParsed && $method === $handler['method'])
-            {
+            preg_match_all('!\d+!', $requestPath, $urlIds);
+            if($handler['path'] === $pathParsed && $method === $handler['method']) {
                 $callback = $handler['handler'];
             }
         }
 
-        if(!$callback || sizeof($idParsed) > 1){
+        if(!$callback || sizeof($urlIds) > 1){
             header("HTTP/1.0 404 Not Found");
             if(!empty($this->notFoundHandler)){
                 $callback = $this->notFoundHandler;
@@ -38,7 +37,7 @@ class Router
 
         $this->getInputData();
         call_user_func_array($callback, [
-            array_merge($_GET, $this->getInputData(), $idParsed)
+            array_merge($_GET, $this->getInputData(), $urlIds)
         ]);
     }
 

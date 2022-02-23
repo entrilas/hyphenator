@@ -41,10 +41,8 @@ class Patterns
 
     private function getPatternPath(): string
     {
-        return (dirname(__FILE__, 3)
-            . $this->patternsSettings['RESOURCES_PATH']
-            . DIRECTORY_SEPARATOR
-            . $this->patternsSettings['PATTERNS_NAME']);
+        return dirname(__FILE__, 3)
+            . $this->patternsSettings['PATTERNS_PATH'];
     }
 
     public function getPatterns(): array

@@ -2,81 +2,92 @@
 
 namespace App\Controllers\API;
 
+use App\Core\Response;
 use App\Models\Pattern;
 use App\Requests\DeletePatternRequest;
 use App\Requests\PatternRequest;
+use App\Requests\StorePatternRequest;
+use App\Requests\UpdatePatternRequest;
 use PDOException;
 
 class PatternController
 {
     public function __construct(
-        private Pattern $pattern
+        private Pattern $pattern,
+        private Response $response
     ) {
-
     }
 
     public function showAll(): bool|string
     {
-        return $this->pattern->getPatterns();
+        $patterns = $this->pattern->getPatterns();
+        return $this->response->response('Ok',
+            "Patterns provided below have been found",
+            $patterns
+        );
     }
 
-    public function show($id): bool|string
+    public function show(PatternRequest $request): bool|string
     {
-        $response = $this->pattern->getPattern($id);
-        $response == 'false' ? $response = false : null;
+        $response = $this->pattern->getPattern($request->getId());
         if(!$response){
-            header('HTTP/1.1 404 Not Found', true, 404);
-            exit();
+            $this->response->response('Not Found', sprintf("Pattern with id [%s] was not found", $request->getId()));
         }
-        return $response;
+        return $this->response->response('Ok',
+            sprintf("Pattern with id [%s] was found", $request->getId()),
+            $response
+        );
     }
 
-    public function showByName(string $name): bool|string
-    {
-        return $this->pattern->getPatternByName($name);
-    }
-
-    public function submit(PatternRequest $request)
+    /**
+     * @throws Exception
+     */
+    public function submit(StorePatternRequest $request)
     {
         $params = $request->getParams();
-        var_dump($params);
-        if($this->getIfExists($params['pattern']) != null){
-            return $this->getIfExists($params['pattern']);
+        if($this->pattern->getPatternByName($request->getPattern()) !== false){
+            return $this->response->response('Ok',
+                "Pattern is already created and found in database.",
+                $this->pattern->getPatternByName($request->getPattern()));
         }
-        header('HTTP/1.1 201 OK', true, 201);
-        return $this->pattern->submitPattern($params);
-    }
-
-    private function getIfExists(string $name)
-    {
-        $existingPattern = json_decode($this->showByName($name),true);
-        if($existingPattern !== false){
-            return json_encode($existingPattern, JSON_PRETTY_PRINT);
-        }
-        return null;
+        $this->pattern->submitPattern($params);
+        return $this->response->response('Created',
+            "Pattern has been created.",
+            $this->pattern->getPatternByName($request->getPattern()));
     }
 
     public function delete(DeletePatternRequest $request): bool|string
     {
         $id = $request->getId();
-        if(!$this->show($id)) {
-            header('HTTP/1.1 404 Not Found', true, 404);
-            exit();
+        if(!$this->pattern->getPattern($id)) {
+            return $this->response->response('Not Found',
+                sprintf("Pattern with id [%s] has not been found.", $id));
         }
-        return $this->pattern->deletePattern($id);
+        $this->pattern->deletePattern($id);
+        return $this->response->response('Ok',
+            sprintf("Pattern with id [%s] has been deleted.", $id));
     }
 
-    public function update(PatternRequest $request): bool|string|null
+    public function update(UpdatePatternRequest $request): bool|string|null
     {
-        $params = $request->getParams();
-        $pattern = $this->show($params[0]);
+        $this->checkIfExists($request);
         try{
-            return $this->pattern->updatePattern($params);
+            $this->pattern->updatePattern($request->getParams());
+            return $this->response->response('Ok',
+                sprintf("Pattern with id [%s] has been updated.", $request->getId()));
         }catch(PDOException $e)
         {
-            header('HTTP/1.1 409 Conflict', true, 409);
-            echo sprintf("Pattern [ %s ] already exists in database.",$params['pattern']);
+            return $this->response->response('Conflict',
+                sprintf("Pattern with id [%s] is already created.", $request->getId()));
         }
         return null;
+    }
+
+    private function checkIfExists(UpdatePatternRequest $request)
+    {
+        if(!$this->pattern->getPattern($request->getId())){
+            return $this->response->response('Not Found',
+                sprintf("Pattern with id [%s] has not been found!", $request->getId()));
+        }
     }
 }

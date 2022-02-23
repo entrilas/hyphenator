@@ -13,17 +13,17 @@ class Pattern extends Model
         parent::__construct($queryBuilder);
     }
 
-    public function getPatterns(): bool|string
+    public function getPatterns(): array|bool
     {
         return $this->queryBuilder
             ->table($this->table)
             ->select(['id', 'pattern'])
             ->from()
             ->execute()
-            ->getAllJson();
+            ->getAllData();
     }
 
-    public function getPattern($id): bool|string
+    public function getPattern(int $id): array|bool
     {
         return $this->queryBuilder
             ->table($this->table)
@@ -31,10 +31,10 @@ class Pattern extends Model
             ->from()
             ->where('id')
             ->execute([$id])
-            ->getJson();
+            ->getData();
     }
 
-    public function getPatternByName(string $pattern): bool|string
+    public function getPatternByName(string $pattern): array|bool
     {
         return $this->queryBuilder
             ->table($this->table)
@@ -42,10 +42,10 @@ class Pattern extends Model
             ->from()
             ->where('pattern')
             ->execute([$pattern])
-            ->getJson();
+            ->getData();
     }
 
-    public function submitPattern(array $params)
+    public function submitPattern(array $params): array|bool
     {
         return $this->queryBuilder
             ->table($this->table)
@@ -53,10 +53,10 @@ class Pattern extends Model
             ->columns(['pattern'])
             ->values([$params['pattern']])
             ->execute([$params['pattern']])
-            ->getJson();
+            ->getData();
     }
 
-    public function deletePattern($id): bool|string
+    public function deletePattern($id): array|bool
     {
         return $this->queryBuilder
             ->table($this->table)
@@ -64,10 +64,10 @@ class Pattern extends Model
             ->from()
             ->where('id')
             ->execute([$id])
-            ->getJson();
+            ->getData();
     }
 
-    public function updatePattern(array $params): bool|string
+    public function updatePattern(array $params): array|bool
     {
         return $this->queryBuilder
             ->table($this->table)
@@ -75,6 +75,6 @@ class Pattern extends Model
             ->set(['pattern'])
             ->where('id')
             ->execute([$params['pattern'], $params[0][0]])
-            ->getJson();
+            ->getData();
     }
 }

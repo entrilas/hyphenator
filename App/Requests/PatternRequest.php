@@ -2,22 +2,27 @@
 
 namespace App\Requests;
 
+use App\Core\Response;
+
 class PatternRequest
 {
-    public function __construct(private array $params)
-    {
-        $this->validateNullableData($params);
+    public function __construct(
+        private array $params,
+        private Response $response
+    ) {
     }
 
-    private function validateNullableData(array $params)
+    public function getPattern(): string|null
     {
-        if(is_null($params['pattern'])){
-            header('HTTP/1.1 422 Unprocessable Entity', true, 422);
-            exit();
-        }
+        return $this->params['pattern'];
     }
 
-    public function getParams(): array
+    public function getId(): int|null
+    {
+        return (int)$this->params[0][0];
+    }
+
+    public function getParams(): array|null
     {
         return $this->params;
     }

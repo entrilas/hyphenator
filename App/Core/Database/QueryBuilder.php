@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Core\Database;
 
 use PDO;
+use stdClass;
 
 class QueryBuilder
 {
@@ -110,16 +111,20 @@ class QueryBuilder
         return $this;
     }
 
-    public function getJson(): bool|string
+    public function getData(): array|bool
     {
-        $result = $this->stmt->fetch();
-        return json_encode($result, JSON_PRETTY_PRINT);
+        $fetchedData = $this->stmt->fetch();
+        if($fetchedData === false)
+            return false;
+        return (array)$fetchedData;
     }
 
-    public function getAllJson(): bool|string
+    public function getAllData(): array|bool
     {
-        $result = $this->stmt->fetchAll();
-        return json_encode($result, JSON_PRETTY_PRINT);
+        $fetchedData = $this->stmt->fetchAll();
+        if($fetchedData === false)
+            return false;
+        return (array)$fetchedData;
     }
 
     public function truncate(string $table): string|bool
@@ -137,7 +142,7 @@ class QueryBuilder
     private function setFields(array $columns): string
     {
         $this->fields = implode(' = ?, ', array_values($columns));
-        return $this->fields.' = ?';
+        return sprintf("%s = ?", $this->fields);
     }
 
     private function setHolders(array $columns): string

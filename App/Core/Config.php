@@ -52,9 +52,7 @@ class Config
     private function getPath(string $name): string
     {
         return dirname(__FILE__, 3)
-            . DIRECTORY_SEPARATOR
             . Constants::CONFIG_PATH
-            . DIRECTORY_SEPARATOR
             . $name;
     }
 }

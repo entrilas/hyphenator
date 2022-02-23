@@ -13,7 +13,7 @@ class ValidPattern extends Model
         parent::__construct($queryBuilder);
     }
 
-    public function submitValidPattern(array $params)
+    public function submitValidPattern(array $params): bool|array
     {
         return $this->queryBuilder
             ->table($this->table)
@@ -21,7 +21,7 @@ class ValidPattern extends Model
             ->columns(['fk_word_id', 'fk_pattern_id'])
             ->values([$params['fk_word_id'], $params['fk_pattern_id']])
             ->execute([$params['fk_word_id'], $params['fk_pattern_id']])
-            ->getJson();
+            ->getData();
     }
 }
 

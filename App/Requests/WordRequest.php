@@ -4,21 +4,12 @@ namespace App\Requests;
 
 use App\Core\Response;
 
-class UpdateWordRequest
+class WordRequest
 {
     public function __construct(
         private array $params,
         private Response $response
     ) {
-        $this->validateUpdate();
-    }
-
-    private function validateUpdate()
-    {
-        if(is_null($this->getWord()) &&
-            is_null($this->getHyphenatedWord())){
-            $this->response->response('Unprocessable Entity', 'Data provided is incorrect.');
-        }
     }
 
     public function getWord(): string|null

@@ -3,80 +3,97 @@
 namespace App\Controllers\API;
 
 use App\Algorithm\Hyphenation;
+use App\Core\Response;
 use App\Models\Word;
 use App\Requests\DeleteWordRequest;
 use App\Requests\ShowWordRequest;
 use App\Requests\StoreWordRequest;
 use App\Requests\UpdateWordRequest;
+use App\Requests\WordRequest;
+use Exception;
 use PDOException;
 
 class WordController
 {
     public function __construct(
         private Word $word,
-        private Hyphenation $hyphenation
+        private Hyphenation $hyphenation,
+        private Response $response
     ) {
     }
 
     public function showAll(): bool|string
     {
-        return $this->word->getWords();
+        $words = $this->word->getWords();
+        return $this->response->response('Ok',
+            "Words provided below have been found",
+            $words
+        );
     }
 
-    public function show($id): bool|string
+    public function show(WordRequest $request): bool|string
     {
-        $response = $this->word->getWord($id);
-        $response == 'false' ? $response = false : null;
+        $response = $this->word->getWord($request->getId());
         if(!$response){
-            header('HTTP/1.1 404 Not Found', true, 404);
-            exit();
+            $this->response->response('Not Found', sprintf("Word with id [%s] was not found", $request->getId()));
         }
-        return $response;
+        return $this->response->response('Ok',
+            sprintf("Word with id [%s] was found", $request->getId()),
+            $response
+        );
     }
 
-    public function showByName(string $name): bool|string
-    {
-        return $this->word->getWordByName($name);
-    }
-
+    /**
+     * @throws Exception
+     */
     public function submit(StoreWordRequest $request)
     {
         $params = $request->getParams();
-        if($this->getIfExists($params['word']) != null){
-            return $this->getIfExists($params['word']);
+        if($this->word->getWordByName($request->getWord()) !== false){
+            return $this->response->response('Ok',
+                "Word is already created and found in database.",
+                $this->word->getWordByName($request->getWord()));
         }
-        $hyphenatedWord = $this->hyphenation->hyphenate($params['word']);
+        $hyphenatedWord = $this->hyphenation->hyphenate($request->getWord());
         $params['hyphenated_word'] = $hyphenatedWord;
-        header('HTTP/1.1 201 OK', true, 201);
-        return $this->word->submitWord($params);
-    }
-
-    private function getIfExists(string $name): string|null
-    {
-        $existingWord = json_decode($this->showByName($name),true);
-        if($existingWord !== false){
-            return json_encode($existingWord, JSON_PRETTY_PRINT);
-        }
-        return null;
+        $this->word->submitWord($params);
+        return $this->response->response('Created',
+            "Word has been created.",
+            $this->word->getWordByName($request->getWord()));
     }
 
     public function delete(DeleteWordRequest $request): bool|string
     {
         $id = $request->getId();
-        return $this->word->deleteWord($id);
+        if(!$this->word->getWord($id)) {
+            return $this->response->response('Not Found',
+                sprintf("Word with id [%s] has not been found.", $id));
+        }
+        $this->word->deleteWord($id);
+        return $this->response->response('Ok',
+            sprintf("Word with id [%s] has been deleted.", $id));
     }
 
     public function update(UpdateWordRequest $request): bool|string|null
     {
-        $params = $request->getParams();
-        $word = $this->show($params[0][0]);
+        $this->checkIfExists($request);
         try{
-            return $this->word->updateWord($params);
+            $this->word->updateWord($request->getParams());
+            return $this->response->response('Ok',
+                sprintf("Word with id [%s] has been updated.", $request->getId()));
         }catch(PDOException $e)
         {
-            header('HTTP/1.1 409 Conflict', true, 409);
-            echo sprintf("Word [ %s ] already exists in database.",$params['word']);
+            return $this->response->response('Conflict',
+                sprintf("Word with id [%s] is already created.", $request->getId()));
         }
         return null;
+    }
+
+    private function checkIfExists(UpdateWordRequest $request)
+    {
+        if(!$this->word->getWord($request->getId())){
+            return $this->response->response('Not Found',
+                sprintf("Word with id [%s] has not been found!", $request->getId()));
+        }
     }
 }
