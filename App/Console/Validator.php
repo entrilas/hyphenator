@@ -9,13 +9,9 @@ use App\Core\Exceptions\InvalidArgumentException;
 
 class Validator
 {
-    private mixed $argv;
-    private mixed $argc;
-
-    public function __construct()
-    {
-        $this->argv = $_SERVER['argv'];
-        $this->argc = $_SERVER['argc'];
+    public function __construct(
+        private Input $inputReceiver
+    ) {
     }
 
     /**
@@ -23,8 +19,9 @@ class Validator
      */
     public function validateData(): void
     {
-        if(($this->getData() === null || $this->getData() === '')
-            && ($this->getFlag() === Constants::IMPORT_PATTERNS_COMMAND))
+        if(($this->inputReceiver->getData() === null ||
+            $this->inputReceiver->getData() === '') &&
+            ($this->inputReceiver->getFlag() === Constants::IMPORT_PATTERNS_COMMAND))
             throw new InvalidArgumentException("Data provided is null or empty");
     }
 
@@ -33,22 +30,9 @@ class Validator
      */
     public function validateArguments(): void
     {
-        if($this->argc > 3 || $this->argc < 3)
+        if($this->inputReceiver->getArgumentsCount() > 3 ||
+            $this->inputReceiver->getArgumentsCount() < 3)
             throw new InvalidArgumentException("Invalid arguments provided 
             (php index.php [flag] '[content]')");
-    }
-
-    public function getFlag(): mixed
-    {
-        if(isset($this->argv[1]))
-            return $this->argv[1];
-        return null;
-    }
-
-    public function getData(): mixed
-    {
-        if(isset($this->argv[2]))
-            return $this->argv[2];
-        return null;
     }
 }

@@ -21,7 +21,8 @@ class InvokerFormer
         private Migration $migration,
         private Hyphenation $hyphenation,
         private FileHyphenation $fileHyphenation,
-        private SentenceHyphenation $sentenceHyphenation
+        private SentenceHyphenation $sentenceHyphenation,
+        private Input $inputReceiver
     ){
     }
 
@@ -30,7 +31,7 @@ class InvokerFormer
         return new CommandInvoker(
             new PatternCommand(
                 $this->importService,
-                $this->validator->getData()
+                $this->inputReceiver->getData()
             )
         );
     }
@@ -40,7 +41,7 @@ class InvokerFormer
         return new CommandInvoker(
             new WordCommand(
                 $this->hyphenation,
-                $this->validator->getData()
+                $this->inputReceiver->getData()
             )
         );
     }
@@ -50,7 +51,7 @@ class InvokerFormer
         return new CommandInvoker(
             new FileCommand(
                 $this->fileHyphenation,
-                $this->validator->getData()
+                $this->inputReceiver->getData()
             )
         );
     }
@@ -60,7 +61,7 @@ class InvokerFormer
         return new CommandInvoker(
             new SentenceCommand(
                 $this->sentenceHyphenation,
-                $this->validator->getData()
+                $this->inputReceiver->getData()
             )
         );
     }
@@ -70,7 +71,7 @@ class InvokerFormer
         return new CommandInvoker(
             new MigrationCommand(
                 $this->migration,
-                $this->validator->getData()
+                $this->inputReceiver->getData()
             )
         );
     }

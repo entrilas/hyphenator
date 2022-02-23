@@ -8,6 +8,7 @@ use App\Algorithm\Interfaces\HyphenationInterface;
 use App\Core\Database\Database;
 use App\Core\Exceptions\InvalidArgumentException;
 use App\Core\Log\Logger;
+use App\Core\Patterns;
 use App\Core\Settings;
 use App\Models\Pattern;
 use App\Models\ValidPattern;
@@ -18,20 +19,21 @@ use PDOException;
 
 class Hyphenation implements HyphenationInterface
 {
-    /**
-     * @throws InvalidArgumentException
-     */
+    private array $applicationSettings;
+
     public function __construct(
         private HyphenationTrie $hyphenator,
         private Word $word,
         private Pattern $pattern,
         private ValidPattern $validPattern,
+        private Patterns $patterns,
         private Settings $settings,
         private Database $database,
         private Logger $logger
     ) {
+        $this->applicationSettings = $this->settings->getConfig();
         $this->hyphenator->formPatternTrie(
-            $this->settings->getPatterns()
+            $this->patterns->getPatterns()
         );
     }
 
@@ -40,7 +42,7 @@ class Hyphenation implements HyphenationInterface
      */
     public function hyphenate(string $word): string
     {
-        if($this->settings->isDatabaseValid()) {
+        if($this->applicationSettings['USE_DATABASE']) {
             if($this->checkIfWordExists($word)){
                 return $this->getHyphenatedWordName($word);
             }
@@ -72,7 +74,7 @@ class Hyphenation implements HyphenationInterface
         string $hyphenatedWord,
         array $validPatterns)
     : void {
-        if($this->settings->isDatabaseValid())
+        if($this->patterns->isDatabaseValid())
         {
             $this->word->submitWord(
                 ['word' => $word,

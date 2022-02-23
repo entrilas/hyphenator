@@ -6,6 +6,7 @@ use App\Constants\Constants;
 use App\Core\Cache\Interfaces\CacheInterface;
 use App\Core\Config;
 use App\Core\Exceptions\InvalidArgumentException;
+use App\Core\Settings;
 use Generator;
 use DateInterval;
 use Traversable;
@@ -17,18 +18,19 @@ class Cache implements CacheInterface
 {
     public const PSR16_RESERVED = '/{|}|\(|\)|\/|\\\\|@|:/u';
     private string $cachePath;
+    private array $applicationSettings;
 
     /**
      * @throws InvalidArgumentException
      */
     public function __construct(
-        private Config $config,
+        private Settings $settings,
         private int $defaultTTL = Constants::DEFAULT_TTL,
         private int $dirMode = Constants::DIR_MODE,
         private int $fileMode = Constants::FILE_MODE
     ) {
-        $settings = $config->get(Constants::CONFIG_FILE_NAME);
-        $this->cachePath = $this->realPath($settings['CACHE_OUTPUT']);
+        $this->applicationSettings = $this->settings->getConfig();
+        $this->cachePath = $this->realPath($this->applicationSettings['CACHE_OUTPUT']);
         if (! file_exists($this->cachePath) && file_exists(dirname($this->cachePath))) {
             $this->makeDirectory($this->cachePath);
         }

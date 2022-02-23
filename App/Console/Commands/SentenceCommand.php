@@ -16,6 +16,9 @@ class SentenceCommand implements CommandInterface
     ) {
     }
 
+    /**
+     * @throws \Exception
+     */
     public function execute(): string
     {
         return $this->hyphenator->hyphenateSentence($this->filePath);

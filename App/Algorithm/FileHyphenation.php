@@ -8,7 +8,6 @@ use App\Core\Exceptions\FileNotFoundException;
 use App\Services\FileReaderService;
 use Exception;
 
-
 class FileHyphenation
 {
     public function __construct(

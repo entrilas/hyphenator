@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Algorithm;
 
+use App\Constants\Constants;
 use App\Traits\FormatString;
 use Exception;
 
@@ -25,10 +26,10 @@ class SentenceHyphenation
         $hyphenatedSentence = '';
         foreach($wordsArray as $word)
         {
-            if(strlen($word) > 4){
-                $hyphenatedSentence .= $this->hyphenator->hyphenate($word) . " ";
+            if(strlen($word) > Constants::MINIMUM_WORD_LENGTH){
+                $hyphenatedSentence .= sprintf("%s ", $this->hyphenator->hyphenate($word));
             }else
-                $hyphenatedSentence .= $word . " ";
+                $hyphenatedSentence .= sprintf("%s ", $word);
         }
         return $hyphenatedSentence;
     }

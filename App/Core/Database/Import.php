@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Core\Database;
 
 use App\Core\Cache\Cache;
+use App\Core\Exceptions\FileNotFoundException;
 use App\Core\Exceptions\InvalidArgumentException;
 use App\Models\Pattern;
 use App\Services\FileReaderService;
@@ -23,7 +24,7 @@ class Import
     }
 
     /**
-     * @throws InvalidArgumentException
+     * @throws InvalidArgumentException|FileNotFoundException
      */
     public function importPatterns(string $path): void
     {
@@ -33,7 +34,9 @@ class Import
         foreach($patterns as $pattern)
         {
             $clearedPattern = $this->removeSpaces($pattern);
-            $this->pattern->submitPattern(['pattern' => $clearedPattern]);
+            $this->pattern->submitPattern(
+                ['pattern' => $clearedPattern]
+            );
         }
         $this->setCache($patterns);
     }

@@ -13,7 +13,7 @@ class QueryBuilder
     private $table;
     private $stmt;
     private $columnNames;
-    private $holders;
+    private $valuesHolders;
     private $fields;
 
     public function __construct(
@@ -72,8 +72,8 @@ class QueryBuilder
 
     public function values(array $data): QueryBuilder
     {
-        $this->holders = $this->setHolders($data);
-        $this->query .= " VALUES ($this->holders)";
+        $this->valuesHolders = $this->setHolders($data);
+        $this->query .= " VALUES ($this->valuesHolders)";
         return $this;
     }
 
@@ -142,8 +142,8 @@ class QueryBuilder
 
     private function setHolders(array $columns): string
     {
-        $this->holders = array_fill(1 ,count($columns),'?');
-        return implode(', ',array_values($this->holders));
+        $this->valuesHolders = array_fill(1 ,count($columns),'?');
+        return implode(', ',array_values($this->valuesHolders));
     }
 
     private function bindParameters(array $params = null): void

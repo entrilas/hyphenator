@@ -14,6 +14,7 @@ final class Constants
     final public const MIGRATIONS_FOLDER_NAME = "Migrations";
     final public const CONFIG_PATH = "config";
     final public const EXPORT_FILE_PATH = __DIR__."/../../resources/export.txt";
+    final public const MINIMUM_WORD_LENGTH = 4;
 
     final public const DIR_MODE = 0775;
     final public const FILE_MODE = 0664;

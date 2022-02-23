@@ -7,7 +7,6 @@ namespace App\Console\Commands;
 use App\Console\Interfaces\CommandInterface;
 use App\Constants\Constants;
 use App\Core\Database\Import;
-use App\Core\Database\QueryBuilder;
 use App\Core\Exceptions\InvalidArgumentException;
 
 class PatternCommand implements CommandInterface
