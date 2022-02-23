@@ -15,8 +15,7 @@ class Export
 
     public function exportPatterns(): array
     {
-        $patternsJson = $this->pattern->getPatterns();
-        $patternsArray = json_decode($patternsJson, true);
+        $patternsArray = $this->pattern->getPatterns();
         return $this->formPatterns($patternsArray);
     }
 
@@ -24,7 +23,8 @@ class Export
     {
         $patterns = [];
         foreach ($patternsArray as $pattern) {
-            $patterns[] = $pattern['pattern'];
+            $patternData = (array)$pattern;
+            $patterns[] = $patternData['pattern'];
         }
         return $patterns;
     }

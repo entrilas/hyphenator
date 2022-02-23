@@ -53,15 +53,12 @@ class WordController
      */
     public function submit(StoreWordRequest $request)
     {
-        $params = $request->getParams();
         if($this->word->getWordByName($request->getWord()) !== false){
-            return $this->response->response(ResponseCodes::OK_ERROR_NAME,
+            return $this->response->response(ResponseCodes::CONFLICT_ERROR_NAME,
                 "Word is already created and found in database.",
                 $this->word->getWordByName($request->getWord()));
         }
-        $hyphenatedWord = $this->hyphenation->hyphenate($request->getWord());
-        $params['hyphenated_word'] = $hyphenatedWord;
-        $this->word->submitWord($params);
+        $this->hyphenation->hyphenate($request->getWord());
         return $this->response->response(ResponseCodes::CREATED_ERROR_NAME,
             "Word has been created.",
             $this->word->getWordByName($request->getWord()));

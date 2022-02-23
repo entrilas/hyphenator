@@ -13,7 +13,7 @@ class Container
 {
     protected array $instances = [];
 
-    public function set(string $name, object $concrete = NULL)
+    public function set(string $name, object $concrete = NULL): void
     {
         if ($concrete === NULL) {
             $concrete = $name;

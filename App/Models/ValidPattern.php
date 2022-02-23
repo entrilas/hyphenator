@@ -24,4 +24,3 @@ class ValidPattern extends Model
             ->getData();
     }
 }
-

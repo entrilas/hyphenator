@@ -4,9 +4,6 @@ declare(strict_types=1);
 
 namespace App\Core\Database;
 
-use PDO;
-use stdClass;
-
 class QueryBuilder
 {
     private $db = null;

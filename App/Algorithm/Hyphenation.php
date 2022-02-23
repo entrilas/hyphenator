@@ -43,7 +43,7 @@ class Hyphenation implements HyphenationInterface
     public function hyphenate(string $word): string
     {
         if($this->applicationSettings['USE_DATABASE']) {
-            if($this->checkIfWordExists($word)){
+            if($this->word->getWordByName($word)){
                 return $this->getHyphenatedWordName($word);
             }
             $hyphenatedWord = $this->hyphenator->hyphenate($word);
@@ -52,13 +52,6 @@ class Hyphenation implements HyphenationInterface
             return $hyphenatedWord;
         }
         return $this->hyphenator->hyphenate($word);
-    }
-
-    private function checkIfWordExists(string $word): bool
-    {
-        $wordValue = $this->word->getWordByName($word);
-        $wordValue == "false" ? $isWordFound = false : $isWordFound = true;
-        return $isWordFound;
     }
 
     public function getValidPatterns(): array
@@ -74,12 +67,12 @@ class Hyphenation implements HyphenationInterface
         string $hyphenatedWord,
         array $validPatterns)
     : void {
-        if($this->patterns->isDatabaseValid())
+        if($this->applicationSettings['USE_DATABASE'])
         {
             $this->word->submitWord(
                 ['word' => $word,
-                'hyphenated_word' => $hyphenatedWord]
-            );
+                'hyphenated_word' => $hyphenatedWord
+                ]);
             $this->insertValidPatterns($validPatterns, $word);
         }
     }
@@ -89,14 +82,16 @@ class Hyphenation implements HyphenationInterface
      */
     private function insertValidPatterns(array $validPatterns, string $word): void
     {
-        $wordID = $this->getDataID($this->word->getWordByName($word));
+        $word = $this->word->getWordByName($word);
+        $wordID = $word['id'];
         $this->logger->info(sprintf('Word to hyphenate: %s', $word));
         foreach($validPatterns as $pattern)
         {
             $this->logger->info(sprintf('Detected pattern : %s', $pattern));
             try{
                 $this->database->getConnector()->beginTransaction();
-                $patternID = $this->getDataID($this->pattern->getPatternByName($pattern));
+                $pattern = $this->pattern->getPatternByName($pattern);
+                $patternID = $pattern['id'];
                 $this->validPattern->submitValidPattern(
                     ['fk_word_id' => $wordID,
                      'fk_pattern_id' => $patternID]
@@ -109,16 +104,9 @@ class Hyphenation implements HyphenationInterface
         }
     }
 
-    private function getDataID($data): int
+    private function getHyphenatedWordName(string $wordName): string
     {
-        $decodedData = json_decode($data, true);
-        return $decodedData['id'];
-    }
-
-    private function getHyphenatedWordName(string $word): string
-    {
-        $wordData = $this->word->getWordByName($word);
-        $decodedData = json_decode($wordData, true);
-        return $decodedData['hyphenated_word'];
+        $hyphenatedWord = $this->word->getWordByName($wordName);
+        return $hyphenatedWord['hyphenated_word'];
     }
 }
