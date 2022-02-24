@@ -7,12 +7,9 @@ namespace App\Core\Database;
 class QueryBuilder
 {
     private $db = null;
-    private $query;
-    private $table;
+    private string $query;
+    private string $table;
     private $stmt;
-    private $columnNames;
-    private $valuesHolders;
-    private $fields;
 
     public function __construct(
         private Database $database
@@ -41,9 +38,9 @@ class QueryBuilder
 
     public function select(array $columns): QueryBuilder
     {
-        $this->columnNames = $this->setColumns($columns);
+        $columnNames = $this->setColumns($columns);
         $this->resetQuery();
-        $this->query .= "SELECT $this->columnNames";
+        $this->query .= "SELECT $columnNames";
         return $this;
     }
 
@@ -63,15 +60,15 @@ class QueryBuilder
 
     public function columns(array $columns): QueryBuilder
     {
-        $this->columnNames = $this->setColumns($columns);
-        $this->query .= " ($this->columnNames)";
+        $columnNames = $this->setColumns($columns);
+        $this->query .= " ($columnNames)";
         return $this;
     }
 
     public function values(array $data): QueryBuilder
     {
-        $this->valuesHolders = $this->setHolders($data);
-        $this->query .= " VALUES ($this->valuesHolders)";
+        $valuesHolders = $this->setHolders($data);
+        $this->query .= " VALUES ($valuesHolders)";
         return $this;
     }
 
@@ -89,8 +86,8 @@ class QueryBuilder
 
     public function set(array $columns): QueryBuilder
     {
-        $this->fields = $this->setFields($columns);
-        $this->query .= " SET $this->fields";
+        $columnFields = $this->setFields($columns);
+        $this->query .= " SET $columnFields";
         return $this;
     }
 
@@ -132,20 +129,19 @@ class QueryBuilder
 
     private function setColumns(array $columns): string
     {
-        $this->columnNames = implode(', ', array_values($columns));
-        return $this->columnNames;
+        return implode(', ', array_values($columns));
     }
 
     private function setFields(array $columns): string
     {
-        $this->fields = implode(' = ?, ', array_values($columns));
-        return sprintf("%s = ?", $this->fields);
+        $columnFieldsArray = implode(' = ?, ', array_values($columns));
+        return sprintf("%s = ?", $columnFieldsArray);
     }
 
     private function setHolders(array $columns): string
     {
-        $this->valuesHolders = array_fill(1 ,count($columns),'?');
-        return implode(', ',array_values($this->valuesHolders));
+        $valuesHoldersArray = array_fill(1 ,count($columns), '?');
+        return implode(', ',array_values($valuesHoldersArray));
     }
 
     private function bindParameters(array $params = null): void
