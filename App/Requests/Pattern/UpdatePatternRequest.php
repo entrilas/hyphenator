@@ -32,3 +32,4 @@ class UpdatePatternRequest
         return $this->params;
     }
 }
+

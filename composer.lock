@@ -8,16 +8,16 @@
     "packages": [
         {
             "name": "entrilas/hyphenation-algorithm",
-            "version": "v1.3",
+            "version": "v1.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/entrilas/hyphenation-algorithm.git",
-                "reference": "d9bf82e8a918e16f50151ce06f2796e291640c92"
+                "reference": "3b0d0f0b5d0db087273462f287666e9ed2de5220"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/entrilas/hyphenation-algorithm/zipball/d9bf82e8a918e16f50151ce06f2796e291640c92",
-                "reference": "d9bf82e8a918e16f50151ce06f2796e291640c92",
+                "url": "https://api.github.com/repos/entrilas/hyphenation-algorithm/zipball/3b0d0f0b5d0db087273462f287666e9ed2de5220",
+                "reference": "3b0d0f0b5d0db087273462f287666e9ed2de5220",
                 "shasum": ""
             },
             "type": "library",
@@ -39,9 +39,9 @@
             "description": "This is hyphenation algorithm to hyphenate words using TeX algorithm.",
             "support": {
                 "issues": "https://github.com/entrilas/hyphenation-algorithm/issues",
-                "source": "https://github.com/entrilas/hyphenation-algorithm/tree/v1.3"
+                "source": "https://github.com/entrilas/hyphenation-algorithm/tree/v1.4"
             },
-            "time": "2022-02-22T15:04:00+00:00"
+            "time": "2022-02-24T10:02:11+00:00"
         }
     ],
     "packages-dev": [],
