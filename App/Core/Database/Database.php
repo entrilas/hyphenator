@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace App\Core\Database;
 
-use App\Constants\Constants;
-use App\Core\Config;
 use App\Core\Exceptions\FileNotFoundException;
 use App\Core\Exceptions\UnsupportedFormatException;
 use App\Core\Settings;
@@ -16,7 +14,6 @@ use PDOException;
 class Database
 {
     private $connector = null;
-    private array $databaseSettings;
 
     /**
      * @throws FileNotFoundException
@@ -26,7 +23,6 @@ class Database
     public function __construct(
         private Settings $settings
     ) {
-        $this->databaseSettings = $this->settings->getDatabaseConfig();
         $this->connection();
     }
 
@@ -38,9 +34,9 @@ class Database
         if (null === $this->connector) {
             try {
                 $this->connector = new PDO(
-                    $this->databaseSettings['dsn'],
-                    $this->databaseSettings['user'],
-                    $this->databaseSettings['password']
+                    $this->settings->getDsn(),
+                    $this->settings->getUsername(),
+                    $this->settings->getPassword()
                 );
                 $this->connector->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_OBJ);
             } catch(PDOException $e) {

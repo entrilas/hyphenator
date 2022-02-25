@@ -32,7 +32,7 @@ class QueryBuilder
     public function insert(): QueryBuilder
     {
         $this->resetQuery();
-        $this->query .= "INSERT INTO $this->table";
+        $this->query .= sprintf("INSERT INTO %s", $this->table);
         return $this;
     }
 
@@ -40,14 +40,14 @@ class QueryBuilder
     {
         $columnNames = $this->setColumns($columns);
         $this->resetQuery();
-        $this->query .= "SELECT $columnNames";
+        $this->query .= sprintf("SELECT %s", $columnNames);
         return $this;
     }
 
     public function update(): QueryBuilder
     {
         $this->resetQuery();
-        $this->query .= "UPDATE $this->table";
+        $this->query .= sprintf("UPDATE %s", $this->table);
         return $this;
     }
 
@@ -61,33 +61,34 @@ class QueryBuilder
     public function columns(array $columns): QueryBuilder
     {
         $columnNames = $this->setColumns($columns);
-        $this->query .= " ($columnNames)";
+        $this->query .= sprintf(" (%s)", $columnNames);
         return $this;
     }
 
     public function values(array $data): QueryBuilder
     {
         $valuesHolders = $this->setHolders($data);
-        $this->query .= " VALUES ($valuesHolders)";
+        $this->query .= sprintf(" VALUES (%s)", $valuesHolders);
+
         return $this;
     }
 
     public function from(): QueryBuilder
     {
-        $this->query .= " FROM $this->table";
+        $this->query .= sprintf(" FROM %s", $this->table);
         return $this;
     }
 
     public function where(string $field): QueryBuilder
     {
-        $this->query .= " WHERE $field = ?";
+        $this->query .= sprintf(" WHERE %s = ?", $field);
         return $this;
     }
 
     public function set(array $columns): QueryBuilder
     {
         $columnFields = $this->setFields($columns);
-        $this->query .= " SET $columnFields";
+        $this->query .= sprintf(" SET %s", $columnFields);
         return $this;
     }
 
@@ -123,7 +124,7 @@ class QueryBuilder
 
     public function truncate(string $table): string|bool
     {
-        $this->stmt = $this->db->prepare("DELETE FROM $table");
+        $this->stmt = $this->db->prepare(sprintf("DELETE FROM %s", $table));
         return $this->stmt->execute();
     }
 

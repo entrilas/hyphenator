@@ -4,31 +4,24 @@ declare(strict_types=1);
 
 namespace App\Core\Log;
 
-use App\Constants\Constants;
-use App\Core\Config;
-use App\Core\Exceptions\FileNotFoundException;
-use App\Core\Exceptions\ParseException;
-use App\Core\Exceptions\UnsupportedFormatException;
 use App\Core\Log\Interfaces\LoggerInterface;
 use App\Core\Settings;
 use Exception;
 
 class Logger implements LoggerInterface
 {
-    private array $loggerSettings;
     private mixed $openedFile;
 
     public function __construct(
         private Settings $settings
     ) {
-        $this->loggerSettings = $this->settings->getLoggerConfig();
     }
 
     private function getLogFile(): string
     {
-        $time = date($this->loggerSettings['LOG_DATE_FORMAT']);
+        $time = date($this->settings->getLogDateFormatName());
         return $this->getRoot()
-            . $this->loggerSettings['LOG_PATH']
+            . $this->settings->getLogPathName()
             . DIRECTORY_SEPARATOR
             . "log-$time.txt";
     }
@@ -36,7 +29,7 @@ class Logger implements LoggerInterface
     private function getLogDirectory(): string
     {
         return $this->getRoot()
-            . $this->loggerSettings['LOG_PATH'];
+            . $this->settings->getLogPathName();
     }
 
     private function getRoot(): string
@@ -148,7 +141,7 @@ class Logger implements LoggerInterface
 
     private function formatLog($context): string
     {
-        $time = date($this->loggerSettings['LOG_FORMAT']);
+        $time = date($this->settings->getLogFormatName());
         $timeLog = is_null($time) ? "[N/A] " : "[$time] ";
         $levelLog = is_null($context['level']) ? "[N/A]" : "[{$context['level']}]";
         $messageLog = is_null($context['message']) ? "N/A" : "{$context['message']}";
@@ -158,7 +151,7 @@ class Logger implements LoggerInterface
 
     private function logConsole($message): void
     {
-        if($this->loggerSettings['LOG_TO_CONSOLE']) {
+        if($this->settings->getLogToConsoleName()) {
             print_r($message);
         }
     }
@@ -174,7 +167,7 @@ class Logger implements LoggerInterface
             $this->openLog();
         }
 
-        if($this->loggerSettings['LOG_TO_FILE']) {
+        if($this->settings->getLogToFileName()) {
             fwrite($this->openedFile, $message . PHP_EOL);
         }
         $this->closeFile();

@@ -7,6 +7,7 @@ namespace App\Console\Commands;
 use App\Console\Interfaces\CommandInterface;
 use App\Constants\Constants;
 use App\Core\Database\Import;
+use App\Core\Exceptions\FileNotFoundException;
 use App\Core\Exceptions\InvalidArgumentException;
 
 class PatternCommand implements CommandInterface
@@ -19,8 +20,9 @@ class PatternCommand implements CommandInterface
 
     /**
      * @throws InvalidArgumentException
+     * @throws FileNotFoundException
      */
-    public function execute(): mixed
+    public function execute(): bool
     {
         return $this->patternImportService->importPatterns($this->path);
     }

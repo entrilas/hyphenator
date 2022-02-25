@@ -22,13 +22,8 @@ class StorePatternRequest
         }
     }
 
-    public function getPattern(): string|null
+    public function getPattern(): string
     {
         return $this->params['pattern'];
-    }
-
-    public function getParams(): array|null
-    {
-        return $this->params;
     }
 }

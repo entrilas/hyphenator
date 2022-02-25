@@ -17,7 +17,7 @@ class Validator
     /**
      * @throws InvalidArgumentException
      */
-    public function validateData(): void
+    public function validateConsoleInput(): void
     {
         if(($this->inputReceiver->getData() === null ||
             $this->inputReceiver->getData() === '') &&
@@ -28,7 +28,7 @@ class Validator
     /**
      * @throws InvalidArgumentException
      */
-    public function validateArguments(): void
+    public function validateArgumentsCount(): void
     {
         if($this->inputReceiver->getArgumentsCount() > 3 ||
             $this->inputReceiver->getArgumentsCount() < 3)

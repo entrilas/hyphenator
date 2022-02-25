@@ -19,12 +19,13 @@ class Migration
     /**
      * @throws Exception
      */
-    public function migrate(string $name): void
+    public function migrate(string $name): bool
     {
         $path = $this->getPath($name);
         $this->validateFile($path);
         $sql = file_get_contents($path);
         $this->execSQL($sql, $name);
+        return true;
     }
 
     /**

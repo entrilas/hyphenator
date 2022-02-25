@@ -13,7 +13,7 @@ class CommandInvoker
     ) {
     }
 
-    public function handle(): mixed
+    public function handle(): bool|array|string
     {
         return $this->command->execute();
     }

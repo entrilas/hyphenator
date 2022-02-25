@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Console;
 
 use App\Algorithm\FileHyphenation;
@@ -17,7 +19,6 @@ class InvokerFormer
 {
     public function __construct(
         private Import $importService,
-        private Validator $validator,
         private Migration $migration,
         private Hyphenation $hyphenation,
         private FileHyphenation $fileHyphenation,

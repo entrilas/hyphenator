@@ -4,18 +4,18 @@ declare(strict_types=1);
 
 namespace App\Core\Database;
 
-use App\Models\Pattern;
+use App\Repository\PatternRepository;
 
 class Export
 {
     public function __construct(
-        private Pattern $pattern
+        private PatternRepository $patternRepository
     ) {
     }
 
     public function exportPatterns(): array
     {
-        $patternsArray = $this->pattern->getPatterns();
+        $patternsArray = $this->patternRepository->getPatterns();
         return $this->formPatterns($patternsArray);
     }
 

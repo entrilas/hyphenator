@@ -1,26 +1,31 @@
 <?php
 
+declare(strict_types=1);
+
+
 namespace App\Models;
 
-use App\Core\Database\QueryBuilder;
-use App\Core\Model;
-
-class ValidPattern extends Model
+class ValidPattern
 {
-    private string $table = 'valid_patterns';
-
-    public function __construct(QueryBuilder $queryBuilder) {
-        parent::__construct($queryBuilder);
+    public function __construct(
+        private int $id = -1,
+        private int $fk_word_id,
+        private int $fk_pattern_id
+    ) {
     }
 
-    public function submitValidPattern(array $params): bool|array
+    public function getForeignWordId(): int
     {
-        return $this->queryBuilder
-            ->table($this->table)
-            ->insert()
-            ->columns(['fk_word_id', 'fk_pattern_id'])
-            ->values([$params['fk_word_id'], $params['fk_pattern_id']])
-            ->execute([$params['fk_word_id'], $params['fk_pattern_id']])
-            ->getData();
+        return $this->fk_word_id;
+    }
+
+    public function getForeignPatternId(): int
+    {
+        return $this->fk_pattern_id;
+    }
+
+    public function getId(): int
+    {
+        return $this->id;
     }
 }

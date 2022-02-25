@@ -7,6 +7,7 @@ namespace App\Console\Commands;
 use App\Algorithm\SentenceHyphenation;
 use App\Console\Interfaces\CommandInterface;
 use App\Constants\Constants;
+use Exception;
 
 class SentenceCommand implements CommandInterface
 {
@@ -17,7 +18,7 @@ class SentenceCommand implements CommandInterface
     }
 
     /**
-     * @throws \Exception
+     * @throws Exception
      */
     public function execute(): string
     {
