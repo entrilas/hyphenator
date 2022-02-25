@@ -10,7 +10,8 @@
     }
   ],
   "require": {
-    "entrilas/hyphenation-algorithm": "^1.0"
+    "entrilas/hyphenation-algorithm": "^1.0",
+    "phpunit/phpunit": "^9"
   },
   "autoload": {
     "psr-4": {

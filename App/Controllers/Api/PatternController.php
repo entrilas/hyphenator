@@ -26,11 +26,13 @@ class PatternController
     {
         $patterns = $this->patternRepository->getPatterns();
         if($patterns === false){
-            return $this->response->response(ResponseCodes::NOT_FOUND_ERROR_NAME,
+            return $this->response->response(
+                ResponseCodes::NOT_FOUND_ERROR_NAME,
                 "Words was not found",
             );
         }
-        return $this->response->response(ResponseCodes::OK_ERROR_NAME,
+        return $this->response->response(
+            ResponseCodes::OK_ERROR_NAME,
             "Patterns provided below have been found",
             $patterns
         );
@@ -60,7 +62,8 @@ class PatternController
     {
         $pattern = $this->patternRepository->getPatternByName($request->getPattern());
         if($pattern !== false){
-            return $this->response->response(ResponseCodes::CREATED_ERROR_NAME,
+            return $this->response->response(
+                ResponseCodes::CREATED_ERROR_NAME,
                 "Pattern is already created and found in database.",
                 ['id' => $pattern->getId(),
                  'pattern' => $pattern->getPattern()
@@ -68,7 +71,8 @@ class PatternController
             );
         }
         $this->patternRepository->submitPattern($request->getPattern());
-        return $this->response->response(ResponseCodes::CREATED_ERROR_NAME,
+        return $this->response->response(
+            ResponseCodes::CREATED_ERROR_NAME,
             "Pattern has been created."
         );
     }
@@ -77,19 +81,28 @@ class PatternController
     {
         $id = $request->getId();
         if(!$this->patternRepository->getPattern($id)) {
-            return $this->response->response(ResponseCodes::NOT_FOUND_ERROR_NAME,
-                sprintf("Pattern with id [%s] has not been found.", $id));
+            return $this->response->response(
+                ResponseCodes::NOT_FOUND_ERROR_NAME,
+                sprintf("Pattern with id [%s] has not been found.",
+                    $id)
+            );
         }
         $this->patternRepository->deletePattern($id);
-        return $this->response->response(ResponseCodes::OK_ERROR_NAME,
-            sprintf("Pattern with id [%s] has been deleted.", $id));
+        return $this->response->response(
+            ResponseCodes::OK_ERROR_NAME,
+            sprintf("Pattern with id [%s] has been deleted.",
+                $id)
+        );
     }
 
     public function update(UpdatePatternRequest $request): ?string
     {
         if(!$this->checkIfPatternExists($request)){
-            return $this->response->response(ResponseCodes::NOT_FOUND_ERROR_NAME,
-                sprintf("Pattern with id [%s] has not been found.", $request->getId()));
+            return $this->response->response(
+                ResponseCodes::NOT_FOUND_ERROR_NAME,
+                sprintf("Pattern with id [%s] has not been found.",
+                    $request->getId())
+            );
         }
         try{
             $this->patternRepository->updatePattern(
@@ -97,11 +110,13 @@ class PatternController
                 $request->getPattern()
             );
             return $this->response->response(ResponseCodes::OK_ERROR_NAME,
-                sprintf("Pattern with id [%s] has been updated.", $request->getId()));
+                sprintf("Pattern with id [%s] has been updated.", $request->getId())
+            );
         }catch(PDOException $e)
         {
             return $this->response->response(ResponseCodes::CONFLICT_ERROR_NAME,
-                sprintf("Pattern with id [%s] is already created.", $request->getId()));
+                sprintf("Pattern with id [%s] is already created.", $request->getId())
+            );
         }
     }
 
