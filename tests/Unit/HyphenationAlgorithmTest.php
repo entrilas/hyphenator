@@ -10,22 +10,33 @@ class HyphenationAlgorithmTest extends TestCase
     private const INPUT = 'computer';
     private const HYPHENATE_METHOD = 'hyphenate';
 
-    protected function setUp(): void
+    protected function setupMockup(string $result): void
     {
         $this->hyphenationTrie = $this->createMock(
             HyphenationTrie::class
         );
 
         $this->hyphenationTrie->method(self::HYPHENATE_METHOD)
-            ->willReturn(self::RESULT);
+            ->willReturn($result);
     }
 
     /**
-     * @throws Exception
+     * @dataProvider formTestHyphenationProvider
      */
-    public function testHyphenation(): void
+    public function testHyphenation(string $input, string $result): void
     {
-        $result = $this->hyphenationTrie->hyphenate(self::INPUT);
-        $this->assertEquals(SELF::RESULT, $result);
+        $this->setupMockup($result);
+        $hyphenatedWord = $this->hyphenationTrie->hyphenate($input);
+        $this->assertEquals($result, $hyphenatedWord);
     }
+
+    public function formTestHyphenationProvider()
+    {
+        return [
+            ['computer', 'com-put-er'],
+            ['miscalculated', 'mis-cal-cu-lat-ed'],
+            ['fantastic', 'fan-tas-tic'],
+        ];
+    }
+
 }
