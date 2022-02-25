@@ -36,10 +36,7 @@ class PatternRepository extends Connection implements IPatternRepository
             ->where('id')
             ->execute([$id])
             ->getData();
-        if($patternArray !== false){
-            return new Pattern((int)$patternArray['id'], $patternArray['pattern']);
-        }
-        return false;
+        return $this->formPatternModel($patternArray);
     }
 
     public function getPatternByName(string $pattern): Pattern|bool
@@ -51,10 +48,7 @@ class PatternRepository extends Connection implements IPatternRepository
             ->where('pattern')
             ->execute([$pattern])
             ->getData();
-        if($patternArray !== false){
-            return new Pattern((int)$patternArray['id'], $patternArray['pattern']);
-        }
-        return false;
+        return $this->formPatternModel($patternArray);
     }
 
     public function submitPattern(string $pattern): bool
@@ -88,8 +82,13 @@ class PatternRepository extends Connection implements IPatternRepository
             ->where('id')
             ->execute([$pattern, $id])
             ->getData();
+        return $this->formPatternModel($patternArray);
+    }
+
+    private function formPatternModel(array|bool $patternArray): Pattern|bool
+    {
         if($patternArray !== false){
-            return new Pattern($id, $pattern);
+            return new Pattern((int)$patternArray['id'], $patternArray['pattern']);
         }
         return false;
     }

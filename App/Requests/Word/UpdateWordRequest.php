@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace App\Requests\Word;
 
+use App\Constants\ResponseCodes;
 use App\Core\Response;
+use App\Repository\WordRepository;
 
 class UpdateWordRequest
 {

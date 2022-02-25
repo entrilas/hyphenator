@@ -6,6 +6,7 @@ namespace App\Controllers\Api;
 
 use App\Constants\ResponseCodes;
 use App\Core\Response;
+use App\Models\Pattern;
 use App\Repository\PatternRepository;
 use App\Requests\Pattern\DeletePatternRequest;
 use App\Requests\Pattern\PatternRequest;
@@ -86,9 +87,15 @@ class PatternController
 
     public function update(UpdatePatternRequest $request): ?string
     {
-        $this->checkIfExists($request);
+        if(!$this->checkIfPatternExists($request)){
+            return $this->response->response(ResponseCodes::NOT_FOUND_ERROR_NAME,
+                sprintf("Pattern with id [%s] has not been found.", $request->getId()));
+        }
         try{
-            $this->patternRepository->updatePattern($request->getId(), $request->getPattern());
+            $this->patternRepository->updatePattern(
+                $request->getId(),
+                $request->getPattern()
+            );
             return $this->response->response(ResponseCodes::OK_ERROR_NAME,
                 sprintf("Pattern with id [%s] has been updated.", $request->getId()));
         }catch(PDOException $e)
@@ -98,12 +105,8 @@ class PatternController
         }
     }
 
-    private function checkIfExists(UpdatePatternRequest $request): string|null
+    private function checkIfPatternExists(UpdatePatternRequest $request): Pattern|bool
     {
-        if(!$this->patternRepository->getPattern($request->getId())){
-            return $this->response->response(ResponseCodes::NOT_FOUND_ERROR_NAME,
-                sprintf("Pattern with id [%s] has not been found!", $request->getId()));
-        }
-        return null;
+        return $this->patternRepository->getPattern($request->getId());
     }
 }

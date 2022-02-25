@@ -20,7 +20,7 @@ class WordRepository extends Connection implements IWordRepository
     {
         return $this->queryBuilder
             ->table($this->table)
-            ->select(['id', 'word'])
+            ->select(['id', 'word', 'hyphenated_word'])
             ->from()
             ->execute()
             ->getAllData();
@@ -35,10 +35,7 @@ class WordRepository extends Connection implements IWordRepository
             ->where('id')
             ->execute([$id])
             ->getData();
-        if($wordsArray !== false){
-            return new Word((int)$wordsArray['id'], $wordsArray['word'], $wordsArray['hyphenated_word']);
-        }
-        return false;
+        return $this->formWordModel($wordsArray);
     }
 
     public function getWordByName(string $word): Word|bool
@@ -50,14 +47,7 @@ class WordRepository extends Connection implements IWordRepository
             ->where('word')
             ->execute([$word])
             ->getData();
-        if($wordsArray !== false){
-            return new Word(
-                (int)$wordsArray['id'],
-                $wordsArray['word'],
-                $wordsArray['hyphenated_word']
-            );
-        }
-        return false;
+        return $this->formWordModel($wordsArray);
     }
 
     public function submitWord(string $word, string $hyphenatedWord): bool
@@ -89,10 +79,19 @@ class WordRepository extends Connection implements IWordRepository
             ->update()
             ->set(['word', 'hyphenated_word'])
             ->where('id')
-            ->execute([$word, $hyphenatedWord])
+            ->execute([$word, $hyphenatedWord, $id])
             ->getData();
+        return $this->formWordModel($wordsArray);
+    }
+
+    private function formWordModel(array|bool $wordsArray): Word|bool
+    {
         if($wordsArray !== false){
-            return new Word($id, $word, $hyphenatedWord);
+            return new Word(
+                (int)$wordsArray['id'],
+                $wordsArray['word'],
+                $wordsArray['hyphenated_word']
+            );
         }
         return false;
     }

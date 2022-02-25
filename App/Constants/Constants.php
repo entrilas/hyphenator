@@ -10,6 +10,8 @@ final class Constants
     final public const LOGGER_FILE_NAME = 'logger.json';
     final public const DATABASE_FILE_NAME = 'database.json';
     final public const MIGRATIONS_FOLDER_NAME = 'Migrations';
+    final public const CACHE_OUTPUT_NAME = 'CACHE_OUTPUT';
+    final public const PATTERNS_PATH_NAME = 'PATTERNS_PATH';
     final public const CONFIG_PATH = '/config/';
     final public const MINIMUM_WORD_LENGTH = 4;
 

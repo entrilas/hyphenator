@@ -7,6 +7,7 @@ namespace App\Controllers\API;
 use App\Algorithm\Hyphenation;
 use App\Constants\ResponseCodes;
 use App\Core\Response;
+use App\Models\Word;
 use App\Repository\WordRepository;
 use App\Requests\Word\DeleteWordRequest;
 use App\Requests\Word\StoreWordRequest;
@@ -84,37 +85,40 @@ class WordController
         $id = $request->getId();
         if(!$this->wordRepository->getWord($id)) {
             return $this->response->response(ResponseCodes::NOT_FOUND_ERROR_NAME,
-                sprintf("Pattern with id [%s] has not been found.", $id));
+                sprintf("Word with id [%s] has not been found.", $id));
         }
         $this->wordRepository->deleteWord($id);
         return $this->response->response(ResponseCodes::OK_ERROR_NAME,
-            sprintf("Pattern with id [%s] has been deleted.", $id));
+            sprintf("Word with id [%s] has been deleted.", $id));
     }
 
     public function update(UpdateWordRequest $request): ?string
     {
-        $this->checkIfExists($request);
+        if($this->checkIfWordExists($request) === false){
+            return $this->response->response(ResponseCodes::NOT_FOUND_ERROR_NAME,
+                sprintf("Word with id [%s] has not been found", $request->getId())
+            );
+        }
         try{
-            $this->wordRepository->updateWord(
+            $wordModel = $this->wordRepository->updateWord(
                 $request->getId(),
                 $request->getWord(),
                 $request->getHyphenatedWord()
             );
+            var_dump($wordModel);
             return $this->response->response(ResponseCodes::OK_ERROR_NAME,
-                sprintf("Pattern with id [%s] has been updated.", $request->getId()));
+                sprintf("Word with id [%s] has been updated.", $request->getId())
+            );
         }catch(PDOException $e)
         {
             return $this->response->response(ResponseCodes::CONFLICT_ERROR_NAME,
-                sprintf("Pattern with id [%s] is already created.", $request->getId()));
+                sprintf("Word with id [%s] is already created.", $request->getId())
+            );
         }
     }
 
-    private function checkIfExists(UpdateWordRequest $request): string|null
+    private function checkIfWordExists(UpdateWordRequest $request): Word|bool
     {
-        if(!$this->wordRepository->getWord($request->getId())){
-            return $this->response->response(ResponseCodes::NOT_FOUND_ERROR_NAME,
-                sprintf("Pattern with id [%s] has not been found!", $request->getId()));
-        }
-        return null;
+        return $this->wordRepository->getWord($request->getId());
     }
 }
