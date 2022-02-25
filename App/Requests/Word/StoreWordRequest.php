@@ -24,12 +24,12 @@ class StoreWordRequest
         }
     }
 
-    public function getWord(): string|null
+    public function getWord(): string
     {
         return $this->params['word'];
     }
 
-    public function getParams(): array|null
+    public function getParams(): array
     {
         return $this->params;
     }

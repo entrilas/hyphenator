@@ -2,11 +2,12 @@
 
 declare(strict_types=1);
 
-namespace App\Controllers\API;
+namespace App\Controllers\Api;
 
 use App\Constants\ResponseCodes;
 use App\Core\Response;
 use App\Models\Pattern;
+use App\Repository\PatternRepository;
 use App\Requests\Pattern\DeletePatternRequest;
 use App\Requests\Pattern\PatternRequest;
 use App\Requests\Pattern\StorePatternRequest;
@@ -16,14 +17,19 @@ use PDOException;
 class PatternController
 {
     public function __construct(
-        private Pattern $pattern,
+        private PatternRepository $patternRepository,
         private Response $response
     ) {
     }
 
     public function showAll(): bool|string
     {
-        $patterns = $this->pattern->getPatterns();
+        $patterns = $this->patternRepository->getPatterns();
+        if($patterns === false){
+            return $this->response->response(ResponseCodes::NOT_FOUND_ERROR_NAME,
+                "Words was not found",
+            );
+        }
         return $this->response->response(ResponseCodes::OK_ERROR_NAME,
             "Patterns provided below have been found",
             $patterns
@@ -32,13 +38,18 @@ class PatternController
 
     public function show(PatternRequest $request): bool|string
     {
-        $response = $this->pattern->getPattern($request->getId());
-        if(!$response){
-            $this->response->response(ResponseCodes::NOT_FOUND_ERROR_NAME, sprintf("Pattern with id [%s] was not found", $request->getId()));
+        $pattern = $this->patternRepository->getPattern($request->getId());
+        if(!$pattern){
+            $this->response->response(
+                    ResponseCodes::NOT_FOUND_ERROR_NAME,
+                    sprintf("Pattern with id [%s] was not found", $request->getId())
+            );
         }
-        return $this->response->response(ResponseCodes::OK_ERROR_NAME,
+        return $this->response->response(
+            ResponseCodes::OK_ERROR_NAME,
             sprintf("Pattern with id [%s] was found", $request->getId()),
-            $response
+            ['pattern' => $pattern->getPattern(),
+             'id' => $pattern->getId()]
         );
     }
 
@@ -47,35 +58,44 @@ class PatternController
      */
     public function submit(StorePatternRequest $request)
     {
-        $params = $request->getParams();
-        if($this->pattern->getPatternByName($request->getPattern()) !== false){
+        $pattern = $this->patternRepository->getPatternByName($request->getPattern());
+        if($pattern !== false){
             return $this->response->response(ResponseCodes::CREATED_ERROR_NAME,
                 "Pattern is already created and found in database.",
-                $this->pattern->getPatternByName($request->getPattern()));
+                ['id' => $pattern->getId(),
+                 'pattern' => $pattern->getPattern()
+                ]
+            );
         }
-        $this->pattern->submitPattern($params);
+        $this->patternRepository->submitPattern($request->getPattern());
         return $this->response->response(ResponseCodes::CREATED_ERROR_NAME,
-            "Pattern has been created.",
-            $this->pattern->getPatternByName($request->getPattern()));
+            "Pattern has been created."
+        );
     }
 
     public function delete(DeletePatternRequest $request): bool|string
     {
         $id = $request->getId();
-        if(!$this->pattern->getPattern($id)) {
+        if(!$this->patternRepository->getPattern($id)) {
             return $this->response->response(ResponseCodes::NOT_FOUND_ERROR_NAME,
                 sprintf("Pattern with id [%s] has not been found.", $id));
         }
-        $this->pattern->deletePattern($id);
+        $this->patternRepository->deletePattern($id);
         return $this->response->response(ResponseCodes::OK_ERROR_NAME,
             sprintf("Pattern with id [%s] has been deleted.", $id));
     }
 
-    public function update(UpdatePatternRequest $request): bool|string|null
+    public function update(UpdatePatternRequest $request): ?string
     {
-        $this->checkIfExists($request);
+        if(!$this->checkIfPatternExists($request)){
+            return $this->response->response(ResponseCodes::NOT_FOUND_ERROR_NAME,
+                sprintf("Pattern with id [%s] has not been found.", $request->getId()));
+        }
         try{
-            $this->pattern->updatePattern($request->getParams());
+            $this->patternRepository->updatePattern(
+                $request->getId(),
+                $request->getPattern()
+            );
             return $this->response->response(ResponseCodes::OK_ERROR_NAME,
                 sprintf("Pattern with id [%s] has been updated.", $request->getId()));
         }catch(PDOException $e)
@@ -83,14 +103,10 @@ class PatternController
             return $this->response->response(ResponseCodes::CONFLICT_ERROR_NAME,
                 sprintf("Pattern with id [%s] is already created.", $request->getId()));
         }
-        return null;
     }
 
-    private function checkIfExists(UpdatePatternRequest $request)
+    private function checkIfPatternExists(UpdatePatternRequest $request): Pattern|bool
     {
-        if(!$this->pattern->getPattern($request->getId())){
-            return $this->response->response(ResponseCodes::NOT_FOUND_ERROR_NAME,
-                sprintf("Pattern with id [%s] has not been found!", $request->getId()));
-        }
+        return $this->patternRepository->getPattern($request->getId());
     }
 }

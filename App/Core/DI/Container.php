@@ -45,7 +45,7 @@ class Container
 
         $reflector = new ReflectionClass($name);
         if (!$reflector->isInstantiable()) {
-            throw new Exception("Class {$name} is not instantiable");
+            throw new Exception(sprintf("Class %s is not instantiable", $name));
         }
 
         $constructor = $reflector->getConstructor();
@@ -72,7 +72,7 @@ class Container
                 if ($parameter->isDefaultValueAvailable()) {
                     $dependencies[] = $parameter->getDefaultValue();
                 } else {
-                    throw new Exception("Can not resolve class dependency {$parameter->name}");
+                    throw new Exception(sprintf("Can not resolve class dependency %s", $parameter->name));
                 }
             } else {
                 $dependencies[] = $this->get($dependency->name);

@@ -4,7 +4,6 @@ namespace App\Core\Cache;
 
 use App\Constants\Constants;
 use App\Core\Cache\Interfaces\CacheInterface;
-use App\Core\Config;
 use App\Core\Exceptions\InvalidArgumentException;
 use App\Core\Settings;
 use Generator;
@@ -18,7 +17,6 @@ class Cache implements CacheInterface
 {
     public const PSR16_RESERVED = '/{|}|\(|\)|\/|\\\\|@|:/u';
     private string $cachePath;
-    private array $applicationSettings;
 
     /**
      * @throws InvalidArgumentException
@@ -29,8 +27,7 @@ class Cache implements CacheInterface
         private int $dirMode = Constants::DIR_MODE,
         private int $fileMode = Constants::FILE_MODE
     ) {
-        $this->applicationSettings = $this->settings->getConfig();
-        $this->cachePath = $this->realPath($this->applicationSettings['CACHE_OUTPUT']);
+        $this->cachePath = $this->realPath($this->settings->getCacheOutput());
         if (! file_exists($this->cachePath) && file_exists(dirname($this->cachePath))) {
             $this->makeDirectory($this->cachePath);
         }

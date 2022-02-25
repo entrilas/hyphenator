@@ -6,32 +6,28 @@ namespace App\Algorithm;
 
 use App\Algorithm\Interfaces\HyphenationInterface;
 use App\Core\Database\Database;
-use App\Core\Exceptions\InvalidArgumentException;
 use App\Core\Log\Logger;
 use App\Core\Patterns;
 use App\Core\Settings;
-use App\Models\Pattern;
-use App\Models\ValidPattern;
-use App\Models\Word;
+use App\Repository\PatternRepository;
+use App\Repository\ValidPatternRepository;
+use App\Repository\WordRepository;
 use Exception;
 use Hyphenation\Algorithm\HyphenationTrie;
 use PDOException;
 
 class Hyphenation implements HyphenationInterface
 {
-    private array $applicationSettings;
-
     public function __construct(
         private HyphenationTrie $hyphenator,
-        private Word $word,
-        private Pattern $pattern,
-        private ValidPattern $validPattern,
+        private WordRepository $wordRepository,
+        private PatternRepository $patternRepository,
+        private ValidPatternRepository $validPatternRepository,
         private Patterns $patterns,
         private Settings $settings,
         private Database $database,
         private Logger $logger
     ) {
-        $this->applicationSettings = $this->settings->getConfig();
         $this->hyphenator->formPatternTrie(
             $this->patterns->getPatterns()
         );
@@ -42,9 +38,10 @@ class Hyphenation implements HyphenationInterface
      */
     public function hyphenate(string $word): string
     {
-        if($this->applicationSettings['USE_DATABASE']) {
-            if($this->word->getWordByName($word)){
-                return $this->getHyphenatedWordName($word);
+        if($this->settings->getDatabaseUsageStatus()) {
+            $wordModel = $this->wordRepository->getWordByName($word);
+            if($wordModel){
+                return $wordModel->getHyphenatedWord();
             }
             $hyphenatedWord = $this->hyphenator->hyphenate($word);
             $validPatterns = $this->hyphenator->getValidPatterns();
@@ -67,12 +64,8 @@ class Hyphenation implements HyphenationInterface
         string $hyphenatedWord,
         array $validPatterns)
     : void {
-        if($this->applicationSettings['USE_DATABASE'])
-        {
-            $this->word->submitWord(
-                ['word' => $word,
-                'hyphenated_word' => $hyphenatedWord
-                ]);
+        if($this->settings->getDatabaseUsageStatus()) {
+            $this->wordRepository->submitWord($word, $hyphenatedWord);
             $this->insertValidPatterns($validPatterns, $word);
         }
     }
@@ -82,20 +75,15 @@ class Hyphenation implements HyphenationInterface
      */
     private function insertValidPatterns(array $validPatterns, string $word): void
     {
-        $word = $this->word->getWordByName($word);
-        $wordID = $word['id'];
-        $this->logger->info(sprintf('Word to hyphenate: %s', $word));
+        $word = $this->wordRepository->getWordByName($word);
+        $this->logger->info(sprintf('Word to hyphenate: %s', $word->getWord()));
         foreach($validPatterns as $pattern)
         {
             $this->logger->info(sprintf('Detected pattern : %s', $pattern));
             try{
                 $this->database->getConnector()->beginTransaction();
-                $pattern = $this->pattern->getPatternByName($pattern);
-                $patternID = $pattern['id'];
-                $this->validPattern->submitValidPattern(
-                    ['fk_word_id' => $wordID,
-                     'fk_pattern_id' => $patternID]
-                );
+                $pattern = $this->patternRepository->getPatternByName($pattern);
+                $this->validPatternRepository->submitValidPattern($word->getId(), $pattern->getId());
                 $this->database->getConnector()->commit();
             }catch(PDOException $e)
             {
@@ -103,10 +91,5 @@ class Hyphenation implements HyphenationInterface
             }
         }
     }
-
-    private function getHyphenatedWordName(string $wordName): string
-    {
-        $hyphenatedWord = $this->word->getWordByName($wordName);
-        return $hyphenatedWord['hyphenated_word'];
-    }
 }
+

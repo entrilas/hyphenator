@@ -7,6 +7,7 @@ namespace App\Console\Commands;
 use App\Console\Interfaces\CommandInterface;
 use App\Constants\Constants;
 use App\Core\Database\Migration;
+use Exception;
 
 class MigrationCommand implements CommandInterface
 {
@@ -16,7 +17,10 @@ class MigrationCommand implements CommandInterface
     ) {
     }
 
-    public function execute(): mixed
+    /**
+     * @throws Exception
+     */
+    public function execute(): bool
     {
         return $this->migration->migrate($this->path);
     }

@@ -22,7 +22,7 @@ class DeletePatternRequest
         }
     }
 
-    public function getId(): int|null
+    public function getId(): int
     {
         return (int)$this->params[0][0];
     }

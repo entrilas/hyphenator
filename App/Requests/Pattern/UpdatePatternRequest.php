@@ -22,14 +22,13 @@ class UpdatePatternRequest
         }
     }
 
-    public function getPattern(): string|null
+    public function getPattern(): string
     {
         return $this->params['pattern'];
     }
 
-    public function getParams(): array|null
+    public function getId(): int
     {
-        return $this->params;
+        return (int)$this->params[0][0];
     }
 }
-

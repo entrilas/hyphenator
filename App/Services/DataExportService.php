@@ -8,12 +8,9 @@ use App\Core\Settings;
 
 class DataExportService
 {
-    private array $applicationSettings;
-
     public function __construct(
         private Settings $settings
     ) {
-        $this->applicationSettings = $this->settings->getConfig();
     }
 
     public function exportToFile($data): void
@@ -39,6 +36,6 @@ class DataExportService
     private function getPath(): string
     {
         return dirname(__FILE__, 3) .
-            $this->applicationSettings['EXPORT_DATA_PATH'];
+            $this->settings->getExportFileName();
     }
 }

@@ -7,7 +7,7 @@ namespace App\Core\Database;
 use App\Core\Cache\Cache;
 use App\Core\Exceptions\FileNotFoundException;
 use App\Core\Exceptions\InvalidArgumentException;
-use App\Models\Pattern;
+use App\Repository\PatternRepository;
 use App\Services\FileReaderService;
 use App\Traits\FormatString;
 
@@ -19,14 +19,14 @@ class Import
         private QueryBuilder $queryBuilder,
         private Cache $cache,
         private FileReaderService $fileReaderService,
-        private Pattern $pattern
+        private PatternRepository $patternRepository
     ) {
     }
 
     /**
      * @throws InvalidArgumentException|FileNotFoundException
      */
-    public function importPatterns(string $path): void
+    public function importPatterns(string $path): bool
     {
         $this->truncatePatternsTable();
         $this->validatePath($path);
@@ -34,11 +34,10 @@ class Import
         foreach($patterns as $pattern)
         {
             $clearedPattern = $this->removeSpaces($pattern);
-            $this->pattern->submitPattern(
-                ['pattern' => $clearedPattern]
-            );
+            $this->patternRepository->submitPattern($clearedPattern);
         }
         $this->setCache($patterns);
+        return true;
     }
 
     /**
