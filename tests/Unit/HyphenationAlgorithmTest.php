@@ -1,13 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 use Hyphenation\Algorithm\HyphenationTrie;
 use PHPUnit\Framework\TestCase;
 
 class HyphenationAlgorithmTest extends TestCase
 {
     private HyphenationTrie $hyphenationTrie;
-    private const RESULT = 'com-put-er';
-    private const INPUT = 'computer';
     private const HYPHENATE_METHOD = 'hyphenate';
 
     protected function setupMockup(string $result): void
@@ -30,7 +30,7 @@ class HyphenationAlgorithmTest extends TestCase
         $this->assertEquals($result, $hyphenatedWord);
     }
 
-    public function formTestHyphenationProvider()
+    public function formTestHyphenationProvider(): array
     {
         return [
             ['computer', 'com-put-er'],
@@ -38,5 +38,4 @@ class HyphenationAlgorithmTest extends TestCase
             ['fantastic', 'fan-tas-tic'],
         ];
     }
-
 }

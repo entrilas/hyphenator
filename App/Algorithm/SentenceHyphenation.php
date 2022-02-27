@@ -30,6 +30,6 @@ class SentenceHyphenation
             }else
                 $wordsArray[$i] = sprintf("%s", $word);
         }
-        return implode(" ",$wordsArray);
+        return implode(" ", $wordsArray);
     }
 }

@@ -16,7 +16,9 @@ class FileReaderService
     {
         $this->validatePath($path);
         $data = [];
-        foreach (new SplFileObject($path) as $line) {
+        $file = new SplFileObject($path);
+        $this->setFileFlags($file);
+        foreach ($file as $line) {
             $data[] = $line;
         }
         return $data;
@@ -25,11 +27,17 @@ class FileReaderService
     /**
      * @throws FileNotFoundException
      */
-    private function validatePath(string $filePath)
+    private function validatePath(string $filePath): void
     {
         $absPath = realpath($filePath);
         if ($absPath === false) {
             throw new FileNotFoundException(sprintf("File with URL [ %s ] was not found.", $filePath));
         }
+    }
+
+    private function setFileFlags($file): void
+    {
+        $file->setFlags(SplFileObject::SKIP_EMPTY |
+            SplFileObject::READ_AHEAD);
     }
 }
