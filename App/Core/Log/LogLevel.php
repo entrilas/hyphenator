@@ -6,12 +6,12 @@ namespace App\Core\Log;
 
 class LogLevel
 {
-    final public const EMERGENCY = 'emergency';
-    final public const ALERT     = 'alert';
-    final public const CRITICAL  = 'critical';
-    final public const ERROR     = 'error';
-    final public const WARNING   = 'warning';
-    final public const NOTICE    = 'notice';
-    final public const INFO      = 'info';
-    final public const DEBUG     = 'debug';
+    public const EMERGENCY = 'emergency';
+    public const ALERT     = 'alert';
+    public const CRITICAL  = 'critical';
+    public const ERROR     = 'error';
+    public const WARNING   = 'warning';
+    public const NOTICE    = 'notice';
+    public const INFO      = 'info';
+    public const DEBUG     = 'debug';
 }

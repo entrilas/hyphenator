@@ -6,15 +6,15 @@ namespace App\Constants;
 
 final class ResponseCodes
 {
-    final public const NOT_FOUND_ERROR_NAME = "Not Found";
-    final public const CONFLICT_ERROR_NAME = "Conflict";
-    final public const UNPROCESSABLE_ENTITY_ERROR_NAME = "Unprocessable Entity";
-    final public const OK_ERROR_NAME = "Ok";
-    final public const CREATED_ERROR_NAME = "Created";
+    public const NOT_FOUND_ERROR_NAME = "Not Found";
+    public const CONFLICT_ERROR_NAME = "Conflict";
+    public const UNPROCESSABLE_ENTITY_ERROR_NAME = "Unprocessable Entity";
+    public const OK_ERROR_NAME = "Ok";
+    public const CREATED_ERROR_NAME = "Created";
 
-    final public const NOT_FOUND_ERROR_CODE = 404;
-    final public const CONFLICT_ERROR_CODE = 409;
-    final public const UNPROCESSABLE_ENTITY_ERROR_CODE = 422;
-    final public const OK_ERROR_CODE = 200;
-    final public const CREATED_ERROR_CODE = 201;
+    public const NOT_FOUND_ERROR_CODE = 404;
+    public const CONFLICT_ERROR_CODE = 409;
+    public const UNPROCESSABLE_ENTITY_ERROR_CODE = 422;
+    public const OK_ERROR_CODE = 200;
+    public const CREATED_ERROR_CODE = 201;
 }

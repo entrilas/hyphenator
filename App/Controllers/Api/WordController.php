@@ -116,7 +116,6 @@ class WordController
                 $request->getWord(),
                 $request->getHyphenatedWord()
             );
-            var_dump($wordModel);
             return $this->response->response(
                 ResponseCodes::OK_ERROR_NAME,
                 sprintf("Word with id [%s] has been updated.",

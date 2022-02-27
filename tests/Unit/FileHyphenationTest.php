@@ -54,7 +54,7 @@ class FileHyphenationTest extends TestCase
     /**
      * @throws Exception
      */
-    public function testSentenceHyphenation(): void
+    public function testFileHyphenation(): void
     {
         $result = $this->fileHyphenation->hyphenateFile(self::FILE_PATH);
         $this->assertEquals($this->createResultMap(), $result);

@@ -2,6 +2,6 @@
   "CACHE_OUTPUT" : "/var/cache",
   "PATTERNS_PATH" : "/resources/tex-hyphenation-patterns.txt",
   "EXPORT_DATA_PATH" : "/resources/export.txt",
-  "USE_DATABASE" : true,
+  "USE_DATABASE" : false,
   "DATA_EXPORT_TO_FILE": false
 }
