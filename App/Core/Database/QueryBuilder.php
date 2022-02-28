@@ -58,6 +58,13 @@ class QueryBuilder
         return $this;
     }
 
+    public function orderby(array $columns): QueryBuilder
+    {
+        $columnNames = $this->setColumns($columns);
+        $this->query .= sprintf(" ORDER BY %s", $columnNames);
+        return $this;
+    }
+
     public function columns(array $columns): QueryBuilder
     {
         $columnNames = $this->setColumns($columns);

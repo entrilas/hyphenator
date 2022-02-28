@@ -22,6 +22,7 @@ class WordRepository extends Connection implements IWordRepository
             ->table($this->table)
             ->select(['id', 'word', 'hyphenated_word'])
             ->from()
+            ->orderby(['id'])
             ->execute()
             ->getAllData();
     }

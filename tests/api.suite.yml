@@ -1,0 +1,9 @@
+actor: ApiTester
+step_decorators:
+  - \Codeception\Step\AsJson
+modules:
+    enabled:
+        - \Helper\Api
+        - REST:
+              url: http://127.0.0.1:8000/api
+              depends: PhpBrowser

@@ -23,6 +23,7 @@ class PatternRepository extends Connection implements IPatternRepository
             ->table($this->table)
             ->select(['id', 'pattern'])
             ->from()
+            ->orderby(['id'])
             ->execute()
             ->getAllData();
     }
