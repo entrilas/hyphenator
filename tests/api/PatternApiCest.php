@@ -4,10 +4,17 @@ use Codeception\Example;
 
 class PatternApiCest
 {
+    private function createPatternDataProvider(): array
+    {
+        return [
+            ['pattern' => '.ba4mf5s'],
+            ['pattern' => '.t3st4d'],
+        ];
+    }
     /**
      * @param ApiTester $I
      * @param Example $pattern
-     * @example {"pattern" : ".ba4mf5s"}
+     * @dataProvider createPatternDataProvider
      */
     public function tryToSubmitPattern(ApiTester $I, Example $pattern)
     {
@@ -26,7 +33,7 @@ class PatternApiCest
     /**
      * @param ApiTester $I
      * @param Example   $pattern
-     * @example {"pattern" : ".ba4mf5s"}
+     * @dataProvider createPatternDataProvider
      */
     public function tryToReceiveAllPatterns(ApiTester $I, Example $pattern)
     {
@@ -44,12 +51,14 @@ class PatternApiCest
     /**
      * @param ApiTester $I
      * @param Example $pattern
-     * @example {"pattern" : ".ba4mf5s"}
+     * @dataProvider createPatternDataProvider
      */
     public function tryToReceivePattern(ApiTester $I, Example $pattern)
     {
         $I->sendGet('/patterns');
-        $id = $I->grabDataFromResponseByJsonPath('$.data[-1:].id')[0];
+        $id = $I->grabDataFromResponseByJsonPath(
+            sprintf("$.data[?(@.pattern == '%s')].id",
+            $pattern['pattern']))[0];
 
         $I->wantToTest(sprintf("Receive pattern with id [%s] from database test.", $id));
         $I->haveHttpHeader('accept', 'application/json');
@@ -65,35 +74,39 @@ class PatternApiCest
     /**
      * @param ApiTester $I
      * @param Example $pattern
-     * @example {"update_pattern" : ".upd4t3d"}
+     * @dataProvider createPatternDataProvider
      */
     public function tryToUpdatePattern(ApiTester $I, Example $pattern)
     {
         $I->sendGet('/patterns');
-        $id = $I->grabDataFromResponseByJsonPath('$.data[-1:].id')[0];
+        $id = $I->grabDataFromResponseByJsonPath(
+            sprintf("$.data[?(@.pattern == '%s')].id",
+                $pattern['pattern']))[0];
 
         $I->wantToTest(sprintf("Update pattern with id [%s] from database test.", $id));
         $I->sendPutAsJson('/patterns/' . $id,
-            ['pattern' => $pattern['update_pattern']]
+            ['pattern' => $pattern['pattern']]
         );
         $I->seeResponseIsJson();
         $I->seeResponseCodeIsSuccessful();
 
         $I->sendGet('/patterns');
         $I->seeResponseContainsJson(['data' => [
-            'pattern' => $pattern['update_pattern']
+            'pattern' => $pattern['pattern']
         ]]);
     }
 
     /**
      * @param ApiTester $I
      * @param Example   $pattern
-     * @example {"pattern" : ".upd4t3d"}
+     * @dataProvider createPatternDataProvider
      */
     public function tryToDeletePattern(ApiTester $I, Example $pattern)
     {
         $I->sendGet('/patterns');
-        $id = $I->grabDataFromResponseByJsonPath('$.data[-1:].id')[0];
+        $id = $I->grabDataFromResponseByJsonPath(
+            sprintf("$.data[?(@.pattern == '%s')].id",
+                $pattern['pattern']))[0];
 
         $I->wantToTest(sprintf("Delete pattern with id [%s] from database test.", $id));
         $I->sendDelete('/patterns/' . $id);

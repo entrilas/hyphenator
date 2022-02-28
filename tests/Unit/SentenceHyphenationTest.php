@@ -35,15 +35,26 @@ class SentenceHyphenationTest extends TestCase
             ['is', 'is'],
             ['the', 'best'],
             ['property', 'prop-er-ty'],
+            ['future', 'fu-ture'],
+            ['fantastic', 'fan-tas-tic'],
+            ['fiction', 'fic-tion'],
+        ];
+    }
+
+    public function formSentencesDataProvider(): array
+    {
+        return [
+            ['computer is the best property', 'com-put-er is the best prop-er-ty'],
+            ['future is fantastic fiction', 'fu-ture is fan-tas-tic fic-tion']
         ];
     }
 
     /**
-     * @throws Exception
+     * @dataProvider formSentencesDataProvider
      */
-    public function testSentenceHyphenation(): void
+    public function testSentenceHyphenation(string $input, string $result): void
     {
-        $result = $this->sentenceHyphenation->hyphenateSentence(self::INPUT);
-        $this->assertEquals(self::RESULT, $result);
+        $hyphenatedSentence = $this->sentenceHyphenation->hyphenateSentence($input);
+        $this->assertEquals($result, $hyphenatedSentence);
     }
 }

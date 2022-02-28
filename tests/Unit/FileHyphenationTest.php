@@ -13,6 +13,7 @@ class FileHyphenationTest extends TestCase
     private FileHyphenation $fileHyphenation;
     private CONST FILE_PATH = __DIR__ . '/../../resources/copy-file.txt';
     private const METHOD = 'hyphenate';
+    private const READ_FILE_METHOD = 'readFile';
 
     protected function setUp(): void
     {
@@ -29,7 +30,7 @@ class FileHyphenationTest extends TestCase
 
         $fileReaderService
             ->expects($this->any())
-            ->method('readFile')
+            ->method(self::READ_FILE_METHOD)
             ->with(self::FILE_PATH)
             ->willReturn($this->createReaderServiceResult());
 
