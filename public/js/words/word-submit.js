@@ -13,6 +13,9 @@ $( "#wordSubmitForm" ).submit(function( event ) {
         success: function (data) {
             alert('Word has been hyphenated');
             window.location.href = '/words';
-        }
+        }, error: function (jqXHR, exception) {
+            handleError(jqXHR, exception);
+            window.location.href = '/words';
+        },
     });
 });
