@@ -10,7 +10,7 @@ class DeletePatternRequest
 {
     public function __construct(
         private array $params,
-        private Response $response
+        private ?Response $response = NULL
     ) {
         $this->validateDelete();
     }
