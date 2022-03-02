@@ -23,4 +23,10 @@
     h1{
         padding-top: 5%;
     }
+    td{
+        text-align: center;
+    }
+    .btn{
+        margin-bottom: 3%;
+    }
 </style>

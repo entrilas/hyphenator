@@ -15,7 +15,7 @@ $.ajax(
                     .append($('<td>', {text: data.id}))
                     .append($('<td>', {text: data.pattern}))
                     .append(
-                        `<a class="btn btn-warning" href='/patterns/${data.id}'>Edit</a>`+
+                        `<a class="btn btn-warning mr-1" href='/patterns/${data.id}'>Edit</a>`+
                         `<a class="btn btn-danger" onclick="deletePattern(${data.id})">Delete</a>`
                     )
                 )
