@@ -31,9 +31,10 @@ $router->update('/api/words/:id', function(array $params = []) use ($container, 
     $wordController->update($updateWordRequest);
 });
 
-$router->get('/api/words', function() use ($container) {
+$router->get('/api/words', function(array $params = []) use ($container) {
+    $wordRequest = new WordRequest($params);
     $wordController = $container->get('App\\Controllers\\Api\\WordController');
-    $wordController->showAll();
+    $wordController->showAll($wordRequest);
 });
 
 $router->get('/api/words/:id', function(array $params = []) use ($container, $response){
@@ -50,9 +51,10 @@ $router->post('/api/patterns', function(array $params = []) use ($container, $re
     $patternController->submit($storePatternRequest);
 });
 
-$router->get('/api/patterns', function() use ($container) {
+$router->get('/api/patterns', function(array $params = []) use ($container) {
+    $patternRequest = new PatternRequest($params);
     $patternController = $container->get('App\\Controllers\\Api\\PatternController');
-    $patternController->showAll();
+    $patternController->showAll($patternRequest);
 });
 
 $router->get('/api/patterns/:id', function(array $params) use ($container, $response){

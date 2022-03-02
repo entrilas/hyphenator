@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Constants\Constants;
 use App\Core\Connection;
 use App\Core\Database\QueryBuilder;
 use App\Models\Word;
@@ -26,6 +27,19 @@ class WordRepository extends Connection implements IWordRepository
             ->execute()
             ->getAllData();
     }
+
+    public function getWordsByPage(int $page): array
+    {
+        return $this->queryBuilder
+            ->table($this->table)
+            ->select(['id', 'word', 'hyphenated_word'])
+            ->from()
+            ->orderby(['id'])
+            ->pagination(Constants::PAGE_LIMIT, ($page - 1) * Constants::PAGE_LIMIT)
+            ->execute()
+            ->getAllData();
+    }
+
 
     public function getWord(int $id): Word|bool
     {

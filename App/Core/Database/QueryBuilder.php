@@ -76,7 +76,12 @@ class QueryBuilder
     {
         $valuesHolders = $this->setHolders($data);
         $this->query .= sprintf(" VALUES (%s)", $valuesHolders);
+        return $this;
+    }
 
+    public function pagination(int $limit, int $offset): QueryBuilder
+    {
+        $this->query .= sprintf(" LIMIT %s OFFSET %s", $limit, $offset);
         return $this;
     }
 

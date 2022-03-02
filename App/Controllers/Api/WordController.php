@@ -25,9 +25,14 @@ class WordController
     ) {
     }
 
-    public function showAll(): bool|string
+    public function showAll(WordRequest $request): bool|string
     {
-        $words = $this->wordRepository->getWords();
+        if($request->getPage() === 0){
+            $words = $this->wordRepository->getWords();
+        }else{
+            $words = $this->wordRepository->getWordsByPage($request->getPage());
+        }
+
         if($words === false){
             return $this->response->response(
                 ResponseCodes::NOT_FOUND_ERROR_NAME,

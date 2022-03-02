@@ -7,6 +7,7 @@ use App\Models\Word;
 interface IWordRepository
 {
     public function getWords(): array;
+    public function getWordsByPage(int $page): array;
     public function getWord(int $id): Word|bool;
     public function getWordByName(string $word): Word|bool;
     public function submitWord(string $word, string $hyphenatedWord): bool;

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Repository;
 
+use App\Constants\Constants;
 use App\Core\Connection;
 use App\Core\Database\QueryBuilder;
 use App\Models\Pattern;
@@ -24,6 +25,18 @@ class PatternRepository extends Connection implements IPatternRepository
             ->select(['id', 'pattern'])
             ->from()
             ->orderby(['id'])
+            ->execute()
+            ->getAllData();
+    }
+
+    public function getPatternsByPage(int $page): array
+    {
+        return $this->queryBuilder
+            ->table($this->table)
+            ->select(['id', 'pattern'])
+            ->from()
+            ->orderby(['id'])
+            ->pagination(Constants::PAGE_LIMIT, ($page - 1) * Constants::PAGE_LIMIT)
             ->execute()
             ->getAllData();
     }

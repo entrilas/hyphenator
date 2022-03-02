@@ -22,9 +22,14 @@ class PatternController
     ) {
     }
 
-    public function showAll(): bool|string
+    public function showAll(PatternRequest $request): bool|string
     {
-        $patterns = $this->patternRepository->getPatterns();
+        if($request->getPage() === 0){
+            $patterns = $this->patternRepository->getPatterns();
+        }else{
+            $patterns = $this->patternRepository->getPatternsByPage($request->getPage());
+        }
+
         if($patterns === false){
             return $this->response->response(
                 ResponseCodes::NOT_FOUND_ERROR_NAME,

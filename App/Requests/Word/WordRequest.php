@@ -18,4 +18,9 @@ class WordRequest
     {
         return (int)$this->params[0][0];
     }
+
+    public function getPage(): int
+    {
+        return (int)$this->params['page'];
+    }
 }

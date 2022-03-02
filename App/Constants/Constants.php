@@ -13,12 +13,13 @@ final class Constants
     public const CACHE_OUTPUT_NAME = 'CACHE_OUTPUT';
     public const PATTERNS_PATH_NAME = 'PATTERNS_PATH';
     public const CONFIG_PATH = '/config/';
+
     public const MINIMUM_WORD_LENGTH = 4;
+    public const PAGE_LIMIT = 10;
 
     public const DIR_MODE = 0775;
     public const FILE_MODE = 0664;
     public const DEFAULT_TTL = 3600;
-
 
     public const WORD_COMMAND = 'word';
     public const SENTENCE_COMMAND = 'sentence';

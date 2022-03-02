@@ -1,7 +1,9 @@
 <section>
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="container-fluid">
-            <a class="navbar-brand" href="#">Navbar</a>
+            <a class="navbar-brand">
+                <a href="#" class="navbar-left">best hyphenator</a>
+            </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -14,10 +16,12 @@
                         <a class="nav-link" href="/words">Words</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/patterns">Patterns</a>
+                        <a class="nav-link" href="/patterns?page=1">Patterns</a>
                     </li>
                 </ul>
             </div>
         </div>
     </nav>
 </section>
+
+
