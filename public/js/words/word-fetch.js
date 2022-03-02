@@ -1,3 +1,4 @@
+console.log(id);
 $.ajax(
     {
         type: "GET",

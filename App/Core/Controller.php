@@ -2,10 +2,10 @@
 
 namespace App\Core;
 
-class Controller
+class Controller extends View
 {
-    public function view(string $view, array $data = [])
+    public function view($view, $params = []): string
     {
-        require_once sprintf(__DIR__ . '/../../public/views/%s.php', $view);
+        return $this->renderView($view, $params);
     }
 }

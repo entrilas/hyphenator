@@ -9,16 +9,16 @@ class WordController extends Controller
 {
     public function index()
     {
-        $this->view('words/index');
+        return $this->view('words/index');
     }
 
     public function submit()
     {
-        $this->view('words/words-submit');
+        return $this->view('words/words-submit');
     }
 
     public function update(WordRequest $request)
     {
-        $this->view('words/words-update', ['id' => $request->getId()]);
+        return $this->view('words/words-update', ['id' => $request->getId()]);
     }
 }
