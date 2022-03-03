@@ -16,7 +16,7 @@ $.ajax(
                     .append($('<td>', {text: data.word}))
                     .append($('<td>', {text: data.hyphenated_word}))
                     .append(
-                        `<a class="btn btn-danger mr-1" href='/words/${data.id}'>Edit</a>`+
+                        `<a class="btn btn-danger mr-1" href='/strings/${data.id}'>Edit</a>`+
                         `<a class="btn btn-warning" onclick="deleteWord(${data.id})">Delete</a>`
                     )
                 )
@@ -35,7 +35,7 @@ function deleteWord(id)
         contentType: 'application/json',
         success: function (response) {
             alert('Word has been deleted');
-            window.location.href = '/words';
+            window.location.href = '/strings';
         }
     });
 }

@@ -15,7 +15,7 @@
                         <a class="nav-link active" aria-current="page" href="/">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/words?page=1">Words</a>
+                        <a class="nav-link" href="/strings?page=1">Words</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="/patterns?page=1">Patterns</a>

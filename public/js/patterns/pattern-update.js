@@ -12,7 +12,7 @@ $( "#patternUpdateForm" ).submit(function( event ) {
         contentType: "application/json",
         success: function (data) {
             alert('Pattern has been updated');
-            window.location.href = '/patterns';
+            window.location.href = '/patterns?page=1';
         }, error: function (jqXHR, exception) {
             handleError(jqXHR, exception);
             window.location.href = '/patterns?page=1';

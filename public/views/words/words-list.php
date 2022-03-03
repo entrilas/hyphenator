@@ -4,7 +4,7 @@
         <p class="lead">Here you can hyphenate or check already existing hyphenated words<br></p>
     </div>
 
-    <a class="btn btn-primary btn-nueva" href="words/submit"><b>+</b> Hyphenate Word </a>
+    <a class="btn btn-primary btn-nueva" href="strings/submit"><b>+</b> Hyphenate Word </a>
     <table class="table table-bordered" id="wordsTable">
     <thead>
     <tr>

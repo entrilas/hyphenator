@@ -10,17 +10,17 @@ $router->get('/', function(array $params = []) use ($container) {
     echo $homeController->index();
 });
 
-$router->get('/words', function(array $params = []) use ($container) {
+$router->get('/strings', function(array $params = []) use ($container) {
     $wordController = $container->get('App\\Controllers\\Web\\WordController');
     echo $wordController->index();
 });
 
-$router->get('/words/submit', function(array $params = []) use ($container) {
+$router->get('/strings/submit', function(array $params = []) use ($container) {
     $wordController = $container->get('App\\Controllers\\Web\\WordController');
     echo $wordController->submit();
 });
 
-$router->get('/words/:id', function(array $params = []) use ($container, $response) {
+$router->get('/strings/:id', function(array $params = []) use ($container, $response) {
     $wordController = $container->get('App\\Controllers\\Web\\WordController');
     $wordRequest = new WordRequest($params, $response);
     echo $wordController->update($wordRequest);

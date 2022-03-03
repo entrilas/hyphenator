@@ -1,9 +1,8 @@
-
-    <body>
+<body>
     <div class="position-relative overflow-hidden p-3 p-md-5 m-md-3 text-center bg-light">
         <div class="col-md-5 p-lg-5 mx-auto my-5">
             <h1 class="display-4 font-weight-normal">Hyphenator</h1>
-            <p class="lead font-weight-normal">HHyphenation is the use of a hyphen to break up a word when it reaches the edge of a document or container.</p>
+            <p class="lead font-weight-normal">Hyphenation is the use of a hyphen to break up a word when it reaches the edge of a document or container.</p>
             <a class="btn btn-outline-secondary" href="/words/submit">Hyphenate</a>
         </div>
         <div class="product-device box-shadow d-none d-md-block"></div>
@@ -35,7 +34,7 @@
             </div>
         </div>
     </footer>
-    </body>
+</body>
 
 <script>
 </script>

@@ -135,8 +135,10 @@ class Logger implements LoggerInterface
 
         $message = $this->formatLog($context);
 
-        $this->logFile($message);
-        $this->logConsole($message);
+        if(!$this->settings->getDatabaseUsageStatus()){
+            $this->logFile($message);
+            $this->logConsole($message);
+        }
     }
 
     private function formatLog($context): string

@@ -20,11 +20,10 @@ $.ajax(
                     )
                 )
             }
-        }
-        // }, error: function (jqXHR, exception) {
-        //     handleError(jqXHR, exception);
-        //     window.location.href = '/';
-        // },
+        }, error: function (jqXHR, exception) {
+            handleError(jqXHR, exception);
+            window.location.href = '/';
+        },
     });
 
 function deletePattern(id)

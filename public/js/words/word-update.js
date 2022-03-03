@@ -13,10 +13,10 @@ $( "#wordUpdateForm" ).submit(function( event ) {
         contentType: "application/json",
         success: function (data) {
             alert('Word has been updated');
-            window.location.href = '/words';
+            window.location.href = '/strings?page=1';
         }, error: function (jqXHR, exception) {
             handleError(jqXHR, exception);
-            window.location.href = '/words?page=1';
+            window.location.href = '/strings?page=1';
         },
     });
 });
