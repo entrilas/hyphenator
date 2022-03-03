@@ -42,6 +42,7 @@ $router->get('/patterns/:id', function(array $params = []) use ($container, $res
     echo $patternController->update($patternRequest);
 });
 
-$router->addNotFoundHandler(function(){
-    echo "Not Found!";
+$router->addNotFoundHandler(function() use ($container){
+    $homeController = $container->get('App\\Controllers\\Web\\HomeController');
+    echo $homeController->notFound();
 });

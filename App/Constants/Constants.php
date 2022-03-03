@@ -17,7 +17,7 @@ final class Constants
     public const MINIMUM_WORD_LENGTH = 4;
     public const PAGE_LIMIT = 10;
 
-    public const DIR_MODE = 0775;
+    public const DIR_MODE = 0777;
     public const FILE_MODE = 0664;
     public const DEFAULT_TTL = 3600;
 

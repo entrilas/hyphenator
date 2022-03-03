@@ -1,5 +1,5 @@
 {
-  "dsn": "mysql:dbname=hyphenator;host=database;port=3306;charset=utf8",
-  "user": "user",
-  "password": "123"
+  "dsn": "mysql:dbname=hyphenator;host=db;charset=utf8",
+  "user": "dbuser",
+  "password": "654321"
 }

@@ -74,9 +74,3 @@ $router->update('/api/patterns/:id', function(array $params = []) use ($containe
     $patternRequest = new UpdatePatternRequest($params, $response);
     $patternController->update($patternRequest);
 });
-
-//$router->addNotFoundHandler(function(){
-//    echo "Not Found!";
-//});
-
-//$router->run();

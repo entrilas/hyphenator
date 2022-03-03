@@ -1,27 +1,31 @@
-version: "3.3"
+version: "3"
 services:
+
   web:
     build:
       context: .
-      dockerfile: ./Dockerfile
+      dockerfile: Dockerfile
+    environment:
+    - MYSQL_DATABASE=hyphenator
+    - MYSQL_USER=dbuser
+    - MYSQL_PASSWORD=654321
+    - MYSQL_HOST=db
     ports:
     - "8080:80"
     volumes:
     - .:/var/www
-    stdin_open: true
-    tty: true
     depends_on:
-    - database
+    - db
 
-  database:
+  db:
     image: mysql:5.7
-    environment:
-      MYSQL_ROOT_PASSWORD: 123
-      MYSQL_DATABASE: hyphenator
-      MYSQL_USER: user
-      MYSQL_PASSWORD: 123
     ports:
-      - "9906:3306"
+    - "6603:3306"
+    environment:
+    - MYSQL_ROOT_PASSWORD=654321
+    - MYSQL_USER=dbuser
+    - MYSQL_PASSWORD=654321
+    - MYSQL_DATABASE=hyphenator
     volumes:
     - "mysql_data:/var/lib/mysql"
     - ./App/Migrations/migrate.sql:/docker-entrypoint-initdb.d/schema.sql

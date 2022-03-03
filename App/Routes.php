@@ -16,7 +16,7 @@ $container = new Container;
 $router = $container->get('App\\Core\\Router');
 $response = $container->get('App\\Core\\Response');
 
-require_once 'Routes/web.php';
-require_once 'Routes/api.php';
+require_once __DIR__ . '/Routes/web.php';
+require_once __DIR__ . '/Routes/api.php';
 
 $router->run();

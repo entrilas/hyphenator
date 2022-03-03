@@ -15,7 +15,7 @@ $( "#patternUpdateForm" ).submit(function( event ) {
             window.location.href = '/patterns';
         }, error: function (jqXHR, exception) {
             handleError(jqXHR, exception);
-            window.location.href = '/patterns';
+            window.location.href = '/patterns?page=1';
         },
     });
 });

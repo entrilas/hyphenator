@@ -16,7 +16,7 @@ $( "#wordUpdateForm" ).submit(function( event ) {
             window.location.href = '/words';
         }, error: function (jqXHR, exception) {
             handleError(jqXHR, exception);
-            window.location.href = '/words';
+            window.location.href = '/words?page=1';
         },
     });
 });

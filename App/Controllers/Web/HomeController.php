@@ -10,4 +10,9 @@ class HomeController extends Controller
     {
         return $this->view('home');
     }
+
+    public function notFound()
+    {
+        return $this->view('_404');
+    }
 }
