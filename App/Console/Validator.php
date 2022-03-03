@@ -22,7 +22,7 @@ class Validator
         if(($this->inputReceiver->getData() === null ||
             $this->inputReceiver->getData() === '') &&
             ($this->inputReceiver->getFlag() === Constants::IMPORT_PATTERNS_COMMAND))
-            throw new InvalidArgumentException("Data provided is null or empty");
+            throw new InvalidArgumentException('Data provided is null or empty');
     }
 
     /**

@@ -29,7 +29,7 @@ class Router
         }
 
         if(!$callback || sizeof($urlIds) > 1){
-            header("HTTP/1.0 404 Not Found");
+            header('HTTP/1.0 404 Not Found');
             if(!empty($this->notFoundHandler)){
                 $callback = $this->notFoundHandler;
             }
@@ -68,7 +68,7 @@ class Router
 
     private function getInputData(): array
     {
-        $inputData = file_get_contents("php://input");
+        $inputData = file_get_contents('php://input');
         $inputDecoded = json_decode($inputData);
         return (array)$inputDecoded;
     }

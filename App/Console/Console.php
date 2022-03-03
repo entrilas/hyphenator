@@ -53,14 +53,14 @@ class Console
             MigrationCommand::getCommand() => $this->invokerFormer->formMigrationInvoker(),
             PatternCommand::getCommand() => $this->invokerFormer->formImportPatternsInvoker(),
             default => throw new InvalidArgumentException(
-                "Command was not found!"
+                'Command was not found!'
             ),
         };
         $this->printData($invoker->handle());
         $this->timer->finish();
         $executionTime = $this->timer->getTime();
-        $this->logger->info(sprintf("Process is finished in %s seconds", $executionTime));
-        $this->logger->info("Process has been finished!");
+        $this->logger->info(sprintf('Process is finished in %s seconds', $executionTime));
+        $this->logger->info('Process has been finished!');
     }
 
     private function printData($data): void
