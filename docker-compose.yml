@@ -1,0 +1,30 @@
+version: "3.3"
+services:
+  web:
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    ports:
+    - "8080:80"
+    volumes:
+    - .:/var/www
+    stdin_open: true
+    tty: true
+    depends_on:
+    - database
+
+  database:
+    image: mysql:5.7
+    environment:
+      MYSQL_ROOT_PASSWORD: 123
+      MYSQL_DATABASE: hyphenator
+      MYSQL_USER: user
+      MYSQL_PASSWORD: 123
+    ports:
+      - "9906:3306"
+    volumes:
+    - "mysql_data:/var/lib/mysql"
+    - ./App/Migrations/migrate.sql:/docker-entrypoint-initdb.d/schema.sql
+
+volumes:
+  mysql_data: { driver: local }
