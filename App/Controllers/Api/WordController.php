@@ -27,13 +27,13 @@ class WordController
 
     public function showAll(WordRequest $request): bool|string
     {
-        if($request->getPage() === 0){
+        if ($request->getPage() === 0) {
             $words = $this->wordRepository->getWords();
-        }else{
+        } else {
             $words = $this->wordRepository->getWordsByPage($request->getPage());
         }
 
-        if($words === false){
+        if ($words === false) {
             return $this->response->response(
                 ResponseCodes::NOT_FOUND_ERROR_NAME,
                 "Words was not found",
@@ -50,7 +50,7 @@ class WordController
     public function show(WordRequest $request): bool|string
     {
         $word = $this->wordRepository->getWord($request->getId());
-        if(!$word){
+        if (!$word) {
             $this->response->response(
                 ResponseCodes::NOT_FOUND_ERROR_NAME,
                 sprintf("Word with id [%s] was not found", $request->getId())
@@ -66,13 +66,10 @@ class WordController
         );
     }
 
-    /**
-     * @throws Exception
-     */
     public function submit(StoreWordRequest $request): string
     {
         $word = $this->wordRepository->getWordByName($request->getWord());
-        if($word !== false){
+        if ($word !== false) {
             return $this->response->response(
                 ResponseCodes::CREATED_ERROR_NAME,
                 "Word is already created and found in database.",
@@ -92,30 +89,37 @@ class WordController
     public function delete(DeleteWordRequest $request): bool|string
     {
         $id = $request->getId();
-        if(!$this->wordRepository->getWord($id)) {
+        if (!$this->wordRepository->getWord($id)) {
             return $this->response->response(
                 ResponseCodes::NOT_FOUND_ERROR_NAME,
-                sprintf("Word with id [%s] has not been found.",
-                    $id));
+                sprintf(
+                    "Word with id [%s] has not been found.",
+                    $id
+                )
+            );
         }
         $this->wordRepository->deleteWord($id);
         return $this->response->response(
             ResponseCodes::OK_ERROR_NAME,
-            sprintf("Word with id [%s] has been deleted.",
-                $id));
+            sprintf(
+                "Word with id [%s] has been deleted.",
+                $id
+            )
+        );
     }
 
     public function update(UpdateWordRequest $request): ?string
     {
-        if($this->checkIfWordExists($request) === false){
+        if ($this->checkIfWordExists($request) === false) {
             return $this->response->response(
                 ResponseCodes::NOT_FOUND_ERROR_NAME,
-                sprintf("Word with id [%s] has not been found",
+                sprintf(
+                    "Word with id [%s] has not been found",
                     $request->getId()
                 )
             );
         }
-        try{
+        try {
             $wordModel = $this->wordRepository->updateWord(
                 $request->getId(),
                 $request->getWord(),
@@ -123,15 +127,16 @@ class WordController
             );
             return $this->response->response(
                 ResponseCodes::OK_ERROR_NAME,
-                sprintf("Word with id [%s] has been updated.",
+                sprintf(
+                    "Word with id [%s] has been updated.",
                     $request->getId()
                 )
             );
-        }catch(PDOException $e)
-        {
+        } catch (PDOException $e) {
             return $this->response->response(
                 ResponseCodes::CONFLICT_ERROR_NAME,
-                sprintf("Word with id [%s] is already created.",
+                sprintf(
+                    "Word with id [%s] is already created.",
                     $request->getId()
                 )
             );

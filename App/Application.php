@@ -14,13 +14,12 @@ class Application
      */
     public function __construct()
     {
-        if(PHP_SAPI === "cli")
-        {
+        if (PHP_SAPI === "cli") {
             $container = new Container;
             $console = $container->get('App\\Console\\Console');
             $console->runConsole();
-        }else{
-            require_once __DIR__.'/../App/Routes.php';
+        } else {
+            include_once __DIR__.'/../App/Routes.php';
         }
     }
 }

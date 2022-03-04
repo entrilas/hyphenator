@@ -24,7 +24,7 @@ class InvokerFormer
         private FileHyphenation $fileHyphenation,
         private SentenceHyphenation $sentenceHyphenation,
         private Input $inputReceiver
-    ){
+    ) {
     }
 
     public function formImportPatternsInvoker(): CommandInvoker

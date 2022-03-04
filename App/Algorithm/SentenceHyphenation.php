@@ -23,12 +23,12 @@ class SentenceHyphenation
     public function hyphenateSentence(string $sentence): string
     {
         $wordsArray = $this->splitSentenceIntoWords($sentence);
-        foreach($wordsArray as $i => $word)
-        {
-            if(strlen($word) > Constants::MINIMUM_WORD_LENGTH){
+        foreach ($wordsArray as $i => $word) {
+            if (strlen($word) > Constants::MINIMUM_WORD_LENGTH) {
                 $wordsArray[$i] = sprintf("%s", $this->hyphenator->hyphenate($word));
-            }else
+            } else {
                 $wordsArray[$i] = sprintf("%s", $word);
+            }
         }
         return implode(" ", $wordsArray);
     }

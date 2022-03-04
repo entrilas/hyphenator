@@ -10,7 +10,7 @@ class WordRequest
 {
     public function __construct(
         private array $params,
-        private ?Response $response = NULL
+        private ?Response $response = null
     ) {
     }
 

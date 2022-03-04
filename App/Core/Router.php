@@ -19,26 +19,28 @@ class Router
         $requestPath = $requestUri['path'];
         $method = $_SERVER['REQUEST_METHOD'];
         $callback = null;
-        foreach($this->handlers as $handler)
-        {
+        foreach ($this->handlers as $handler) {
             $pathParsed = preg_replace('/[0-9]+/', ':id', $requestPath);
             preg_match_all('!\d+!', $requestPath, $urlIds);
-            if($handler['path'] === $pathParsed && $method === $handler['method']) {
+            if ($handler['path'] === $pathParsed && $method === $handler['method']) {
                 $callback = $handler['handler'];
             }
         }
 
-        if(!$callback || sizeof($urlIds) > 1){
+        if (!$callback || sizeof($urlIds) > 1) {
             header('HTTP/1.0 404 Not Found');
-            if(!empty($this->notFoundHandler)){
+            if (!empty($this->notFoundHandler)) {
                 $callback = $this->notFoundHandler;
             }
         }
 
         $this->getInputData();
-        call_user_func_array($callback, [
+        call_user_func_array(
+            $callback,
+            [
             array_merge($_GET, $this->getInputData(), $urlIds)
-        ]);
+            ]
+        );
     }
 
     public function get(string $path, $handler): void

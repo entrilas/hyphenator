@@ -17,15 +17,17 @@ class Input
 
     public function getFlag(): mixed
     {
-        if(isset($this->argv[1]))
+        if (isset($this->argv[1])) {
             return $this->argv[1];
+        }
         return null;
     }
 
     public function getData(): mixed
     {
-        if(isset($this->argv[2]))
+        if (isset($this->argv[2])) {
             return $this->argv[2];
+        }
         return null;
     }
 

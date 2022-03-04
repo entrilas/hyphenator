@@ -10,14 +10,14 @@ class UpdatePatternRequest
 {
     public function __construct(
         private array $params,
-        private ?Response $response = NULL
+        private ?Response $response = null
     ) {
         $this->validateNullableData();
     }
 
     private function validateNullableData(): void
     {
-        if(is_null($this->getPattern())){
+        if (is_null($this->getPattern())) {
             $this->response->response('Unprocessable Entity', 'Data provided is incorrect.');
         }
     }

@@ -52,22 +52,22 @@ class Console
             FileCommand::getCommand() => $this->invokerFormer->formFileInvoker(),
             MigrationCommand::getCommand() => $this->invokerFormer->formMigrationInvoker(),
             PatternCommand::getCommand() => $this->invokerFormer->formImportPatternsInvoker(),
-            default => throw new InvalidArgumentException(
-                'Command was not found!'
-            ),
+        default => throw new InvalidArgumentException(
+            'Command was not found!'
+        ),
         };
-        $this->printData($invoker->handle());
-        $this->timer->finish();
-        $executionTime = $this->timer->getTime();
-        $this->logger->info(sprintf('Process is finished in %s seconds', $executionTime));
-        $this->logger->info('Process has been finished!');
+            $this->printData($invoker->handle());
+            $this->timer->finish();
+            $executionTime = $this->timer->getTime();
+            $this->logger->info(sprintf('Process is finished in %s seconds', $executionTime));
+            $this->logger->info('Process has been finished!');
     }
 
     private function printData($data): void
     {
-        if($this->settings->getExportToFileStatus()){
+        if ($this->settings->getExportToFileStatus()) {
             $this->dataExportService->exportToFile($data);
-        }else{
+        } else {
             $this->dataExportService->exportToConsole($data);
         }
     }

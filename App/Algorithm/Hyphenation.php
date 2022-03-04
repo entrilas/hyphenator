@@ -38,9 +38,9 @@ class Hyphenation implements HyphenationInterface
      */
     public function hyphenate(string $word): string
     {
-        if($this->settings->getDatabaseUsageStatus()) {
+        if ($this->settings->getDatabaseUsageStatus()) {
             $wordModel = $this->wordRepository->getWordByName($word);
-            if($wordModel){
+            if ($wordModel) {
                 return $wordModel->getHyphenatedWord();
             }
             $hyphenatedWord = $this->hyphenator->hyphenate($word);
@@ -62,9 +62,9 @@ class Hyphenation implements HyphenationInterface
     private function insertWord(
         string $word,
         string $hyphenatedWord,
-        array $validPatterns)
-    : void {
-        if($this->settings->getDatabaseUsageStatus()) {
+        array $validPatterns
+    ): void {
+        if ($this->settings->getDatabaseUsageStatus()) {
             $this->wordRepository->submitWord($word, $hyphenatedWord);
             $this->insertValidPatterns($validPatterns, $word);
         }
@@ -73,23 +73,22 @@ class Hyphenation implements HyphenationInterface
     /**
      * @throws Exception
      */
-    private function insertValidPatterns(array $validPatterns, string $word): void
-    {
+    private function insertValidPatterns(
+        array $validPatterns,
+        string $word
+    ): void {
         $word = $this->wordRepository->getWordByName($word);
         $this->logger->info(sprintf('Word to hyphenate: %s', $word->getWord()));
-        foreach($validPatterns as $pattern)
-        {
+        foreach ($validPatterns as $pattern) {
             $this->logger->info(sprintf('Detected pattern : %s', $pattern));
-            try{
+            try {
                 $this->database->getConnector()->beginTransaction();
                 $pattern = $this->patternRepository->getPatternByName($pattern);
                 $this->validPatternRepository->submitValidPattern($word->getId(), $pattern->getId());
                 $this->database->getConnector()->commit();
-            }catch(PDOException $e)
-            {
+            } catch (PDOException $e) {
                 $this->database->getConnector()->rollBack();
             }
         }
     }
 }
-

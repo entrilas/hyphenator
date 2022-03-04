@@ -27,9 +27,9 @@ class Patterns
      */
     private function exportPatterns()
     {
-        if($this->settings->getDatabaseUsageStatus()) {
+        if ($this->settings->getDatabaseUsageStatus()) {
                 $this->patterns = $this->exportService->exportPatterns();
-        }else{
+        } else {
             $this->patterns = $this->patternReaderService->readFile(
                 $this->getPatternPath()
             );

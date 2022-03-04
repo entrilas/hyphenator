@@ -12,11 +12,14 @@ class WordRepository extends Connection implements IWordRepository
 {
     private string $table = 'words';
 
-    public function __construct(QueryBuilder $queryBuilder
-    ) {
+    public function __construct(QueryBuilder $queryBuilder)
+    {
         parent::__construct($queryBuilder);
     }
 
+    /**
+     * @return array
+     */
     public function getWords(): array
     {
         return $this->queryBuilder
@@ -28,6 +31,11 @@ class WordRepository extends Connection implements IWordRepository
             ->getAllData();
     }
 
+    /**
+     * @param int $page
+     *
+     * @return array
+     */
     public function getWordsByPage(int $page): array
     {
         return $this->queryBuilder
@@ -40,7 +48,11 @@ class WordRepository extends Connection implements IWordRepository
             ->getAllData();
     }
 
-
+    /**
+     * @param int $id
+     *
+     * @return Word|bool
+     */
     public function getWord(int $id): Word|bool
     {
         $wordsArray = $this->queryBuilder
@@ -53,6 +65,11 @@ class WordRepository extends Connection implements IWordRepository
         return $this->formWordModel($wordsArray);
     }
 
+    /**
+     * @param string $word
+     *
+     * @return Word|bool
+     */
     public function getWordByName(string $word): Word|bool
     {
         $wordsArray = $this->queryBuilder
@@ -65,6 +82,12 @@ class WordRepository extends Connection implements IWordRepository
         return $this->formWordModel($wordsArray);
     }
 
+    /**
+     * @param string $word
+     * @param string $hyphenatedWord
+     *
+     * @return bool
+     */
     public function submitWord(string $word, string $hyphenatedWord): bool
     {
         return $this->queryBuilder
@@ -76,6 +99,11 @@ class WordRepository extends Connection implements IWordRepository
             ->getData();
     }
 
+    /**
+     * @param int $id
+     *
+     * @return bool
+     */
     public function deleteWord(int $id): bool
     {
         return $this->queryBuilder
@@ -87,6 +115,13 @@ class WordRepository extends Connection implements IWordRepository
             ->getData();
     }
 
+    /**
+     * @param int    $id
+     * @param string $word
+     * @param string $hyphenatedWord
+     *
+     * @return Word|bool
+     */
     public function updateWord(int $id, string $word, string $hyphenatedWord): Word|bool
     {
         $wordsArray = $this->queryBuilder
@@ -99,9 +134,14 @@ class WordRepository extends Connection implements IWordRepository
         return $this->formWordModel($wordsArray);
     }
 
+    /**
+     * @param array|bool $wordsArray
+     *
+     * @return Word|bool
+     */
     private function formWordModel(array|bool $wordsArray): Word|bool
     {
-        if($wordsArray !== false){
+        if ($wordsArray !== false) {
             return new Word(
                 (int)$wordsArray['id'],
                 $wordsArray['word'],

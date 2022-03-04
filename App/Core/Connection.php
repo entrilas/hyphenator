@@ -6,11 +6,13 @@ namespace App\Core;
 
 use App\Core\Database\QueryBuilder;
 
-abstract class Connection {
+abstract class Connection
+{
 
     protected QueryBuilder $queryBuilder;
 
-    public function __construct(QueryBuilder $queryBuilder) {
+    public function __construct(QueryBuilder $queryBuilder)
+    {
         $this->queryBuilder = $queryBuilder;
     }
 }

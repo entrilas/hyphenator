@@ -10,7 +10,8 @@ class ValidPatternRepository extends Connection implements IValidPatternReposito
 {
     private string $table = 'valid_patterns';
 
-    public function __construct(QueryBuilder $queryBuilder) {
+    public function __construct(QueryBuilder $queryBuilder)
+    {
         parent::__construct($queryBuilder);
     }
 

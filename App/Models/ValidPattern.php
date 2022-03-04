@@ -2,7 +2,6 @@
 
 declare(strict_types=1);
 
-
 namespace App\Models;
 
 class ValidPattern
@@ -14,16 +13,25 @@ class ValidPattern
     ) {
     }
 
+    /**
+     * @return int
+     */
     public function getForeignWordId(): int
     {
         return $this->fk_word_id;
     }
 
+    /**
+     * @return int
+     */
     public function getForeignPatternId(): int
     {
         return $this->fk_pattern_id;
     }
 
+    /**
+     * @return int
+     */
     public function getId(): int
     {
         return $this->id;

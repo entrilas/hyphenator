@@ -39,7 +39,7 @@ class Database
                     $this->settings->getPassword()
                 );
                 $this->connector->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_OBJ);
-            } catch(PDOException $e) {
+            } catch (PDOException $e) {
                 throw new Exception($e->getMessage());
             }
         }

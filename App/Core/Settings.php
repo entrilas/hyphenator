@@ -19,7 +19,7 @@ class Settings
      */
     public function __construct(
         private Config $config
-    ){
+    ) {
         $this->databaseSettings = $this->config->get(
             Constants::DATABASE_FILE_NAME
         );

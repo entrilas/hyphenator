@@ -37,7 +37,9 @@ class FileReaderService
 
     private function setFileFlags($file): void
     {
-        $file->setFlags(SplFileObject::SKIP_EMPTY |
-            SplFileObject::READ_AHEAD);
+        $file->setFlags(
+            SplFileObject::SKIP_EMPTY |
+            SplFileObject::READ_AHEAD
+        );
     }
 }

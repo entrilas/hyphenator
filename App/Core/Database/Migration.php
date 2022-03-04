@@ -33,8 +33,9 @@ class Migration
      */
     private function validateFile(string $path): void
     {
-        if(!file_exists($path))
+        if (!file_exists($path)) {
             throw new Exception(sprintf("File location with path [ $path ] does not exist", $path));
+        }
     }
 
     private function execSQL(string $sql, string $name): void
@@ -42,7 +43,7 @@ class Migration
         try {
             $this->database->getConnector()->exec($sql);
             $this->logger->info(sprintf("Migration with name [ %s ] is successful", $name));
-        }catch(Exception $e){
+        } catch (Exception $e) {
             $this->logger->error(sprintf("Migration with name [ %s ] is unsuccessful", $name));
         }
     }

@@ -10,15 +10,15 @@ class StoreWordRequest
 {
     public function __construct(
         private array $params,
-        private ?Response $response = NULL
+        private ?Response $response = null
     ) {
         $this->validateSubmit();
     }
 
     private function validateSubmit(): void
     {
-        if(is_null($this->getWord()) ||
-            !ctype_alpha($this->getWord())
+        if (is_null($this->getWord())
+            || !ctype_alpha($this->getWord())
         ) {
             $this->response->response('Unprocessable Entity', 'Data provided is incorrect.');
         }

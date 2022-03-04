@@ -29,8 +29,10 @@ class Config
     {
         $fileInformation = pathinfo($path);
         if ($fileInformation['extension'] != "json") {
-            throw new UnsupportedFormatException('Unsupported configuration format.
-             At this moment, only JSON file is supported');
+            throw new UnsupportedFormatException(
+                'Unsupported configuration format.
+             At this moment, only JSON file is supported'
+            );
         }
     }
 

@@ -135,7 +135,7 @@ class Logger implements LoggerInterface
 
         $message = $this->formatLog($context);
 
-        if(!$this->settings->getDatabaseUsageStatus()){
+        if (!$this->settings->getDatabaseUsageStatus()) {
             $this->logFile($message);
             $this->logConsole($message);
         }
@@ -153,7 +153,7 @@ class Logger implements LoggerInterface
 
     private function logConsole($message): void
     {
-        if($this->settings->getLogToConsoleName()) {
+        if ($this->settings->getLogToConsoleName()) {
             print_r($message);
         }
     }
@@ -169,7 +169,7 @@ class Logger implements LoggerInterface
             $this->openLog();
         }
 
-        if($this->settings->getLogToFileName()) {
+        if ($this->settings->getLogToFileName()) {
             fwrite($this->openedFile, $message . PHP_EOL);
         }
         $this->closeFile();
@@ -188,4 +188,3 @@ class Logger implements LoggerInterface
         }
     }
 }
-

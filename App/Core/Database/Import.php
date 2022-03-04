@@ -31,8 +31,7 @@ class Import
         $this->truncatePatternsTable();
         $this->validatePath($path);
         $patterns = $this->fileReaderService->readFile($path);
-        foreach($patterns as $pattern)
-        {
+        foreach ($patterns as $pattern) {
             $clearedPattern = $this->removeSpaces($pattern);
             $this->patternRepository->submitPattern($clearedPattern);
         }
@@ -45,8 +44,7 @@ class Import
      */
     private function setCache(array $patterns): void
     {
-        if($this->cache->has('patterns'))
-        {
+        if ($this->cache->has('patterns')) {
             $this->cache->delete('patterns');
             $this->cache->set('patterns', $patterns);
         }
@@ -64,7 +62,8 @@ class Import
      */
     private function validatePath(string $path): void
     {
-        if(!file_exists($path))
+        if (!file_exists($path)) {
             throw new InvalidArgumentException("File in provided path [$path] does not exist.");
+        }
     }
 }

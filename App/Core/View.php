@@ -1,10 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Core;
 
 class View
 {
-    public function renderView($view, array $params = [])
+
+    public function renderView($view, array $params = []): array|bool|string
     {
         $viewContent = $this->renderViewOnly($view, $params);
         ob_start();
@@ -13,7 +16,7 @@ class View
         return str_replace('{{content}}', $viewContent, $layoutContent);
     }
 
-    public function renderViewOnly($view, array $params)
+    public function renderViewOnly($view, array $params): bool|string
     {
         foreach ($params as $key => $value) {
             $key = $value;

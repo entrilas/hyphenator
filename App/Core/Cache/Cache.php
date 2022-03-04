@@ -143,6 +143,9 @@ class Cache implements CacheInterface
         return !file_exists($path) || unlink($path);
     }
 
+    /**
+     * @return bool
+     */
     public function clear(): bool
     {
         $success = true;
@@ -245,11 +248,17 @@ class Cache implements CacheInterface
             . substr($hash, 2);
     }
 
+    /**
+     * @return int
+     */
     protected function getTime(): int
     {
         return time();
     }
 
+    /**
+     * @return Generator
+     */
     protected function listPaths(): Generator
     {
         $iterator = new RecursiveDirectoryIterator(
@@ -287,6 +296,11 @@ class Cache implements CacheInterface
         }
     }
 
+    /**
+     * @param  $path
+     * Method used to create cache directory
+     * @return void
+     */
     private function makeDirectory($path)
     {
         $parent_path = dirname($path);

@@ -13,9 +13,9 @@ class Container
 {
     protected array $instances = [];
 
-    public function set(string $name, object $concrete = NULL): void
+    public function set(string $name, object $concrete = null): void
     {
-        if ($concrete === NULL) {
+        if ($concrete === null) {
             $concrete = $name;
         }
         $this->instances[$name] = $concrete;
@@ -68,7 +68,7 @@ class Container
         $dependencies = [];
         foreach ($parameters as $parameter) {
             $dependency = $parameter->getClass();
-            if ($dependency === NULL) {
+            if ($dependency === null) {
                 if ($parameter->isDefaultValueAvailable()) {
                     $dependencies[] = $parameter->getDefaultValue();
                 } else {

@@ -15,12 +15,12 @@ class DataExportService
 
     public function exportToFile($data): void
     {
-        if(is_array($data)){
+        if (is_array($data)) {
             file_put_contents(
                 $this->getPath(),
                 implode(PHP_EOL, $data)
             );
-        }else{
+        } else {
             file_put_contents(
                 $this->getPath(),
                 $data

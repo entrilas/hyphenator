@@ -121,16 +121,18 @@ class QueryBuilder
     public function getData(): array|bool
     {
         $fetchedData = $this->stmt->fetch();
-        if($fetchedData === false)
+        if ($fetchedData === false) {
             return false;
+        }
         return (array)$fetchedData;
     }
 
     public function getAllData(): array|bool
     {
         $fetchedData = $this->stmt->fetchAll();
-        if($fetchedData === false)
+        if ($fetchedData === false) {
             return false;
+        }
         return (array)$fetchedData;
     }
 
@@ -153,15 +155,14 @@ class QueryBuilder
 
     private function setHolders(array $columns): string
     {
-        $valuesHoldersArray = array_fill(1 ,count($columns), '?');
-        return implode(', ',array_values($valuesHoldersArray));
+        $valuesHoldersArray = array_fill(1, count($columns), '?');
+        return implode(', ', array_values($valuesHoldersArray));
     }
 
     private function bindParameters(array $params = null): void
     {
-        if($params != null){
-            for($i=0;$i<sizeof($params);$i++)
-            {
+        if ($params != null) {
+            for ($i=0; $i<sizeof($params); $i++) {
                 $this->stmt->bindValue($i+1, $params[$i]);
             }
         }

@@ -12,16 +12,16 @@ class UpdateWordRequest
 {
     public function __construct(
         private array $params,
-        private ?Response $response = NULL
+        private ?Response $response = null
     ) {
         $this->validateUpdate();
     }
 
     private function validateUpdate(): void
     {
-        if(is_null($this->getWord()) &&
-           is_null($this->getHyphenatedWord())
-        ){
+        if (is_null($this->getWord())
+            && is_null($this->getHyphenatedWord())
+        ) {
             $this->response->response('Unprocessable Entity', 'Data provided is incorrect.');
         }
     }

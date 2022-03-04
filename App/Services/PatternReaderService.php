@@ -19,11 +19,11 @@ class PatternReaderService extends FileReaderService
      */
     public function readFile(string $path): array
     {
-        if(!$this->cache->has('patterns')) {
+        if (!$this->cache->has('patterns')) {
             $patterns = parent::readFile($path);
             $this->cache->set('patterns', $patterns);
             return $patterns;
-        }else{
+        } else {
             return $this->cache->get('patterns');
         }
     }
