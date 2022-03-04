@@ -141,13 +141,13 @@ class Logger implements LoggerInterface
         }
     }
 
-    private function formatLog($context): string
+    private function formatLog(array $context): string
     {
         $time = date($this->settings->getLogFormatName());
         $timeLog = is_null($time) ? "[N/A] " : "[$time] ";
         $levelLog = is_null($context['level']) ? "[N/A]" : "[{$context['level']}]";
         $messageLog = is_null($context['message']) ? "N/A" : "{$context['message']}";
-        $contextLog = empty($args['context']) ? "" : "$context";
+        $contextLog = empty($context['context']) ? "" : "$context";
         return "$timeLog $levelLog: - $messageLog $contextLog" . PHP_EOL;
     }
 
