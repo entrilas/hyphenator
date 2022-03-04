@@ -7,6 +7,7 @@ namespace App\Repository;
 use App\Constants\Constants;
 use App\Core\Connection;
 use App\Core\Database\QueryBuilder;
+use App\Models\Container\PatternContainer;
 use App\Models\Pattern;
 use App\Repository\Interfaces\IPatternRepository;
 
@@ -14,8 +15,10 @@ class PatternRepository extends Connection implements IPatternRepository
 {
     private string $table = 'patterns';
 
-    public function __construct(QueryBuilder $queryBuilder)
-    {
+    public function __construct(
+        QueryBuilder $queryBuilder,
+        private DataFormer $dataFormer
+    ) {
         parent::__construct($queryBuilder);
     }
 
@@ -31,6 +34,7 @@ class PatternRepository extends Connection implements IPatternRepository
             ->orderby(['id'])
             ->execute()
             ->getAllData();
+
     }
 
     /**
@@ -64,7 +68,7 @@ class PatternRepository extends Connection implements IPatternRepository
             ->where('id')
             ->execute([$id])
             ->getData();
-        return $this->formPatternModel($patternArray);
+        return $this->dataFormer->formPatternModel($patternArray);
     }
 
     /**
@@ -131,19 +135,6 @@ class PatternRepository extends Connection implements IPatternRepository
             ->where('id')
             ->execute([$pattern, $id])
             ->getData();
-        return $this->formPatternModel($patternArray);
-    }
-
-    /**
-     * @param array|bool $patternArray
-     * Forms Data for the Pattern Model
-     * @return Pattern|bool
-     */
-    private function formPatternModel(array|bool $patternArray): Pattern|bool
-    {
-        if ($patternArray !== false) {
-            return new Pattern((int)$patternArray['id'], $patternArray['pattern']);
-        }
-        return false;
+        return $this->dataFormer->formPatternModel($patternArray);
     }
 }

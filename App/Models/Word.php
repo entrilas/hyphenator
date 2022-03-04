@@ -7,7 +7,7 @@ namespace App\Models;
 class Word
 {
     public function __construct(
-        private int $id = -1,
+        private ?int $id,
         private string $word,
         private string $hyphenatedWord
     ) {

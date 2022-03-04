@@ -25,7 +25,8 @@ class SentenceHyphenation
         $wordsArray = $this->splitSentenceIntoWords($sentence);
         foreach ($wordsArray as $i => $word) {
             if (strlen($word) > Constants::MINIMUM_WORD_LENGTH) {
-                $wordsArray[$i] = sprintf("%s", $this->hyphenator->hyphenate($word));
+                $wordModel = $this->hyphenator->hyphenate($word);
+                $wordsArray[$i] = sprintf("%s", $wordModel->getHyphenatedWord());
             } else {
                 $wordsArray[$i] = sprintf("%s", $word);
             }

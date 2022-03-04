@@ -12,8 +12,10 @@ class WordRepository extends Connection implements IWordRepository
 {
     private string $table = 'words';
 
-    public function __construct(QueryBuilder $queryBuilder)
-    {
+    public function __construct(
+        QueryBuilder $queryBuilder,
+        private DataFormer $dataFormer
+    ) {
         parent::__construct($queryBuilder);
     }
 
@@ -62,7 +64,7 @@ class WordRepository extends Connection implements IWordRepository
             ->where('id')
             ->execute([$id])
             ->getData();
-        return $this->formWordModel($wordsArray);
+        return $this->dataFormer->formWordModel($wordsArray);
     }
 
     /**
@@ -79,7 +81,7 @@ class WordRepository extends Connection implements IWordRepository
             ->where('word')
             ->execute([$word])
             ->getData();
-        return $this->formWordModel($wordsArray);
+        return $this->dataFormer->formWordModel($wordsArray);
     }
 
     /**
@@ -131,23 +133,6 @@ class WordRepository extends Connection implements IWordRepository
             ->where('id')
             ->execute([$word, $hyphenatedWord, $id])
             ->getData();
-        return $this->formWordModel($wordsArray);
-    }
-
-    /**
-     * @param array|bool $wordsArray
-     *
-     * @return Word|bool
-     */
-    private function formWordModel(array|bool $wordsArray): Word|bool
-    {
-        if ($wordsArray !== false) {
-            return new Word(
-                (int)$wordsArray['id'],
-                $wordsArray['word'],
-                $wordsArray['hyphenated_word']
-            );
-        }
-        return false;
+        return $this->dataFormer->formWordModel($wordsArray);
     }
 }

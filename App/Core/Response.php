@@ -10,11 +10,11 @@ class Response
 {
 public string $status;
 public string $message;
-public array $data = [];
+public $data = [];
 public int $statusCode;
 public array $result;
 
-public function response(string $status, string $message = '', array $data = []): string|null
+public function response(string $status, string $message = '', $data = []): string|null
 {
     $this->formResult($status, $message, $data);
     match ($this->status){
@@ -28,7 +28,7 @@ public function response(string $status, string $message = '', array $data = [])
         $this->makeMessage();
         $jsonMessage = json_encode($this->result);
         echo json_encode($this->result);
-        return $jsonMessage;
+            return $jsonMessage;
         }
 
     private function setHeader(int $statusCode, string $status): void
@@ -37,14 +37,14 @@ public function response(string $status, string $message = '', array $data = [])
             header(sprintf('HTTP/1.1 %s %s', $statusCode, $status), true, $statusCode);
     }
 
-    private function formResult(string $status, string $message, array $data): void
+    private function formResult(string $status, string $message, $data): void
     {
         $this->status = $status;
         $this->message = $message;
         $this->data = $data;
 
         $this->result = [
-        'status' => $this->status
+            'status' => $this->status
         ];
     }
 
@@ -53,7 +53,6 @@ public function response(string $status, string $message = '', array $data = [])
         if ($this->message != '') {
             $this->result['message'] = $this->message;
         }
-
         if (count($this->data) > 0) {
             $this->result['data'] = $this->data;
         }

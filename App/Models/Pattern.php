@@ -7,7 +7,7 @@ namespace App\Models;
 class Pattern
 {
     public function __construct(
-        private int $id = -1,
+        private ?int $id,
         private string $pattern,
     ) {
     }

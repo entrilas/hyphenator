@@ -2,6 +2,7 @@
 
 namespace App\Repository\Interfaces;
 
+use App\Models\Container\PatternContainer;
 use App\Models\Pattern;
 
 interface IPatternRepository

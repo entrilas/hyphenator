@@ -66,6 +66,9 @@ class WordController
         );
     }
 
+    /**
+     * @throws Exception
+     */
     public function submit(StoreWordRequest $request): string
     {
         $word = $this->wordRepository->getWordByName($request->getWord());

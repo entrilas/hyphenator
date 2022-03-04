@@ -7,7 +7,7 @@ namespace App\Models;
 class ValidPattern
 {
     public function __construct(
-        private int $id = -1,
+        private ?int $id,
         private int $fk_word_id,
         private int $fk_pattern_id
     ) {

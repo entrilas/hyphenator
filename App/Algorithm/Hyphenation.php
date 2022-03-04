@@ -9,6 +9,7 @@ use App\Core\Database\Database;
 use App\Core\Log\Logger;
 use App\Core\Patterns;
 use App\Core\Settings;
+use App\Models\Word;
 use App\Repository\PatternRepository;
 use App\Repository\ValidPatternRepository;
 use App\Repository\WordRepository;
@@ -36,7 +37,7 @@ class Hyphenation implements HyphenationInterface
     /**
      * @throws Exception
      */
-    public function hyphenate(string $word): string
+    public function hyphenate(string $word): Word
     {
         if ($this->settings->getDatabaseUsageStatus()) {
             $wordModel = $this->wordRepository->getWordByName($word);
@@ -46,9 +47,10 @@ class Hyphenation implements HyphenationInterface
             $hyphenatedWord = $this->hyphenator->hyphenate($word);
             $validPatterns = $this->hyphenator->getValidPatterns();
             $this->insertWord($word, $hyphenatedWord, $validPatterns);
-            return $hyphenatedWord;
+            return new Word(null, $word, $hyphenatedWord);
         }
-        return $this->hyphenator->hyphenate($word);
+        $hyphenatedWord = $this->hyphenator->hyphenate($word);
+        return new Word(null, $word, $hyphenatedWord);
     }
 
     public function getValidPatterns(): array

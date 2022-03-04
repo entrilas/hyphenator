@@ -18,13 +18,15 @@ class FileHyphenation
 
     /**
      * @throws FileNotFoundException
+     * @throws Exception
      */
     public function hyphenateFile(string $filePath): array
     {
         $fileData = $this->fileReader->readFile($filePath);
         $hyphenatedData = [];
         foreach ($fileData as $word) {
-            $hyphenatedData[] = $this->hyphenator->hyphenate($word);
+            $wordModel = $this->hyphenator->hyphenate($word);
+            $hyphenatedData[] = $wordModel->getHyphenatedWord();
         }
         return $hyphenatedData;
     }

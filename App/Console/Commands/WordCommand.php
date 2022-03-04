@@ -18,7 +18,8 @@ class WordCommand implements CommandInterface
 
     public function execute(): string
     {
-        return $this->hyphenator->hyphenate($this->word);
+        $wordModel = $this->hyphenator->hyphenate($this->word);
+        return $wordModel->getHyphenatedWord();
     }
 
     public static function getCommand(): string

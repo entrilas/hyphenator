@@ -21,12 +21,21 @@ use PDOException;
 
 class PatternController
 {
+    /**
+     * @param PatternRepository $patternRepository
+     * @param Response          $response
+     */
     public function __construct(
         private PatternRepository $patternRepository,
         private Response $response
     ) {
     }
 
+    /**
+     * @param  PatternRequest $request
+     * Method used to show all patterns from the database
+     * @return bool|string
+     */
     public function showAll(PatternRequest $request): bool|string
     {
         if ($request->getPage() === 0) {
@@ -50,6 +59,11 @@ class PatternController
         );
     }
 
+    /**
+     * @param  PatternRequest $request
+     * Method used to show pattern from the database
+     * @return bool|string
+     */
     public function show(PatternRequest $request): bool|string
     {
         $pattern = $this->patternRepository->getPattern($request->getId());
@@ -73,6 +87,9 @@ class PatternController
         );
     }
 
+    /**
+     * @throws Exception
+     */
     public function submit(StorePatternRequest $request)
     {
         $pattern = $this->patternRepository->getPatternByName(
@@ -116,6 +133,11 @@ class PatternController
         );
     }
 
+    /**
+     * @param  UpdatePatternRequest $request
+     * Method used to update pattern in the database
+     * @return string|null
+     */
     public function update(UpdatePatternRequest $request): ?string
     {
         if (!$this->checkIfPatternExists($request)) {
@@ -150,6 +172,11 @@ class PatternController
         }
     }
 
+    /**
+     * @param  UpdatePatternRequest $request
+     * Method used to check if pattern exists in the database
+     * @return Pattern|bool
+     */
     private function checkIfPatternExists(
         UpdatePatternRequest $request
     ): Pattern|bool {
