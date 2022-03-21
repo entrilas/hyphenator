@@ -11,7 +11,22 @@ Hyphenator for English language made in plain PHP. Application contains three di
 * Internet Application
 
 The main purpose of this application was to create efficient algorithm, which can hyphenate large file of data and output correct result.
-During the development of the application, it was must to implement these principles:
+During the development of the application, it was necessary to learn and implement these principles:
+
+- OOP Principles.
+- PSR Standards.
+- REGEX.
+- MySQL and PDO.
+- REST Api.
+- Designs patterns.
+- Dependency injections.
+- Composer usage.
+- Composer package creation.
+- Clean code, SOLID, DRY, KISS principles.
+- PHPUnit, Codeception testing.
+- Frontend basics.
+- Dockerizing application.
+- ...
 
 
 ## Installation 
@@ -70,6 +85,6 @@ Contributors names and contact info
 
 Arnas Dulinskas  
 [@LinkedIn](https://www.linkedin.com/in/arnas-dulinskas-b148481b6)
-Visma Internship, 2022
+Application was created during [@Visma](https://www.visma.lt/) Internship, 2022
 
     
