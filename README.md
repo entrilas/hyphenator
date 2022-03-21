@@ -39,9 +39,9 @@ Before using the application it is must to do these steps:
 
 - config.json file is responsible for global application settings, for example:
 - 'USE_DATABASE' option is responsible for using database or not so if you are planning to use CLI, REST API, Internet Application at the same time
-you should put this option to true.
+you should put this option to true...
 - database.json file is responsible for database connection information.
-logger.json file is responsible for logging data. Either you want to log information to file/console you can setup it yourself.
+logger.json file is responsible for logging data. Either you want to log information to file/console you can setup it yourself...
 
 
 ## Getting Started
@@ -83,8 +83,8 @@ Endpoints :
 
 Contributors names and contact info
 
-Arnas Dulinskas  
-[@LinkedIn](https://www.linkedin.com/in/arnas-dulinskas-b148481b6)
-Application was created during [@Visma](https://www.visma.lt/) Internship, 2022
+- Arnas Dulinskas  
+- [@LinkedIn](https://www.linkedin.com/in/arnas-dulinskas-b148481b6)
+- Application was created during [@Visma](https://www.visma.lt/) Internship, 2022
 
     
